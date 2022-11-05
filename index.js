@@ -6,6 +6,10 @@ const app = express();
 dotenv.config();
 
 
+const mailerRoutes = require('./Routes/mailerRoutes')
+app.use('/api',mailerRoutes);
+
+
 const options ={
     useNewUrlParser: true,
     autoIndex: true,
@@ -15,7 +19,7 @@ const options ={
     family: 4,
     useUnifiedTopology: true
 }
-
+ 
 
 app.listen(process.env.PORT,()=>
 {
