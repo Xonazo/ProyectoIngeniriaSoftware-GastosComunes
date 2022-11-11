@@ -9,7 +9,7 @@ const sendMail = (req, res) => {
     const mail = 'edison.munoz1901@alumnos.ubiobio.cl'
     if (!token) {
 
-        return res.status(400).send({ message: "Nos se ha entregado la con traseña de aplicacion para el correo" })
+        return res.status(400).send({ message: "Nos se ha entregado la contraseña de aplicacion para el correo" })
     }
     const transporter = nodemailer.createTransport({
         host:'smtp.gmail.com',
@@ -24,7 +24,6 @@ const sendMail = (req, res) => {
         'edi.edison.edi@gmail.com',
         'matias.san1901@alumnos.ubiobio.cl',
         'nelson.rubio1901@alumnos.ubiobio.cl'
-        
 
     ]
     const mailOptions = {
@@ -45,16 +44,12 @@ const sendMail = (req, res) => {
 
     transporter.verify().then(()=>{
         console.log('servidor de correos habilitado')
-    
     }).catch(error=>{
         console.log('Error al utilizar servidor de correos')
-    
     })
-    
 
 
 
-    
 }
 
 
