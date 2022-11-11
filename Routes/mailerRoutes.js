@@ -9,4 +9,3 @@ api.post('/mail',mailerController)
 
 
 module.exports = api
-
