@@ -11,7 +11,4 @@ api.get('/buscarVecinoRut/:rut',vecinoController.getUniqueVecinoRut);
 api.get('/buscarVecinoVivienda/:numeroVivienda',vecinoController.getUniqueVecinoVivienda);
 
 
-
-
-
 module.exports = api

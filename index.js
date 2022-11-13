@@ -8,7 +8,7 @@ dotenv.config();
 //a
 const mailerRoutes = require('./Routes/mailerRoutes')
 const vecinoRoutes = require('./Routes/vecinoRoutes')
-const RegistroRoutes = require('./Routes/RegistroRoutes')
+const RegistroRoutes = require('./Routes/registroRoutes')
 
 app.use(cors());
 app.use(express.json());

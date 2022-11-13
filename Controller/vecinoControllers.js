@@ -1,5 +1,5 @@
-const vecino = require('../models/vecino');
-const Vecino = require('../models/vecino');
+const vecino = require('../Models/vecino');
+const Vecino = require('../Models/vecino');
 
 //copiado del producto
 
