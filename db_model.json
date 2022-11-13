@@ -16,8 +16,5 @@
             "type":"String",
             "payment": "date"
         }
-        
     }
 }
-
-
