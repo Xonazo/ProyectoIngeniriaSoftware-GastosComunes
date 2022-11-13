@@ -18,9 +18,8 @@ const VecinoSchema = new Schema({
         required: true
     },
     numeroVivienda:{
-        type: Number,
-        required: true,
-        unique: true
+        type: Schema.Types.ObjectId,
+        ref: 'condominio'
     },
     deudas:{
         type: Number,

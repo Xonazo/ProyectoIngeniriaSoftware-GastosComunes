@@ -8,6 +8,7 @@ dotenv.config();
 //a
 const mailerRoutes = require('./Routes/mailerRoutes')
 const vecinoRoutes = require('./Routes/vecinoRoutes')
+const condominioRoutes = require ('./Routes/condominioRoutes')
 
 app.use(cors());
 app.use(express.json());
@@ -15,6 +16,7 @@ app.options('*', cors());
 
 app.use('/api', mailerRoutes);
 app.use('/api', vecinoRoutes);
+app.use('/api', condominioRoutes)
 
 //mongoose.set('useNewUrlParser', true);
 //mongoose.set('useFindAndModify', false);

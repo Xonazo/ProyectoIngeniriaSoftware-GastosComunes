@@ -12,49 +12,52 @@ const sendMail = (req, res) => {
         return res.status(400).send({ message: "Nos se ha entregado la con traseña de aplicacion para el correo" })
     }
     const transporter = nodemailer.createTransport({
-        host:'smtp.gmail.com',
-        port:465,
-        secure:true,
-        auth:{
-            user:'edison.munoz1901@alumnos.ubiobio.cl',
-            pass:token
+        host: 'smtp.gmail.com',
+        port: 465,
+        secure: true,
+        auth: {
+            user: 'edison.munoz1901@alumnos.ubiobio.cl',
+            pass: token
         }
     })
     let directory = [
         'edi.edison.edi@gmail.com',
         'matias.san1901@alumnos.ubiobio.cl',
         'nelson.rubio1901@alumnos.ubiobio.cl'
-        
+
 
     ]
     const mailOptions = {
         from: `prueba<${mail}>`,
-        to:directory,
+        to: directory,
         subject: 'prueba',
-        text:`prueba `,
-        html:`
+        text: `prueba `,
+        html: `
         <p> prueba</p>
         `
     }
-    transporter.sendMail(mailOptions,(error,info)=>{
-        if(error){
-            return res.status(400).send({message:'Error al enviar'})
+
+
+
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            return res.status(400).send({ message: 'Error al enviar' })
         }
-        return res.status(200).send({message:'mensaje enviado'})
+        return res.status(200).send({ message: 'mensaje enviado' })
     })
 
-    transporter.verify().then(()=>{
+    transporter.verify().then(() => {
         console.log('servidor de correos habilitado')
-    
-    }).catch(error=>{
+
+    }).catch(error => {
         console.log('Error al utilizar servidor de correos')
-    
+
     })
-    
 
 
 
-    
+
+
 }
 
 
