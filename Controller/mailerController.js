@@ -1,7 +1,21 @@
 const nodemailer = require('nodemailer');
 const dotenv = require('dotenv');
+const User = require('../models/user');
 dotenv.config();
 
+//devolver usuarios
+const getUsers= (callback)=>{
+    User.find({},(error,users)=>{
+        users.reverse()
+        callback(error,users)
+    })
+}
+
+let directory = []
+
+getUsers((error,users)=>{
+    users.email;
+})
 
 const sendMail = (req, res) => {
     //const { message } = req.body
