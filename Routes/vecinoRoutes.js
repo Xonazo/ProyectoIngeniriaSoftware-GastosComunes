@@ -5,9 +5,9 @@ const api = express.Router();
 //a
 api.post('/crearVecino',vecinoController.createVecino);
 api.get('/buscarVecinos',vecinoController.getVecinos);
-api.put('/actualizarVecino/:rut',vecinoController.updateVecino);
-api.delete('/eliminarVecino/:rut',vecinoController.deleteVecino);
-api.get('/buscarVecinoRut/:rut',vecinoController.getUniqueVecinoRut);
+api.put('/actualizarVecino/:id',vecinoController.updateVecino);
+api.delete('/eliminarVecino/:id',vecinoController.deleteVecino);
+api.get('/buscarVecino/:id',vecinoController.getUniqueVecino);
 api.get('/buscarVecinoVivienda/:numeroVivienda',vecinoController.getUniqueVecinoVivienda);
 
 
