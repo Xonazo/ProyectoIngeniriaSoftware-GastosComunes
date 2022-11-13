@@ -1,21 +1,21 @@
 const nodemailer = require('nodemailer');
 const dotenv = require('dotenv');
-const vecino = require('../models/vecino');
+//const vecino = require('../models/vecino');
 dotenv.config();
 
 //devolver usuarios
-const getUsers= (callback)=>{
-    vecino.find({},(error,vecinos)=>{
-        vecinos.reverse()
-        callback(error,vecinos)
-    })
-}
+//const getUsers= (callback)=>{
+//    vecino.find({},(error,vecinos)=>{
+//        vecinos.reverse()
+//        callback(error,vecinos)
+//    })
+//}
 
-let directory = []
+//let directory = []
 
-getUsers((error,vecinos)=>{
-    vecinos.email;
-})
+//getUsers((error,vecinos)=>{
+//    vecinos.email;
+//})
 
 const sendMail = (req, res) => {
     //const { message } = req.body
