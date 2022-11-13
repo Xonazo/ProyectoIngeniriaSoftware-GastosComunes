@@ -6,7 +6,7 @@ const RegistroSchema = new Schema({
     idVecino: {
         type: Schema.Types.ObjectId,
         ref: 'Vecino',
-        required: true
+        required: true,
     },
 
 

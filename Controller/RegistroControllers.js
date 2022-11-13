@@ -12,34 +12,23 @@ const createRegistro = (req, res) =>{
     })
     newRegistro.save((error,Registro)=>{
         if(error){
-            return res.status(400).send({message: "No se creo"})
+            return res.status(400).send({message: "No se creo el registro"})
         }
         return res.status(201).send(Registro)
     })
 }
 
-const getRegistros = (req, res) =>{
-    Registro.find({}, (error, Registro) => {
-    if(error) {
-        return res.status(400).send({message:"No se pudo realizar la busqueda"})
-    }
-    if(Registro.length == 0){
-        return res.status(404).send({message:"No se encontro"})
-    }
-    return res.status(200).send(Registro)
-    })
-}
 
 const updateRegistro = (req, res) => {
     const {id} = req.params
     Registro.findByIdAndUpdate(id, req.body, (error, Registro) => {
         if(error){
-            return res.status(400).send({ message: "No se pudo actualizar la persona"})
+            return res.status(400).send({ message: "No se pudo actualizar el registro"})
         }
         if(!Registro){
-            return res.status(404).send({message: "No se encontro la persona"})
+            return res.status(404).send({message: "No se encontro el registro"})
         }
-        return res.status(200).send({ message: "Persona actualizada"})
+        return res.status(200).send({ message: "registro actualizado"})
     })
 }
 
@@ -47,12 +36,12 @@ const deleteRegistro = (req, res) => {
     const {id} = req.params
     Registro.findByIdAndDelete(id, req.body, (error, Registro) => {
         if(error){
-            return res.status(400).send({ message: "No se pudo eliminar a la persona"})
+            return res.status(400).send({ message: "No se pudo eliminar el registro"})
         }
         if(!Registro){
-            return res.status(404).send({message: "No se encontro la persona"})
+            return res.status(404).send({message: "No se encontro el registro"})
         }
-        return res.status(200).send({ message: "Persona eliminada"})
+        return res.status(200).send({ message: "registro eliminada"})
     })
 }
 
@@ -60,10 +49,10 @@ const getRegistro = (req, res) => {
     const {id} = req.params
     Registro.findById(id, req.body, (error, Registro) => {
         if(error){
-            return res.status(400).send({ message: "No se pudo encontrar a la persona"})
+            return res.status(400).send({ message: "No se pudo encontrar el registro"})
         }
         if(!Registro){
-            return res.status(404).send({message: "No se encontro la persona"})
+            return res.status(404).send({message: "No se encontro el Registro"})
         }
         return res.status(200).send(Registro)
     })
@@ -72,7 +61,6 @@ const getRegistro = (req, res) => {
 
 module.exports = {
     createRegistro,
-    getRegistros,
     updateRegistro,
     deleteRegistro,
     getRegistro}
