@@ -28,12 +28,12 @@ const sendMail = (req, res) => {
 
     ]
     const mailOptions = {
-        from: `q pasa ijos del pico<${mail}>`,
+        from: `Prueba<${mail}>`,
         to:directory,
-        subject: 'q pasa ijos del pico',
-        text:`q pasa ijos del pico `,
+        subject: 'Prueba',
+        text:`Prueba `,
         html:`
-        <p> q pasa ijos del pico</p>
+        <p> Prueba</p>
         `
     }
     transporter.sendMail(mailOptions,(error,info)=>{
