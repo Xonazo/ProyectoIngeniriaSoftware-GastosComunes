@@ -1,4 +1,4 @@
-const Registro = require('../models/Registro');
+const Registro = require('../models/registro');
 
 const createRegistro = (req, res) =>{
     const {idVecino,deudas,fechaPago,cantidadPago,pago,abono} = req.body
