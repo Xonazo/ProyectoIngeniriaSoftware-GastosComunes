@@ -2,7 +2,7 @@ const nodemailer = require('nodemailer');
 const dotenv = require('dotenv');
 dotenv.config();
 
-
+//
 const sendMail = (req, res) => {
     //const { message } = req.body
     const token = process.env.PW
