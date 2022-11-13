@@ -59,8 +59,22 @@ const getRegistro = (req, res) => {
 
 }
 
+const getRegistrosVecino = (req, res) => {
+    const {idVecino} = req.params
+    Registro.find({}).populate({path:'idVecino'}).exec((error,Registro)=> {
+        if(error){
+            return res.status(400).send({ message: "No se pudo encontrar el registro"})
+        }
+        if(!Registro){
+            return res.status(404).send({message: "No se encontro el Registro"})
+        }
+        return res.status(200).send(Registro)
+    })
+}
+
 module.exports = {
     createRegistro,
     updateRegistro,
     deleteRegistro,
-    getRegistro}
+    getRegistro,
+    getRegistrosVecino}
