@@ -5,7 +5,7 @@ const createCondominio = (req, res) => {
     const newCondominio = new Condominio({
 
         numeroVivienda,
-        canOcupantes
+        
     })
     newCondominio.save((error, condominio) => {
         if (error) {

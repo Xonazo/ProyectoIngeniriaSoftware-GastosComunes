@@ -6,10 +6,6 @@ const CondominioSchema = new Schema({
         type: Number,
         required: true,
         unique: true
-    },
-    canOcupantes:{
-        type: Number,
-        required:true
     }
 })
 
