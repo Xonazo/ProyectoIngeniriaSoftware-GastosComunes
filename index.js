@@ -58,7 +58,7 @@ app.listen(process.env.PORT, () => {
     console.log(`Server started on port ${process.env.PORT}`);
 })
 
-cron.schedule('* * * * *', function (res){
+cron.schedule('* 12 * * *', function (res){
     request2('http://localhost:3001/api/queryPrueba', function (error, response , body ) {
     });
 });
