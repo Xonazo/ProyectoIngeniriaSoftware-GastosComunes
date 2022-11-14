@@ -7,7 +7,7 @@ PW = Token de Gmail para nodemailer
 ```
 
 
-<h2> Inicializando el software </h2>
+<h2 style="text-align:center"> Inicializando el software </h2>
 
 ```
 Los comandos para inicializar son:
