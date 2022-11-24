@@ -6,9 +6,11 @@ const app = express();
 dotenv.config();
 
 //a
-const mailerRoutes = require('./Routes/mailerRoutes')
+const notifyRoutes = require('./Routes/notifyRoutes')
 const vecinoRoutes = require('./Routes/vecinoRoutes')
 const RegistroRoutes = require('./Routes/registroRoutes')
+const fileRoutes = require('./Routes/fileRoutes')
+const condominioRoutes = require('./Routes/condominioRoutes')
 
 app.use(cors());
 app.use(express.json());
