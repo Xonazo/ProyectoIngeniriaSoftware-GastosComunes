@@ -1,0 +1,23 @@
+{
+    "person":{
+        "name":{
+            "type":"String",
+            "required": true,
+            "minLength": "1",
+            "maxLength": "100"
+
+        },
+        "rut":{
+            "type": "String",
+            "required": true,
+            "maxLength": "12"
+        },
+        "pago":{
+            "type":"String",
+            "payment": "date"
+        }
+        
+    }
+}
+
+
