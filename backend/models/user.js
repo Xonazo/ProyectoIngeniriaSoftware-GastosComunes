@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 //e
-const VecinoSchema = new Schema({
+const UserSchema = new Schema({
     name: {
         type: String,
         required: true,
@@ -19,11 +19,7 @@ const VecinoSchema = new Schema({
     },
     numeroVivienda: {
         type: Schema.Types.ObjectId,
-        ref: 'condominio'
-    },
-    deudas: {
-        type: Number,
-        required: true
+        ref: 'House'
     },
     personasConvive: {
         type: Number,
@@ -31,5 +27,5 @@ const VecinoSchema = new Schema({
     }
 })
 
-module.exports = mongoose.model('Vecino', VecinoSchema);
+module.exports = mongoose.model('User', UserSchema);
 

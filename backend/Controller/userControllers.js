@@ -3,14 +3,13 @@ const User = require('../models/user');
 //copiado del producto
 
 const createUser = (req, res) => {
-    const { name, rut, correo, numeroVivienda, deudas, personasConvive } = req.body;
+    const { name, rut, correo, numeroVivienda, personasConvive } = req.body;
     const newUser = new User({
 
         name,
         rut,
         correo,
         numeroVivienda,
-        deudas,
         personasConvive
     })
     newUser.save((error, user) => {
