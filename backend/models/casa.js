@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const CondominioSchema = new Schema({
+const CasaSchema = new Schema({
     numeroVivienda:{
         type: Number,
         required: true,
@@ -9,4 +9,4 @@ const CondominioSchema = new Schema({
     }
 })
 
-module.exports = mongoose.model('Condominio',CondominioSchema);
+module.exports = mongoose.model('Casa',CasaSchema);

@@ -1,38 +1,36 @@
-const Condominio = require('../models/condominio');
+const Casa = require('../models/casa');
 
-const createCondominio = (req, res) => {
+const createCasa = (req, res) => {
     const { numeroVivienda } = req.body;
-    const newCondominio = new Condominio({
+    const newCasa = new Casa({
 
         numeroVivienda,
-        
     })
 
-    newCondominio.save((error, condominio) => {
+    newCasa.save((error, casa) => {
         if (error) {
             return res.status(400).send({ message: "No se ha podido crear la casa" });
         }
-        return res.status(201).send(condominio)
+        return res.status(201).send(casa)
     })
-    
 }
 
 const getCasas = (req, res) => {
-    Condominio.find({}, (error, condominio) => {
+    Casa.find({}, (error, casa) => {
         if (error) {
             return res.status(400).send({ message: "No se pudo realizar la busqueda" })
         }
-        return res.status(200).send(condominio)
+        return res.status(200).send(casa)
     })
 }
 
-const deleteCondominio = (req, res) => {
+const deleteCasa = (req, res) => {
     const { id } = req.params
-    Condominio.findByIdAndDelete(id, req.body, (error, condominio) => {
+    Casa.findByIdAndDelete(id, req.body, (error, casa) => {
         if (error) {
             return res.status(400).send({ message: "No se pudo encontrar la casa" })
         }
-        if (!condominio) {
+        if (!casa) {
             return res.status(400).send({ message: "No se pudo eliminar la casa" })
         }
         return res.status(200).send({ message: "Se ha eliminado la casa" })
@@ -40,14 +38,9 @@ const deleteCondominio = (req, res) => {
 
 }
 
-
-
-
-
-
 module.exports = {
 
-    createCondominio,
+    createCasa,
     getCasas,
-    deleteCondominio
+    deleteCasa
 }

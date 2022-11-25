@@ -1,13 +1,12 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const RegistroSchema = new Schema({
 
+const RegistroSchema = new Schema({
     idVecino: {
         type: Schema.Types.ObjectId,
         ref: 'Vecino',
         required: true,
     },
-
 
     deudas:{
         type:Number,
@@ -25,6 +24,7 @@ const RegistroSchema = new Schema({
         required: true,
 
     },
+    
     pago:{
         type: String,
         required: true,

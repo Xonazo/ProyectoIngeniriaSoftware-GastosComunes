@@ -3,7 +3,7 @@ const dotenv = require('dotenv');
 const nodemailer = require('nodemailer');
 dotenv.config();
 /* Importamos modelos */
-const registroPago = require('../models/Registro');
+const registroPago = require('../models/registro');
 const vecino = require('../models/vecino');
 
 const notify = (req, res)=>{

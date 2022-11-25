@@ -9,8 +9,8 @@ const request2 = require('request');
 const cron = require('node-cron');
 
 const vecinoRoutes = require('./Routes/vecinoRoutes')
-const condominioRoutes = require ('./Routes/condominioRoutes')
-const RegistroRoutes = require('./Routes/RegistroRoutes')
+const condominioRoutes = require ('./Routes/casaRoutes')
+const RegistroRoutes = require('./Routes/registroRoutes')
 const notifyRoutes = require('./Routes/notifyRoutes');
 const fileRoutes = require('./Routes/fileRoutes');
 
