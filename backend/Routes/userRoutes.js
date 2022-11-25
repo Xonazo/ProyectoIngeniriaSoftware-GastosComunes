@@ -1,5 +1,5 @@
 const express = require ('express');
-const vecinoController = require('../Controller/vecinoControllers');
+const vecinoController = require('../Controller/userControllers');
 const api = express.Router();
 
 //a

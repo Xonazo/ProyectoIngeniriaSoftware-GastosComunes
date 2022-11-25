@@ -8,8 +8,8 @@ dotenv.config();
 const request2 = require('request');
 const cron = require('node-cron');
 
-const vecinoRoutes = require('./Routes/vecinoRoutes')
-const casaRoutes = require ('./Routes/casaRoutes')
+const vecinoRoutes = require('./Routes/userRoutes')
+const casaRoutes = require ('./Routes/houseRoutes')
 const registroRoutes = require('./Routes/registroRoutes')
 const notifyRoutes = require('./Routes/notifyRoutes');
 const fileRoutes = require('./Routes/fileRoutes');

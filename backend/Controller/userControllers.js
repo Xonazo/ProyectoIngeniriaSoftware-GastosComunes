@@ -1,4 +1,4 @@
-const Vecino = require('../models/vecino');
+const Vecino = require('../models/user');
 
 //copiado del producto
 

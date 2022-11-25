@@ -1,4 +1,4 @@
-const Casa = require('../models/casa');
+const Casa = require('../models/house');
 
 const createCasa = (req, res) => {
     const { numeroVivienda } = req.body;

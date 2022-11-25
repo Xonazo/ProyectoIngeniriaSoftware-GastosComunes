@@ -1,5 +1,5 @@
 const express = require ('express');
-const casaController = require('../Controller/casaController');
+const casaController = require('../Controller/houseController');
 const api = express.Router();
 
 api.post('/crearCasa',casaController.createCasa);

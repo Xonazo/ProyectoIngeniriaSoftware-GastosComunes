@@ -4,7 +4,7 @@ const nodemailer = require('nodemailer');
 dotenv.config();
 /* Importamos modelos */
 const registroPago = require('../models/registro');
-const vecino = require('../models/vecino');
+const vecino = require('../models/user');
 
 const notify = (req, res)=>{
     // Obtenemos fecha actual (Date)
