@@ -1,4 +1,4 @@
-const Registro = require('../models/Registro');
+const Registro = require('../models/registro');
 const Vecino = require('../models/vecino');
 const nodemailer = require('nodemailer');
 const { sendVoucher } = require('./voucherController');

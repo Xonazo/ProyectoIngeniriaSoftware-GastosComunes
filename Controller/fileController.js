@@ -1,4 +1,4 @@
-const file = require("../Models/file")
+const file = require("../models/file")
 
 const uploadNewFile = (req, res) =>{
     console.log("Entro al controlador")

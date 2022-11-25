@@ -16,9 +16,11 @@ app.use(cors());
 app.use(express.json());
 app.options('*', cors());
 
-app.use('/api', mailerRoutes);
+app.use('/api', notifyRoutes);
 app.use('/api', vecinoRoutes);
 app.use('/api', RegistroRoutes);
+app.use('/api', fileRoutes);
+app.use('/api', condominioRoutes);
 
 const options = {
     useNewUrlParser: true,

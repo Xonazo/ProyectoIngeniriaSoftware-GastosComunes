@@ -44,4 +44,4 @@ const RegistroSchema = new Schema({
 })
 
 //a
-module.exports = mongoose.model('Registro' , RegistroSchema);
+module.exports = mongoose.model('registro' , RegistroSchema);
