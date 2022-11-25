@@ -20,7 +20,7 @@ const storage = multer.diskStorage({
 const upload = multer({
     storage: storage,
     fileFilter: function (req, file, cb) {
-        if (file.mimetype == 'image/png') {
+        if (file.mimetype === 'image/png') {
             console.log("El archivo es un png")
         } else {
             console.log("El archivo tiene otra extension")
