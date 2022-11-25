@@ -75,13 +75,8 @@ const getRegistro = (req, res) => {
 
 const getRegistrosVecino = (req, res) => {
     const {idVecino} = req.params
-<<<<<<< Updated upstream
-    Registro.find({}).populate({path:'idVecino'}).exec((error,Registro)=> {
-        if(error){
-=======
     Registro.find({regidVecino:idVecino},(error,registro)=> {
     if(error){
->>>>>>> Stashed changes
             return res.status(400).send({ message: "No se pudo encontrar el registro"})
         }
         if(!Registro){
@@ -96,8 +91,4 @@ module.exports = {
     updateRegistro,
     deleteRegistro,
     getRegistro,
-<<<<<<< Updated upstream
     getRegistrosVecino}
-=======
-    getRegistrosVecino}
->>>>>>> Stashed changes
