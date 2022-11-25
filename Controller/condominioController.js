@@ -1,4 +1,4 @@
-const Condominio = require('../models/condominio');
+const Condominio = require('../Models/condominio');
 
 const createCondominio = (req, res) => {
     const { numeroVivienda } = req.body;

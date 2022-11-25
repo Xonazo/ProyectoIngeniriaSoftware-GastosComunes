@@ -1,6 +1,6 @@
 const express = require('express');
 const RegistroController = require('../Controller/registroController');
-const Registro = require('../models/registro');
+const Registro = require('../Models/registro');
 const api = express.Router();
 
 api.post('/CrearRegistro', RegistroController.createRegistro);

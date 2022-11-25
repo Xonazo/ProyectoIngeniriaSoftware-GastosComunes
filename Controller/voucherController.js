@@ -1,5 +1,5 @@
 const nodemailer = require('nodemailer');
-const Vecino = require('../models/vecino');
+const Vecino = require('../Models/vecino');
 
 const sendVoucher = idVecino =>{
     Vecino.findById(idVecino, (error, Vecino) =>{

@@ -4,8 +4,8 @@ const nodemailer = require('nodemailer');
 dotenv.config();
 
 /* Importamos modelos */
-const registroPago = require('../models/registro');
-const vecino = require('../models/vecino');
+const registroPago = require('../Models/registro');
+const vecino = require('../Models/vecino');
 
 const options = {
     useNewUrlParser: true,
