@@ -100,7 +100,6 @@ const notify = (req, res)=>{
                 registro.forEach(element =>{
                     let nombreVecino = element["name"];
                     let correoVecino = element["correo"];
-                    console.log(nombreVecino);
                     let msgCorreo = `Estimado vecino ${nombreVecino}, su cuenta presenta ${dayDiff} dias de atraso de pago mensual. `;
 
                     const mail = process.env.MAIL;
