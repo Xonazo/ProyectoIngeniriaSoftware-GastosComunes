@@ -1,5 +1,5 @@
 const { isReadable } = require("stream")
-const fileModel = require("../Models/file")
+const fileModel = require("../models/file")
 
 const uploadNewFile = (req, res) =>{
     const {files} = req
