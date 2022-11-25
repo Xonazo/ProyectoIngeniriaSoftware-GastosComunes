@@ -1,36 +1,36 @@
-const Casa = require('../models/house');
+const House = require('../models/house');
 
-const createCasa = (req, res) => {
+const createHouse = (req, res) => {
     const { numeroVivienda } = req.body;
-    const newCasa = new Casa({
+    const newHouse = new House({
 
         numeroVivienda,
     })
 
-    newCasa.save((error, casa) => {
+    newHouse.save((error, house) => {
         if (error) {
             return res.status(400).send({ message: "No se ha podido crear la casa" });
         }
-        return res.status(201).send(casa)
+        return res.status(201).send(house)
     })
 }
 
-const getCasas = (req, res) => {
-    Casa.find({}, (error, casa) => {
+const getHouses = (req, res) => {
+    House.find({}, (error, house) => {
         if (error) {
             return res.status(400).send({ message: "No se pudo realizar la busqueda" })
         }
-        return res.status(200).send(casa)
+        return res.status(200).send(house)
     })
 }
 
-const deleteCasa = (req, res) => {
+const deleteHouse = (req, res) => {
     const { id } = req.params
-    Casa.findByIdAndDelete(id, req.body, (error, casa) => {
+    House.findByIdAndDelete(id, req.body, (error, house) => {
         if (error) {
             return res.status(400).send({ message: "No se pudo encontrar la casa" })
         }
-        if (!casa) {
+        if (!house) {
             return res.status(400).send({ message: "No se pudo eliminar la casa" })
         }
         return res.status(200).send({ message: "Se ha eliminado la casa" })
@@ -40,7 +40,7 @@ const deleteCasa = (req, res) => {
 
 module.exports = {
 
-    createCasa,
-    getCasas,
-    deleteCasa
+    createHouse,
+    getHouses,
+    deleteHouse
 }

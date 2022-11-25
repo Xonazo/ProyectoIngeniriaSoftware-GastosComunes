@@ -8,8 +8,8 @@ dotenv.config();
 const request2 = require('request');
 const cron = require('node-cron');
 
-const vecinoRoutes = require('./Routes/userRoutes')
-const casaRoutes = require ('./Routes/houseRoutes')
+const userRoutes = require('./Routes/userRoutes');
+const houseRoutes = require ('./Routes/houseRoutes');
 const registroRoutes = require('./Routes/registroRoutes')
 const notifyRoutes = require('./Routes/notifyRoutes');
 const fileRoutes = require('./Routes/fileRoutes');
@@ -20,8 +20,8 @@ app.use(express.json());
 app.options('*', cors());
 
 
-app.use('/api', vecinoRoutes);
-app.use('/api', casaRoutes);
+app.use('/api', userRoutes);
+app.use('/api', houseRoutes);
 app.use('/api', registroRoutes);
 app.use('/api', notifyRoutes);
 app.use('/api', fileRoutes);

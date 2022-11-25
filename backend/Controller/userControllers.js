@@ -1,10 +1,10 @@
-const Vecino = require('../models/user');
+const User = require('../models/user');
 
 //copiado del producto
 
-const createVecino = (req, res) => {
+const createUser = (req, res) => {
     const { name, rut, correo, numeroVivienda, deudas, personasConvive } = req.body;
-    const newVecino = new Vecino({
+    const newUser = new User({
         
         name,
         rut,
@@ -13,31 +13,31 @@ const createVecino = (req, res) => {
         deudas,
         personasConvive
     })
-    newVecino.save((error, vecino) => {
+    newUser.save((error, user) => {
         if (error) {
             return res.status(400).send({ message: "No se ha podido crear al Vecino" });
         }
-        return res.status(201).send(vecino)
+        return res.status(201).send(user)
     })
 }
 
-const getVecinos = (req, res) => {
-    Vecino.find({}, (error, vecino) => {
+const getUsers = (req, res) => {
+    User.find({}, (error, user) => {
         if (error) {
             return res.status(400).send({ message: "No se pudo realizar la busqueda" })
         }
-        return res.status(200).send(vecino)
+        return res.status(200).send(user)
     })
 }
 //a
-const updateVecino = (req, res) => {
+const updateUser = (req, res) => {
     const { id } = req.params
-    Vecino.findByIdAndUpdate(id, req.body, (error, vecino) => {
+    User.findByIdAndUpdate(id, req.body, (error, user) => {
 
         if (error) {
             return res.status(400).send({ message: "No se pudo actualizar el vecino" });
         }
-        if (!vecino) {
+        if (!user) {
             return res.status(404).send({ message: "No se encontro al vecino" })
         }
         return res.status(200).send({ message: "Vecino modificado" })
@@ -45,13 +45,13 @@ const updateVecino = (req, res) => {
 
 }
 
-const deleteVecino = (req, res) => {
+const deleteUser = (req, res) => {
     const { id } = req.params
-    Vecino.findByIdAndDelete(id, req.body, (error, vecino) => {
+    User.findByIdAndDelete(id, req.body, (error, user) => {
         if (error) {
             return res.status(400).send({ message: "No se pudo encontrar al vecino" })
         }
-        if (!vecino) {
+        if (!user) {
             return res.status(400).send({ message: "No se pudo eliminar el vecino" })
         }
         return res.status(200).send({ message: "Se ha eliminado al vecino" })
@@ -59,23 +59,23 @@ const deleteVecino = (req, res) => {
 
 }
 
-const getUniqueVecino = (req, res) => {
+const getUniqueUser = (req, res) => {
     const { id } = req.params
-    Vecino.findById(id,(error,vecino) => {
+    User.findById(id,(error,user) => {
         if (error) {
             return res.status(400).send({ message: "No se pudo realizar la busqueda" })
         }
-        if (!vecino) {
+        if (!user) {
             return res.status(404).send({ message: "No se encontro al vecino" })
         }
-        return res.status(200).send(vecino)
+        return res.status(200).send(user)
     })
 }
 
 module.exports = {
-    createVecino,
-    getVecinos,
-    updateVecino,
-    deleteVecino,
-    getUniqueVecino
+    createUser,
+    getUsers,
+    updateUser,
+    deleteUser,
+    getUniqueUser
 }

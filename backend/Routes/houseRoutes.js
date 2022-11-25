@@ -1,10 +1,10 @@
 const express = require ('express');
-const casaController = require('../Controller/houseController');
+const houseController = require('../Controller/houseController');
 const api = express.Router();
 
-api.post('/crearCasa',casaController.createCasa);
-api.get('/buscarCasas',casaController.getCasas);
-api.delete('/eliminarCasa/:id',casaController.deleteCasa);
+api.post('/createHouse',houseController.createHouse);
+api.get('/getHouses',houseController.getHouses);
+api.delete('/deleteHouse/:id',houseController.deleteHouse);
 
 
 

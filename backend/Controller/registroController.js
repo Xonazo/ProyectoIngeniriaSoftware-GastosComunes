@@ -1,5 +1,5 @@
 const Registro = require('../models/registro');
-const Vecino = require('../models/user');
+const User = require('../models/user');
 const nodemailer = require('nodemailer');
 const { sendVoucher } = require('./voucherController');
 
