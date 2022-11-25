@@ -19,13 +19,9 @@ const UserSchema = new Schema({
         required: true
     },
     numeroVivienda:{
-        type: Schema.Types.ObjectId,
-        ref: 'house',
-        unique:true
-    },
-    deudas:{
         type: Number,
-        required: true
+        unique:true,
+        requiered:true
     },
     personasConvive:{
         type: Number,

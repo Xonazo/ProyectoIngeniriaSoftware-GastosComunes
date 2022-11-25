@@ -9,8 +9,8 @@ const request2 = require('request');
 const cron = require('node-cron');
 
 const userRoutes = require('./Routes/userRoutes')
-const houseRoutes = require ('./Routes/houseRoutes')
-const RegistroRoutes = require('./Routes/RegistroRoutes')
+const registroRoutes = require('./Routes/RegistroRoutes')
+const deudasRoutes = require('./Routes/deudasRoutes')
 
 app.use(cors());
 app.use(express.json());
@@ -18,9 +18,8 @@ app.options('*', cors());
 
 
 app.use('/api', userRoutes);
-app.use('/api', houseRoutes);
-app.use('/api', RegistroRoutes);
-
+app.use('/api', registroRoutes);
+app.use('/api', deudasRoutes);
 //mongoose.set('useNewUrlParser', true);
 //mongoose.set('useFindAndModify', false);
 //mongoose.set('useCreateIndex', true);
