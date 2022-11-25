@@ -3,20 +3,13 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const RegistroSchema = new Schema({
 
-    idVecino: {
+    regidVecino: {
         type: Schema.Types.ObjectId,
         ref: 'Vecino',
         required: true,
     },
 
-
-    deudas:{
-        type:Number,
-        required: true,
-
-    },
-
-    fechaPago:{
+    fechaRegistro:{
         type:Date,
         required: true,
     },
@@ -31,14 +24,9 @@ const RegistroSchema = new Schema({
         required: true,
         maxLength: 25,
         enum: [
-            'pago exitoso',
+            'pago a tiempo',
             'pago con atraso'
         ]
-
-    },
-    abono:{
-        type:Number,
-        required: true,
     }
 
 })
