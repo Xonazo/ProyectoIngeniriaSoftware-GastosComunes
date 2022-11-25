@@ -21,6 +21,17 @@ const paydate = new Date(`${ano}-${mes}-04`);
 // Obtenemos el dia de la fecha de pago
 const payday = paydate.getDate()+1;
 
+// Declaracion de objeto transporter "Reutilizable"
+let transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com", 
+    port: 465,
+    secure: true, //
+    auth: {
+    user: process.env.MAIL, // mail 'remitente'
+    pass: process.env.PW // token de 'remitente
+    },
+});
+
 const notify = (req, res)=>{
     // Aviso general para todos los vecinos de fecha de pago
     if ( day < payday) {
@@ -39,18 +50,6 @@ const notify = (req, res)=>{
                 if (!process.env.PW) {
                     return res.status(400).send({ message: "Nos se ha entregado la contraseña de aplicacion para el correo" })
                 }
-
-                // Creamos un objeto "transporter" reutilizable con los siguientes parametros predeterminados
-                let transporter = nodemailer.createTransport({
-                    host: "smtp.gmail.com", 
-                    port: 465,
-                    secure: true, //
-                    auth: {
-                    user: process.env.MAIL, // mail 'remitente'
-                    pass: process.env.PW, // token de 'remitente
-                    },
-                });
-
                 // Enviamos correo con el transporter reutilizable
                 let info =  transporter.sendMail({
                     from: '"Serv. Administracion de Gastos Comunes 🏘" <condominio@ubb.com>', // sender address
@@ -60,7 +59,7 @@ const notify = (req, res)=>{
                     html: "<b>"+msgCorreo+ "</b>" // Cuerpo HTML
                 });
             });
-            return res.status(200).send(vecino)
+            return res.status(200).send({ message: "Se ha notificado la fecha proxima de pago a todos los usuarios." })
         })
     }
     //Aviso general para todos los que no han efectuado un pago.
@@ -81,11 +80,9 @@ const notify = (req, res)=>{
             if (error) {
                 return res.status(400).send({ message: "No se pudo realizar la busqueda"});
             }
-
             //Recorremos el registros para obtener valor de las propiedades "idVecino" y "fechaPago" de cada elemento.
             registro.forEach( element =>{
                 let idVecino = element["idVecino"];
-                let fechaPago = element["fechaPago"];
                 ArrayVecinos.push(idVecino._id.toString());
             });
 
@@ -103,18 +100,6 @@ const notify = (req, res)=>{
                     if (!process.env.PW) {
                         return res.status(400).send({ message: "Nos se ha entregado la contraseña de aplicacion para el correo" })
                     }
-
-                    // Creamos un objeto "transporter" reutilizable con los siguientes parametros predeterminados
-                    let transporter = nodemailer.createTransport({
-                        host: "smtp.gmail.com",
-                        port: 465,
-                        secure: true, // true for 465, false for other ports
-                        auth: {
-                        user: process.env.MAIL, // generated ethereal user
-                        pass: process.env.PW, // generated ethereal password
-                        },
-                    });
-
                     // Enviamos correo con el transporter reutilizable
                     let info =  transporter.sendMail({
                         from: '"Serv. Administracion de Gastos Comunes 🏘" <condominio@ubb.com>', // sender address
@@ -124,6 +109,7 @@ const notify = (req, res)=>{
                         html: "<h1> NOTIFICACION DE ATRASO</h1> <b>"+msgCorreo+ "</b>" // Cuerpo HTML
                     });
                 })
+                return res.status(200).send({ message: "Se ha informado a todo vecino que no ha realizado su pago." })
             })
         })
     }
@@ -149,16 +135,6 @@ const notifyUser = (req, res) => {
         if (!process.env.PW) {
             return res.status(400).send({ message: "Nos se ha entregado la contraseña de aplicacion para el correo" })
         }
-        // Objeto transporter reutilizable
-        let transporter = nodemailer.createTransport({
-            host: "smtp.gmail.com", 
-            port: 465,
-            secure: true, //
-            auth: {
-            user: process.env.MAIL, // mail 'remitente'
-            pass: process.env.PW, // token de 'remitente
-            },
-        });
         //Si aun no es el dia de pago
         if (day < payday) {
             let msg = `Estimado ${nameUser}, recordamos que la fecha de compromiso de pago ${payday}-${mes}-${ano} se encuentra proxima, ${dayDiff} dias restantes, si ya has efectuado el pago, haz caso omiso a este mensaje.`
@@ -170,7 +146,7 @@ const notifyUser = (req, res) => {
                 text: msg, // Mensaje de Notificacion de fecha de pago, cuerpo de texto sin formato.
                 html: "<b>"+msg+ "</b>" // Cuerpo HTML
             });
-            return res.status(200);
+            return res.status(200).send({ message: "Se ha informado la fecha de pago proxima" })
         }
         //Si la fecha de pago ya paso
         if (day > payday) {
@@ -183,10 +159,8 @@ const notifyUser = (req, res) => {
                 text: msg, // Mensaje de Notificacion de fecha de pago, cuerpo de texto sin formato.
                 html: "<b>"+msg+ "</b>" // Cuerpo HTML
             });
-            return res.status(200);
+            return res.status(200).send({ message: "Se ha informado la fecha de atraso." })
         }
-        return res.status(200).send(data)
-        
     })
 }
 
