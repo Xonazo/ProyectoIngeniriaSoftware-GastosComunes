@@ -6,40 +6,37 @@ dotenv.config();
 const registroPago = require('../models/Registro');
 const vecino = require('../models/vecino');
 
-const notify = (req, res)=>{
-    // Obtenemos fecha actual (Date)
-    const date_time = new Date();
-    // Obtenemos el mes de la fecha actual (Number)
-    const mes = date_time.getMonth()+1;
-    // Obtenemos el anio de la fecha actual (Number)
-    const ano = date_time.getFullYear();
-    // Obtenemos el dia de la fecha actual (Number)
-    const day = date_time.getDate();
-    // Declaracion de fecha de pago
-    const paydate = new Date(`${ano}-${mes}-04`);
-    // Obtenemos el dia de la fecha de pago
-    const payday = paydate.getDate()+1;
+        /* Variables globales */
 
-    // Aviso general para todos los vecinos
+// Obtenemos fecha actual (Date)
+const date_time = new Date();
+// Obtenemos el mes de la fecha actual (Number)
+const mes = date_time.getMonth()+1;
+// Obtenemos el anio de la fecha actual (Number)
+const ano = date_time.getFullYear();
+// Obtenemos el dia de la fecha actual (Number)
+const day = date_time.getDate();
+// Declaracion de fecha de pago
+const paydate = new Date(`${ano}-${mes}-04`);
+// Obtenemos el dia de la fecha de pago
+const payday = paydate.getDate()+1;
+
+const notify = (req, res)=>{
+    // Aviso general para todos los vecinos de fecha de pago
     if ( day < payday) {
         // Buscamos todos los vecinos existentes
         vecino.find({}, (error, vecino) => {
             if (error) {
                 return res.status(400).send({ message: "No se pudo realizar la busqueda" })
             }
-            
             // Recorremos el documento de vecinos, para obtener el nombre y correo de cada uno.
             vecino.forEach(element => {
                 let nombreVecino = element["name"];
                 let correoVecino = element["correo"];
                 let msgCorreo = `Estimado vecino ${nombreVecino},recordamos que se acerca la fecha de pago mensual de gastos comunes`;
 
-                // Declaramos el token y mail de remitente.
-                const token = process.env.PW
-                const mail = 'matias.san1901@alumnos.ubiobio.cl'
-
-                // Si el token no existe, retorna un estado 400: ERROR!
-                if (!token) {
+                // Si el token no existe, error
+                if (!process.env.PW) {
                     return res.status(400).send({ message: "Nos se ha entregado la contraseña de aplicacion para el correo" })
                 }
 
@@ -49,8 +46,8 @@ const notify = (req, res)=>{
                     port: 465,
                     secure: true, //
                     auth: {
-                    user: mail, // mail 'remitente'
-                    pass: token, // token de 'remitente
+                    user: process.env.MAIL, // mail 'remitente'
+                    pass: process.env.PW, // token de 'remitente
                     },
                 });
 
@@ -66,6 +63,7 @@ const notify = (req, res)=>{
             return res.status(200).send(vecino)
         })
     }
+    //Aviso general para todos los que no han efectuado un pago.
     if ( day > payday) {
         // Declaracion de rango inicial del mes
         const fechaInicio = new Date(`${ano}-${mes}-1`);
@@ -102,10 +100,8 @@ const notify = (req, res)=>{
                     let correoVecino = element["correo"];
                     let msgCorreo = `Estimado vecino ${nombreVecino}, su cuenta presenta ${dayDiff} dias de atraso de pago mensual. `;
 
-                    const mail = process.env.MAIL;
-                    const token = process.env.PW;
-                    if (!token) {
-                        return res.status(400).send({ message: "El token es incorrecto"});
+                    if (!process.env.PW) {
+                        return res.status(400).send({ message: "Nos se ha entregado la contraseña de aplicacion para el correo" })
                     }
 
                     // Creamos un objeto "transporter" reutilizable con los siguientes parametros predeterminados
@@ -114,8 +110,8 @@ const notify = (req, res)=>{
                         port: 465,
                         secure: true, // true for 465, false for other ports
                         auth: {
-                        user: mail, // generated ethereal user
-                        pass: token, // generated ethereal password
+                        user: process.env.MAIL, // generated ethereal user
+                        pass: process.env.PW, // generated ethereal password
                         },
                     });
 
@@ -133,7 +129,68 @@ const notify = (req, res)=>{
     }
 }
 
+const notifyUser = (req, res) => {
+    const {id} = req.params
+    //Diferencia de dias entre fecha actual y fecha de pago.
+    const calcDiff = date_time - paydate;
+    const dayDiff = Math.trunc(calcDiff/(1000*60*60*24));
+
+    vecino.findById( id, (error, data) =>{
+        if (error) {
+            return res.status(400).send({ message: "No se encontro el usuario"})
+        }
+        if (!data) {
+            return res.status(404).send({ message: "No se encontro al vecino" })
+        }
+        //Obtenemos los valores de propiedades del usuario
+        let nameUser = data["name"];
+        let emailUser = data["correo"];
+        // Verificacion de token correcto
+        if (!process.env.PW) {
+            return res.status(400).send({ message: "Nos se ha entregado la contraseña de aplicacion para el correo" })
+        }
+        // Objeto transporter reutilizable
+        let transporter = nodemailer.createTransport({
+            host: "smtp.gmail.com", 
+            port: 465,
+            secure: true, //
+            auth: {
+            user: process.env.MAIL, // mail 'remitente'
+            pass: process.env.PW, // token de 'remitente
+            },
+        });
+        //Si aun no es el dia de pago
+        if (day < payday) {
+            let msg = `Estimado ${nameUser}, recordamos que la fecha de compromiso de pago ${payday}-${mes}-${ano} se encuentra proxima, ${dayDiff} dias restantes, si ya has efectuado el pago, haz caso omiso a este mensaje.`
+
+            let info =  transporter.sendMail({
+                from: '"Serv. Administracion de Gastos Comunes 🏘" <condominio@ubb.com>', // sender address
+                to: emailUser, // Lista de destinarios, debe ir la variable de "correoVecino" 
+                subject: "Notificacion fecha de pago proxima", // Subject line
+                text: msg, // Mensaje de Notificacion de fecha de pago, cuerpo de texto sin formato.
+                html: "<b>"+msg+ "</b>" // Cuerpo HTML
+            });
+            return res.status(200);
+        }
+        //Si la fecha de pago ya paso
+        if (day > payday) {
+            let msg = `Estimado ${nameUser}, informamos que has sobrepasado la fecha limite de pago de cuenta (${payday}-${mes}-${ano}), el atraso es de ${dayDiff} dias. Favor ponerse al dia con su deuda para evitar corte de servicio.`
+
+            let info =  transporter.sendMail({
+                from: '"Serv. Administracion de Gastos Comunes 🏘" <condominio@ubb.com>', // sender address
+                to: emailUser, // Lista de destinarios, debe ir la variable de "correoVecino" 
+                subject: "Notificacion fecha de pago proxima", // Subject line
+                text: msg, // Mensaje de Notificacion de fecha de pago, cuerpo de texto sin formato.
+                html: "<b>"+msg+ "</b>" // Cuerpo HTML
+            });
+            return res.status(200);
+        }
+        return res.status(200).send(data)
+        
+    })
+}
 
 module.exports = {
-    notify
+    notify,
+    notifyUser
 }
