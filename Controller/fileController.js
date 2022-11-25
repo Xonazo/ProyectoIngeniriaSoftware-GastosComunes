@@ -1,7 +1,7 @@
 const file = require("../Models/file")
 
 const uploadNewFile = (req, res) =>{
-    console.log("Entro al controlador")
+    console.log(req.files)
 }
 
 module.exports={
