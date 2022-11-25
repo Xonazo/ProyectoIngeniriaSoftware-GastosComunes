@@ -27,11 +27,8 @@ const createRegistro = (req, res) =>{
             pdeuda.updateOne({$inc:{deuda:-newRegistro.cantidadPago}} )
             return res.status(201).send(registro)
         })
-
     })
-
 }
-
 
 const updateRegistro = (req, res) => {
     const {id} = req.params
