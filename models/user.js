@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 //e
-const VecinoSchema = new Schema({
+const UserSchema = new Schema({
     name:{
         type: String,
         required: true,
@@ -19,7 +19,7 @@ const VecinoSchema = new Schema({
     },
     numeroVivienda:{
         type: Schema.Types.ObjectId,
-        ref: 'condominio'
+        ref: 'house'
     },
     deudas:{
         type: Number,
@@ -28,9 +28,17 @@ const VecinoSchema = new Schema({
     personasConvive:{
         type: Number,
         required: true
+    },
+    role:{
+        type:String,
+        required: true,
+        enum:[
+            'admin',
+            'user'
+        ]
     }
 
 })
 
-module.exports = mongoose.model('Vecino',VecinoSchema);
+module.exports = mongoose.model('User',UserSchema);
 

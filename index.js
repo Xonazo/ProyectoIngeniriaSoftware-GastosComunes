@@ -5,19 +5,20 @@ const dotenv = require('dotenv');
 const app = express();
 dotenv.config();
 
-//a
-const mailerRoutes = require('./Routes/mailerRoutes')
-const vecinoRoutes = require('./Routes/vecinoRoutes')
-const condominioRoutes = require ('./Routes/condominioRoutes')
+const request2 = require('request');
+const cron = require('node-cron');
+
+const userRoutes = require('./Routes/userRoutes')
+const houseRoutes = require ('./Routes/houseRoutes')
 const RegistroRoutes = require('./Routes/RegistroRoutes')
 
 app.use(cors());
 app.use(express.json());
 app.options('*', cors());
 
-app.use('/api', mailerRoutes);
-app.use('/api', vecinoRoutes);
-app.use('/api', condominioRoutes);
+
+app.use('/api', userRoutes);
+app.use('/api', houseRoutes);
 app.use('/api', RegistroRoutes);
 
 //mongoose.set('useNewUrlParser', true);

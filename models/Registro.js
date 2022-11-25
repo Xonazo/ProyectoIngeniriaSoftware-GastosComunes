@@ -7,12 +7,9 @@ const RegistroSchema = new Schema({
         ref: 'Vecino',
         required: true,
     },
-
-
     deudas:{
         type:Number,
         required: true,
-
     },
 
     fechaPago:{
