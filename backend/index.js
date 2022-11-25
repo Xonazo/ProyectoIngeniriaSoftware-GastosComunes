@@ -9,8 +9,8 @@ const request2 = require('request');
 const cron = require('node-cron');
 
 const vecinoRoutes = require('./Routes/vecinoRoutes')
-const condominioRoutes = require ('./Routes/casaRoutes')
-const RegistroRoutes = require('./Routes/registroRoutes')
+const casaRoutes = require ('./Routes/casaRoutes')
+const registroRoutes = require('./Routes/registroRoutes')
 const notifyRoutes = require('./Routes/notifyRoutes');
 const fileRoutes = require('./Routes/fileRoutes');
 
@@ -21,8 +21,8 @@ app.options('*', cors());
 
 
 app.use('/api', vecinoRoutes);
-app.use('/api', condominioRoutes);
-app.use('/api', RegistroRoutes);
+app.use('/api', casaRoutes);
+app.use('/api', registroRoutes);
 app.use('/api', notifyRoutes);
 app.use('/api', fileRoutes);
 
