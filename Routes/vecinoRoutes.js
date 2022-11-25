@@ -10,7 +10,4 @@ api.delete('/eliminarVecino/:id',vecinoController.deleteVecino);
 api.get('/buscarVecino/:id',vecinoController.getUniqueVecino);
 
 
-
-
-
 module.exports = api

@@ -4,6 +4,6 @@ const uploadNewFile = (req, res) =>{
     console.log(req.files)
 }
 
-module.exports={
+module.exports = {
     uploadNewFile
 }
