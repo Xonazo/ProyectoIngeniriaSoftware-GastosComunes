@@ -3,11 +3,11 @@ const fs = require('fs');
 
 const storage = multer.diskStorage({
     destination: function(req,file,cb){
-        const route = './upload'+req.params.archivo
+        const route = './upload ' + req.params.archivo
         if(!fs.existsSync(route)){
             fs.mkdirSync(route,{recursive: true})
         }
-        cb(null,ruta)
+        cb(null,route)
     },
     filename: function (req,file,cb){
         let fecha = new Date();
