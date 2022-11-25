@@ -2,34 +2,34 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 //e
 const VecinoSchema = new Schema({
-    name:{
+    name: {
         type: String,
         required: true,
         minLenght: 1,
         maxLenght: 100
     },
-    rut:{
+    rut: {
         type: String,
         requiered: true,
-        unique : true
+        unique: true
     },
-    correo:{
+    correo: {
         type: String,
         required: true
     },
-    numeroVivienda:{
+    numeroVivienda: {
         type: Schema.Types.ObjectId,
         ref: 'condominio'
     },
-    deudas:{
+    deudas: {
         type: Number,
         required: true
     },
-    personasConvive:{
+    personasConvive: {
         type: Number,
         required: true
     }
 })
 
-module.exports = mongoose.model('Vecino',VecinoSchema);
+module.exports = mongoose.model('Vecino', VecinoSchema);
 

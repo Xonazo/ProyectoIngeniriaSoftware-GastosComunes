@@ -5,7 +5,7 @@ const User = require('../models/user');
 const createUser = (req, res) => {
     const { name, rut, correo, numeroVivienda, deudas, personasConvive } = req.body;
     const newUser = new User({
-        
+
         name,
         rut,
         correo,
@@ -61,7 +61,7 @@ const deleteUser = (req, res) => {
 
 const getUniqueUser = (req, res) => {
     const { id } = req.params
-    User.findById(id,(error,user) => {
+    User.findById(id, (error, user) => {
         if (error) {
             return res.status(400).send({ message: "No se pudo realizar la busqueda" })
         }

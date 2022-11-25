@@ -8,24 +8,24 @@ const RegistroSchema = new Schema({
         required: true,
     },
 
-    deudas:{
-        type:Number,
+    deudas: {
+        type: Number,
         required: true,
 
     },
 
-    fechaPago:{
-        type:Date,
+    fechaPago: {
+        type: Date,
         required: true,
     },
 
-    cantidadPago:{
-        type:Number,
+    cantidadPago: {
+        type: Number,
         required: true,
 
     },
-    
-    pago:{
+
+    pago: {
         type: String,
         required: true,
         maxLength: 25,
@@ -35,12 +35,12 @@ const RegistroSchema = new Schema({
         ]
 
     },
-    abono:{
-        type:Number,
+    abono: {
+        type: Number,
         required: true,
     }
 
 })
 
 //a
-module.exports = mongoose.model('Registro' , RegistroSchema);
+module.exports = mongoose.model('Registro', RegistroSchema);

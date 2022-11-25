@@ -9,7 +9,7 @@ const fileSchema = new Schema({
         type: String,
         required: true
     },
-    mimeType:{
+    mimeType: {
         type: String,
         required: true
     }
