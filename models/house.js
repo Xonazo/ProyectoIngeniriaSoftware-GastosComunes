@@ -5,7 +5,8 @@ const HouseSchema = new Schema({
     numeroVivienda:{
         type: Number,
         required: true,
-        unique: true
+        unique:true
+
     }
 })
 

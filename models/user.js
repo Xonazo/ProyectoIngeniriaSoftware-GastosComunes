@@ -11,15 +11,17 @@ const UserSchema = new Schema({
     rut:{
         type: String,
         requiered: true,
-        unique : true
-    },
+        unique:true
+   },
+   
     correo:{
         type: String,
         required: true
     },
     numeroVivienda:{
         type: Schema.Types.ObjectId,
-        ref: 'house'
+        ref: 'house',
+        unique:true
     },
     deudas:{
         type: Number,
@@ -39,6 +41,6 @@ const UserSchema = new Schema({
     }
 
 })
-
+//s
 module.exports = mongoose.model('User',UserSchema);
 
