@@ -12,6 +12,7 @@ const vecinoRoutes = require('./Routes/vecinoRoutes')
 const condominioRoutes = require ('./Routes/condominioRoutes')
 const RegistroRoutes = require('./Routes/RegistroRoutes')
 const notifyRoutes = require('./Routes/notifyRoutes');
+const fileRoutes = require('./Routes/fileRoutes');
 
 
 app.use(cors());
@@ -23,16 +24,7 @@ app.use('/api', vecinoRoutes);
 app.use('/api', condominioRoutes);
 app.use('/api', RegistroRoutes);
 app.use('/api', notifyRoutes);
-
-// ComentarioMatias
-
-//mongoose.set('useNewUrlParser', true);
-//mongoose.set('useFindAndModify', false);
-//mongoose.set('useCreateIndex', true);
-//mongoose.set('useUnifiedTopology', true);
-
-
-
+app.use('/api', fileRoutes);
 
 const options = {
     useNewUrlParser: true,
