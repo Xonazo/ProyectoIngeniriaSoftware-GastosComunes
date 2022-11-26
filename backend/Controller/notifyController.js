@@ -4,7 +4,7 @@ const nodemailer = require('nodemailer');
 dotenv.config();
 /* Importamos modelos */
 const registroPago = require('../models/Registro');
-const vecino = require('../models/vecino');
+const user = require('../models/user');
 
         /* Variables globales */
 
@@ -36,15 +36,16 @@ const notify = (req, res)=>{
     // Aviso general para todos los vecinos de fecha de pago
     if ( day < payday) {
         // Buscamos todos los vecinos existentes
-        vecino.find({}, (error, vecino) => {
+        user.find({}, (error, user) => {
             if (error) {
                 return res.status(400).send({ message: "No se pudo realizar la busqueda" })
             }
             // Recorremos el documento de vecinos, para obtener el nombre y correo de cada uno.
-            vecino.forEach(element => {
-                let nombreVecino = element["name"];
-                let correoVecino = element["correo"];
-                let msgCorreo = `Estimado vecino ${nombreVecino},recordamos que se acerca la fecha de pago mensual de gastos comunes`;
+            user.forEach( element => {
+                let nameUser = element["name"];
+                console.log(nameUser);
+                let correoUser = element["correo"];
+                let msgCorreo = `Estimado ${nameUser},recordamos que se acerca la fecha de pago mensual de gastos comunes`;
 
                 // Si el token no existe, error
                 if (!process.env.PW) {
@@ -53,15 +54,17 @@ const notify = (req, res)=>{
                 // Enviamos correo con el transporter reutilizable
                 let info =  transporter.sendMail({
                     from: '"Serv. Administracion de Gastos Comunes 🏘" <condominio@ubb.com>', // sender address
-                    to: correoVecino, // Lista de destinarios, debe ir la variable de "correoVecino" 
+                    to: correoUser, // Lista de destinarios, debe ir la variable de "correoVecino" 
                     subject: "Notificacion de pago mensual de gastos comunes", // Subject line
                     text: msgCorreo, // Mensaje de Notificacion de fecha de pago, cuerpo de texto sin formato.
                     html: "<b>"+msgCorreo+ "</b>" // Cuerpo HTML
                 });
             });
-            return res.status(200).send({ message: "Se ha notificado la fecha proxima de pago a todos los usuarios." })
         })
+        return res.status(200).send({ message: "Se ha notificado la fecha proxima de pago a todos los usuarios." })
     }
+
+
     //Aviso general para todos los que no han efectuado un pago.
     if ( day > payday) {
         // Declaracion de rango inicial del mes
@@ -72,30 +75,30 @@ const notify = (req, res)=>{
         const calcDiff = date_time - paydate;
         const dayDiff = Math.trunc(calcDiff/(1000*60*60*24));
 
-        let ArrayVecinos = [];
+        let ArrayUser = [];
 
         // Seleccion de registros presentes entre la fechaInicio y fechaFin.
         // $gte = Mayor o igual que... ; $lte: menor o igual que...
-        registroPago.find( {fechaPago : {$gte: fechaInicio, $lte : fechaFin} }, (error, registro) =>{
+        registroPago.find( {fechaRegistro : {$gte: fechaInicio, $lte : fechaFin} }, (error, registro) =>{
             if (error) {
                 return res.status(400).send({ message: "No se pudo realizar la busqueda"});
             }
-            //Recorremos el registros para obtener valor de las propiedades "idVecino" y "fechaPago" de cada elemento.
+            //Recorremos el registros para obtener valor de las propiedades "idVecino" y "fechaRegistro" de cada elemento.
             registro.forEach( element =>{
-                let idVecino = element["idVecino"];
-                ArrayVecinos.push(idVecino._id.toString());
+                let idUser = element["regidVecino"];
+                ArrayUser.push(idUser._id.toString());
             });
 
             //A los vecinos que no pertenezcan al Array es porque no presentaron pagos, se le envia correo.
             // $nin = No dentro de ...
-            vecino.find({ _id : {$nin: ArrayVecinos } }, (error, registro) =>{
+            user.find({ _id : {$nin: ArrayUser } }, (error, registro) =>{
                 if (error) {
                     return res.status(400).send({ message: "No se pudo realizar la busqueda"});
                 }
                 registro.forEach(element =>{
                     let nombreVecino = element["name"];
                     let correoVecino = element["correo"];
-                    let msgCorreo = `Estimado vecino ${nombreVecino}, su cuenta presenta ${dayDiff} dias de atraso de pago mensual. `;
+                    let msgCorreo = `Estimado ${nombreVecino}, su cuenta presenta ${dayDiff} dias de atraso de pago mensual. `;
 
                     if (!process.env.PW) {
                         return res.status(400).send({ message: "Nos se ha entregado la contraseña de aplicacion para el correo" })
@@ -109,24 +112,24 @@ const notify = (req, res)=>{
                         html: "<h1> NOTIFICACION DE ATRASO</h1> <b>"+msgCorreo+ "</b>" // Cuerpo HTML
                     });
                 })
-                return res.status(200).send({ message: "Se ha informado a todo vecino que no ha realizado su pago." })
+                return res.status(200).send({ message: "Se ha informado a todo user que no ha realizado su pago." })
             })
         })
     }
 }
 
 const notifyUser = (req, res) => {
-    const {id} = req.params
+    const { id } = req.params
     //Diferencia de dias entre fecha actual y fecha de pago.
     const calcDiff = date_time - paydate;
     const dayDiff = Math.trunc(calcDiff/(1000*60*60*24));
 
-    vecino.findById( id, (error, data) =>{
+    user.findById( id, (error, data) =>{
         if (error) {
             return res.status(400).send({ message: "No se encontro el usuario"})
         }
         if (!data) {
-            return res.status(404).send({ message: "No se encontro al vecino" })
+            return res.status(404).send({ message: "No se encontro al user" })
         }
         //Obtenemos los valores de propiedades del usuario
         let nameUser = data["name"];

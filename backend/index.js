@@ -5,33 +5,22 @@ const dotenv = require('dotenv');
 const app = express();
 dotenv.config();
 
-const request2 = require('request');
 const cron = require('node-cron');
 
-const vecinoRoutes = require('./Routes/vecinoRoutes')
-const condominioRoutes = require ('./Routes/condominioRoutes')
-const RegistroRoutes = require('./Routes/RegistroRoutes')
-const notifyRoutes = require('./Routes/notifyRoutes');
-
+const userRoutes = require('./Routes/userRoutes')
+const registroRoutes = require('./Routes/RegistroRoutes')
+const deudasRoutes = require('./Routes/deudasRoutes');
+const notifyRoutes = require('./Routes/notifyRoutes')
 
 app.use(cors());
 app.use(express.json());
 app.options('*', cors());
 
 
-app.use('/api', vecinoRoutes);
-app.use('/api', condominioRoutes);
-app.use('/api', RegistroRoutes);
+app.use('/api', userRoutes);
+app.use('/api', registroRoutes);
+app.use('/api', deudasRoutes);
 app.use('/api', notifyRoutes);
-
-// ComentarioMatias
-
-//mongoose.set('useNewUrlParser', true);
-//mongoose.set('useFindAndModify', false);
-//mongoose.set('useCreateIndex', true);
-//mongoose.set('useUnifiedTopology', true);
-
-
 
 
 const options = {
@@ -43,7 +32,6 @@ const options = {
     family: 4,
     useUnifiedTopology: true
 }
-
 
 mongoose.connect(process.env.DB, options, (error) => {
     if (error) {
@@ -57,10 +45,3 @@ mongoose.connect(process.env.DB, options, (error) => {
 app.listen(process.env.PORT, () => {
     console.log(`Server started on port ${process.env.PORT}`);
 })
-
-//Descomentar cuando se vaya a implementar.
-
-// cron.schedule('* * * * *', function (res){
-//     request2('http://localhost:3001/api/notifyRoutes', function (error, response , body ) {
-//     });
-// });
