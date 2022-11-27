@@ -5,8 +5,6 @@ const dotenv = require('dotenv');
 const app = express();
 dotenv.config();
 
-const cron = require('node-cron');
-
 const userRoutes = require('./Routes/userRoutes')
 const registroRoutes = require('./Routes/RegistroRoutes')
 const deudasRoutes = require('./Routes/deudasRoutes');

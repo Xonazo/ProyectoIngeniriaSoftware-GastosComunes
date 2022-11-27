@@ -10,7 +10,7 @@ const createRegistro = (req, res) =>{
         if(error){
             return res.status(400).send({message: "No se creo el registro"})
         }
-        Deudas.updateOne({idVecino:newRegistro.regidVecino},{$inc:{deuda:-newRegistro.cantidadPago}},(error,pdeuda) => {
+        Deudas.updateOne({ idVecino: regidVecino }, {$inc:{deuda:-cantidadPago} },(error,pdeuda) => {
             if(error){
                 newRegistro.deleteOne()
                 return res.status(400).send({message: "No se actualizo la deuda"})
