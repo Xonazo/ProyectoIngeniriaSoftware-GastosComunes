@@ -14,12 +14,12 @@ const createUser = (req, res) => {
         role
     })
     const { idVecino,deuda,abono } = req.body;
+
     const newDeudas = new Deudas({
         idVecino: idVecino,
         deuda: 30000,
         abono: 0
     })
-
     newDeudas.save((error, deudas) => {
         if (error) {
             return res.status(400).send({ message: "No se ha podido crear al Usuario" });
