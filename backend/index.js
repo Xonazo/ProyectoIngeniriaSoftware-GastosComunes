@@ -5,14 +5,13 @@ const dotenv = require('dotenv');
 const app = express();
 dotenv.config();
 
-const request2 = require('request');
 const cron = require('node-cron');
 
 const userRoutes = require('./Routes/userRoutes');
-const houseRoutes = require('./Routes/houseRoutes');
-const registroRoutes = require('./Routes/registroRoutes')
+const registroRoutes = require('./Routes/RegistroRoutes')
 const notifyRoutes = require('./Routes/notifyRoutes');
 const fileRoutes = require('./Routes/fileRoutes');
+const deudasRoutes = require('./Routes/deudasRoutes');
 
 
 app.use(cors());
@@ -21,10 +20,10 @@ app.options('*', cors());
 
 
 app.use('/api', userRoutes);
-app.use('/api', houseRoutes);
 app.use('/api', registroRoutes);
 app.use('/api', notifyRoutes);
 app.use('/api', fileRoutes);
+app.use('/api', deudasRoutes);
 
 const options = {
     useNewUrlParser: true,
@@ -49,10 +48,3 @@ mongoose.connect(process.env.DB, options, (error) => {
 app.listen(process.env.PORT, () => {
     console.log(`Server started on port ${process.env.PORT}`);
 })
-
-//Descomentar cuando se vaya a implementar.
-
-// cron.schedule('* * * * *', function (res){
-//     request2('http://localhost:3001/api/notifyRoutes', function (error, response , body ) {
-//     });
-// });

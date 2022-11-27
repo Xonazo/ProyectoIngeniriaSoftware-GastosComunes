@@ -4,9 +4,8 @@ const Schema = mongoose.Schema;
 const DeudasSchema = new Schema({
     idvecino:{
         type: Schema.Types.ObjectId,
-        ref: 'vecino',
-        unique: true,
-    },
+        ref: 'user'
+        },
     deuda:{
         type: Number,
         required: true,

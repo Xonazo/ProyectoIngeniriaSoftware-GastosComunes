@@ -1,14 +1,10 @@
 const { set } = require('mongoose');
 const Deudas = require('../models/deudas');
 
-
 const createDeudas = (req, res) => {
-    const {rut,deuda,abono } = req.body;
-    const newDeudas = new Deudas({
-        rut,
-        deuda,
-        abono
-    })
+
+    const { rut, deuda, abono } = req.body;
+    const newDeudas = new Deudas({ rut, deuda, abono })
     newDeudas.save((error, Deudas) => {
         if (error) {
             return res.status(400).send({ message: "Deuda no fue creada" });
@@ -18,7 +14,7 @@ const createDeudas = (req, res) => {
 }
 
 const getDeudas = (req, res) => {
-    const {rut} = req.params
+    const { rut }  = req.params
     Deudas.find({rut:rut}, (error, Deudas) => {
         if (error) {
             return res.status(400).send({ message: "Busqueda no realizada" })
@@ -56,8 +52,6 @@ const updateDeudas = (req, res) => {
         return res.status(200).send({ message: "Deuda actualizada"})
     })
 }
-
-
 
 module.exports = {
     createDeudas,

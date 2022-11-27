@@ -1,25 +1,25 @@
+const { Minkey } = require('bson');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-
 const RegistroSchema = new Schema({
+
     regidVecino: {
         type: Schema.Types.ObjectId,
         ref: 'user',
         required: true,
     },
 
-    fechaRegistro: {
-        type: Date,
+    fechaRegistro:{
+        type:Date,
         required: true,
     },
 
-    cantidadPago: {
-        type: Number,
+    cantidadPago:{
+        type:Number,
         required: true,
 
     },
-
-    pago: {
+    pago:{
         type: String,
         required: true,
         maxLength: 25,
@@ -27,9 +27,8 @@ const RegistroSchema = new Schema({
             'pago a tiempo',
             'pago con atraso'
         ]
-
     }
+
 })
 
-//a
-module.exports = mongoose.model('Registro', RegistroSchema);
+module.exports = mongoose.model('Registro' , RegistroSchema);
