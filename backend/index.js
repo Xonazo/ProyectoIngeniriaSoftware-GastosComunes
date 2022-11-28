@@ -5,13 +5,12 @@ const dotenv = require('dotenv');
 const app = express();
 dotenv.config();
 
-const cron = require('node-cron');
-
-const userRoutes = require('./Routes/userRoutes');
+const userRoutes = require('./Routes/userRoutes')
 const registroRoutes = require('./Routes/RegistroRoutes')
-const notifyRoutes = require('./Routes/notifyRoutes');
-const fileRoutes = require('./Routes/fileRoutes');
 const deudasRoutes = require('./Routes/deudasRoutes');
+const notifyRoutes = require('./Routes/notifyRoutes')
+const fileRoutes = require('./Routes/fileRoutes');
+
 
 
 app.use(cors());
@@ -21,9 +20,9 @@ app.options('*', cors());
 
 app.use('/api', userRoutes);
 app.use('/api', registroRoutes);
+app.use('/api', deudasRoutes);
 app.use('/api', notifyRoutes);
 app.use('/api', fileRoutes);
-app.use('/api', deudasRoutes);
 
 const options = {
     useNewUrlParser: true,
@@ -34,7 +33,6 @@ const options = {
     family: 4,
     useUnifiedTopology: true
 }
-
 
 mongoose.connect(process.env.DB, options, (error) => {
     if (error) {

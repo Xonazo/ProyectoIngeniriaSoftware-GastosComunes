@@ -1,31 +1,40 @@
+
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-//e
+
 const UserSchema = new Schema({
-    name: {
+    name:{
         type: String,
         required: true,
         minLenght: 1,
         maxLenght: 100
     },
-    rut: {
+    rut:{
         type: String,
         requiered: true,
-        unique: true
+        unique : true
     },
-    correo: {
+    correo:{
         type: String,
         required: true
     },
-    numeroVivienda: {
-        type: Schema.Types.ObjectId,
-        ref: 'House'
+    numeroVivienda:{
+        type: Number,
+        unique: true,
+        requiered: true
     },
-    personasConvive: {
+    personasConvive:{
         type: Number,
         required: true
+    },
+    role:{
+        type:String,
+        required: true,
+        enum:[
+            'admin',
+            'user'
+        ]
     }
 })
 
-module.exports = mongoose.model('User', UserSchema);
-
+module.exports = mongoose.model('User',UserSchema);

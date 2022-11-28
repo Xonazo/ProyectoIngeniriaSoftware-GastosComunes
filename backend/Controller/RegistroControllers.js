@@ -1,6 +1,7 @@
 const Registro = require('../models/Registro');
 const nodemailer = require('nodemailer');
 const Deudas = require('../models/deudas');
+const { sendVoucher } = require('./voucherController');
 
 const createRegistro = (req, res) =>{
     const {regidVecino,fechaRegistro,cantidadPago,pago} = req.body
@@ -10,7 +11,7 @@ const createRegistro = (req, res) =>{
         if(error){
             return res.status(400).send({message: "No se creo el registro"})
         }
-        Deudas.updateOne({idVecino:newRegistro.regidVecino},{$inc:{deuda:-newRegistro.cantidadPago}},(error,pdeuda) => {
+        Deudas.updateOne({ idVecino: regidVecino }, {$inc:{deuda:-cantidadPago} },(error,pdeuda) => {
             if(error){
                 newRegistro.deleteOne()
                 return res.status(400).send({message: "No se actualizo la deuda"})
@@ -19,6 +20,7 @@ const createRegistro = (req, res) =>{
                 newRegistro.deleteOne()
                 return res.status(404).send({message: "No se encontro la deuda"})
             }
+            sendVoucher(regidVecino);
             return res.status(201).send(registro)
         })
 

@@ -1,5 +1,8 @@
 const User = require('../models/user');
 const Deudas = require('../models/deudas');
+const Registro = require('../models/Registro');
+
+
 const { SchemaType } = require('mongoose');
 
 const createUser = (req, res) => {
@@ -13,13 +16,13 @@ const createUser = (req, res) => {
         personasConvive,
         role
     })
-    const { idVecino,deuda,abono } = req.body;
+    const { idVecino } = req.body;
+
     const newDeudas = new Deudas({
         idVecino: idVecino,
         deuda: 30000,
         abono: 0
     })
-
     newDeudas.save((error, deudas) => {
         if (error) {
             return res.status(400).send({ message: "No se ha podido crear al Usuario" });
@@ -102,10 +105,53 @@ const getUniqueVecinoVivienda = (req, res) => {
     })
 }
 
+
+const deleteCascade = (req, res) => {
+    const { id } = req.params
+    User.findByIdAndDelete(id, req.body, (error, user) => {
+
+        if (error) {
+            return res.status(400).send({ message: "No se pudo actualizar el usuario" });
+        }
+
+        if (!user) {
+            return res.status(404).send({ message: "No se encontro al usuario" })
+        }
+
+        
+    })
+    Deudas.deleteMany({idVecino:id},(error, deudas) => {
+
+        if (error) {
+            return res.status(400).send({ message: "No se pudo actualizar el usuario" });
+        }
+
+        if (!deudas) {
+            return res.status(404).send({ message: "No se encontro al usuario" })
+        }
+       
+    })
+
+    Registro.deleteMany({regidVecino:id},  (error, Registro) => {
+
+        if (error) {
+            return res.status(400).send({ message: "No se pudo actualizar el usuario" });
+        }
+
+        if (!Registro) {
+            return res.status(404).send({ message: "No se encontro al usuario" })
+        }
+
+       
+    })
+    return res.status(200).send({ message: "Usuario modificado" })
+}
+
 module.exports = {
     createUser,
     getUser,
     updateUser,
     deleteUser,
-    getOneUser
+    getOneUser,
+    deleteCascade
 }
