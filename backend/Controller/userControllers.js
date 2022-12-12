@@ -2,6 +2,9 @@ const User = require('../models/user');
 const Deudas = require('../models/deudas');
 const { SchemaType } = require('mongoose');
 
+const registroPago = require('../models/Registro');
+const user = require('../models/user');
+
 const createUser = (req, res) => {
     const { name, rut, correo, numeroVivienda, personasConvive, role } = req.body;
     const newUser = new User({
@@ -88,17 +91,60 @@ const getOneUser = (req, res) => {
     })
 }
 
-const getUniqueVecinoVivienda = (req, res) => {
-    const { numeroVivienda } = req.params
+const getUsersNoPay = (req, res) => {
+    const date_time = new Date();
+    const mes = date_time.getMonth()+1;
+    const ano = date_time.getFullYear();
+    const fechaInicio = new Date(`${ano}-${mes}-1`);
+    const fechaFin = new Date();
+    fechaFin.setFullYear(ano, mes, 0)
+    let ArrayUser = [];
 
-    Vecino.find({ numeroVivienda }, (error, vecino) => {
+    registroPago.find( {fechaRegistro : {$gte: fechaInicio, $lte : fechaFin} }, (error, registro) =>{
         if (error) {
-            return res.status(400).send({ message: "No se pudo realizar la busqueda" })
+            return res.status(400).send({ message: "No se pudo realizar la busqueda"});
         }
-        if (!vecino) {
-            return res.status(404).send({ message: "No se encontro al vecino" })
+        //Recorremos el registros para obtener valor de las propiedades "idVecino" y "fechaRegistro" de cada elemento.
+        registro.forEach( element =>{
+            let idUser = element["regidVecino"];
+            ArrayUser.push(idUser._id.toString());
+        })
+        user.find({ _id : {$nin: ArrayUser } }, (error, registro) =>{
+            if (error) {
+                return res.status(400).send({ message: "No se pudo realizar la busqueda"});
+            }
+            return res.status(200).send(registro)
+        })
+    })
+}
+
+const getUsersPay = (req, res) => {
+    const date_time = new Date();
+    const mes = date_time.getMonth()+1;
+    const ano = date_time.getFullYear();
+    const fechaInicio = new Date(`${ano}-${mes}-1`);
+    const fechaFin = new Date();
+    fechaFin.setFullYear(ano, mes, 0)
+    let ArrayUser = [];
+
+    registroPago.find( {fechaRegistro : {$gte: fechaInicio, $lte : fechaFin} }, (error, registro) =>{
+        if (error) {
+            return res.status(400).send({ message: "No se pudo realizar la busqueda"});
         }
-        return res.status(200).send(vecino)
+        //Recorremos el registros para obtener valor de las propiedades "idVecino" y "fechaRegistro" de cada elemento.
+        registro.forEach( element =>{
+            let idUser = element["regidVecino"];
+            ArrayUser.push(idUser._id.toString());
+        })
+
+        //A los vecinos que no pertenezcan al Array es porque no presentaron pagos, se le envia correo.
+        // $nin = No dentro de ...
+        user.find({ _id : {$in: ArrayUser } }, (error, registro) =>{
+            if (error) {
+                return res.status(400).send({ message: "No se pudo realizar la busqueda"});
+            }
+            return res.status(200).send(registro)
+        })
     })
 }
 
@@ -107,5 +153,7 @@ module.exports = {
     getUser,
     updateUser,
     deleteUser,
-    getOneUser
+    getOneUser,
+    getUsersNoPay,
+    getUsersPay
 }

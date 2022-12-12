@@ -6,7 +6,7 @@ dotenv.config();
 const registroPago = require('../models/Registro');
 const user = require('../models/user');
 
-        /* Variables globales */
+    /* Variables globales */
 
 // Obtenemos fecha actual (Date)
 const date_time = new Date();
@@ -87,7 +87,7 @@ const notify = (req, res)=>{
             registro.forEach( element =>{
                 let idUser = element["regidVecino"];
                 ArrayUser.push(idUser._id.toString());
-            });
+            })
 
             //A los vecinos que no pertenezcan al Array es porque no presentaron pagos, se le envia correo.
             // $nin = No dentro de ...

@@ -1,11 +1,12 @@
-import  NavBar  from '../components/NavBar';
-
+import  BannerHome  from '../components/BannerHome';
+import NavBar from "../components/NavBar";
+import ViewUser from '../components/viewUser';
 
 export default function Home() {
-
   return (
-    <div>
-      <NavBar/>
-    </div>
+    <>
+    <NavBar/>
+    <BannerHome/>
+    </>
   )
 }
