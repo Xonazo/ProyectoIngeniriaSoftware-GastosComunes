@@ -25,7 +25,8 @@ const RegistroSchema = new Schema({
         maxLength: 25,
         enum: [
             'pago a tiempo',
-            'pago con atraso'
+            'pago con atraso',
+            'pago abono'
         ]
     }
 

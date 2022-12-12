@@ -2,6 +2,7 @@ const { set } = require('mongoose');
 const Deudas = require('../models/deudas');
 
 
+<<<<<<< Updated upstream:Controller/deudasController.js
 const createDeudas = (req, res) => {
     const {rut,deuda,abono } = req.body;
     const newDeudas = new Deudas({
@@ -9,6 +10,10 @@ const createDeudas = (req, res) => {
         deuda,
         abono
     })
+=======
+    const { idvecino, deuda, abono } = req.body;
+    const newDeudas = new Deudas({ idvecino, deuda, abono })
+>>>>>>> Stashed changes:backend/Controller/deudasController.js
     newDeudas.save((error, Deudas) => {
         if (error) {
             return res.status(400).send({ message: "Deuda no fue creada" });
@@ -18,6 +23,7 @@ const createDeudas = (req, res) => {
 }
 
 const getDeudas = (req, res) => {
+<<<<<<< Updated upstream:Controller/deudasController.js
     const {rut} = req.params
     Deudas.find({rut:rut}, (error, Deudas) => {
         if (error) {
@@ -29,6 +35,16 @@ const getDeudas = (req, res) => {
         return res.status(200).send(Deudas)
     })
 }
+=======
+
+    Deudas.find({}, (error, deuda) => {
+    if (error) {
+        return res.status(400).send({ message: "Busqueda no realizada" });
+    }
+    return res.status(200).send(deuda);
+    });
+    };
+>>>>>>> Stashed changes:backend/Controller/deudasController.js
 
 const deleteDeudas = (req, res) => {
     const { id } = req.params
@@ -53,6 +69,7 @@ const updateDeudas = (req, res) => {
         if(!Deudas){
             return res.status(404).send({message: "Deuda no actualizada"})
         }
+
         return res.status(200).send({ message: "Deuda actualizada"})
     })
 }
