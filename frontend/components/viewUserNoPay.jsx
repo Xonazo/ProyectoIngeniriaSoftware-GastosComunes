@@ -1,4 +1,4 @@
-import { Container, Table, Tbody, Tr, Heading, Thead, Td, Button } from '@chakra-ui/react'
+import { Container, Table, Tbody, Tr, Heading, Thead, Td, Button, Tooltip, Icon } from '@chakra-ui/react'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
@@ -32,10 +32,13 @@ const viewUserNoPay = () => {
                     <Td textAlign='center'>{usuario.name}</Td>
                     <Td textAlign='center'>{usuario.rut}</Td>
                     <Td textAlign='center'>{usuario.correo}</Td>
-                    <Td textAlign={'center'} display={'flex'} justifyContent={'space-around'}>
-                        <Button as={MdOutlineNotificationsActive} boxSize={"35"}
-                        onClick={ () => notifyUser(usuario._id)}
-                        ></Button>
+                    <Td textAlign={'center'} display={'flex'} justifyContent={'space-around'} cursor={"pointer"}>
+                        <Button as={MdOutlineNotificationsActive} boxSize={"35"}onClick={ () => notifyUser(usuario._id)}
+                        _hover ={{
+                            bg: "#4ea39a",
+                            color: "white"
+                        }}
+                        />
                     </Td>
                 </Tr>
             )
