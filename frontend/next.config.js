@@ -5,7 +5,7 @@ const nextConfig = {
 
 module.exports = {
   nextConfig,
-  env:{
+  env: {
     API_URL: process.env.SERVIDOR
   }
 }
