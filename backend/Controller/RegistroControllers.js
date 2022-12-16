@@ -63,7 +63,6 @@ const createRegistroAbono = (req, res) =>{
                     newRegistro.deleteOne()
                     return res.status(400).send({message: "No se actualizo la deuda"})
                 }
-                
             })
 
             sendVoucher(regidVecino);
