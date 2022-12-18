@@ -23,6 +23,12 @@ import { useRouter } from "next/router";
 import { BsTrashFill } from "react-icons/bs";
 
 import { VscAdd } from "react-icons/vsc";
+import Cookies from "js-cookie";
+
+
+
+
+
 
 const viewUser = () => {
   const router = useRouter();
@@ -36,6 +42,12 @@ const viewUser = () => {
     const response = await axios.get(`${process.env.API_URL}/buscarUser`);
     setProducts(response.data);
   };
+
+ const cerrar = async () => {
+  await axios.get(`${process.env.API_URL}/logout`);
+  Cookies.remove("token");
+  router.push("/");
+ }
 
   // Confirmar para eliminar usuario.
   const deletUserConfirmation = (id) => {
@@ -66,6 +78,8 @@ const viewUser = () => {
     );
     getUsers();
   };
+
+
 
   const showProducts = () => {
     return products.map((usuario, index) => {
@@ -121,6 +135,15 @@ const viewUser = () => {
         >
           Crear Usuario
         </Button>
+      <Heading>
+      <Button
+          colorScheme={"teal"}
+          size="lg"
+          onClick={() => cerrar()}
+        >
+          Logout
+        </Button>
+      </Heading>
         <Table variant={"simple"} my="10">
           <Thead color="white">
             <Tr

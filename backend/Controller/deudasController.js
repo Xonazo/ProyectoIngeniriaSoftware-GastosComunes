@@ -3,8 +3,8 @@ const Deudas = require('../models/deudas');
 
 const createDeudas = (req, res) => {
 
-    const { rut, deuda, abono } = req.body;
-    const newDeudas = new Deudas({ rut, deuda, abono }) 
+    const { idvecino, deuda, abono } = req.body;
+    const newDeudas = new Deudas({ idvecino, deuda, abono }) 
     newDeudas.save((error, Deudas) => {
         if (error) {
             return res.status(400).send({ message: "Deuda no fue creada" });

@@ -3,6 +3,7 @@ import axios from 'axios'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import {MdOutlineNotificationsActive} from 'react-icons/md'
+import Swal from "sweetalert2";
 
 const viewUserNoPay = () => {
 
@@ -47,6 +48,12 @@ const viewUserNoPay = () => {
 
     const notifyUser = async (id) => {
         const response = await axios.get(`${process.env.API_URL}/notifyUser/`+id)
+        Swal.fire({
+            title: "Exitoso!",
+            text: "El usuario a sido notificado !",
+            icon: "success"
+            
+          })
     }
 
 

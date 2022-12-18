@@ -10,8 +10,21 @@ import {
   Stack,
   Center,
 } from "@chakra-ui/react";
+import { useRouter } from "next/router";
+import cookie from "js-cookie";
+import { useEffect } from "react";
+
 
 const NavBar = () => {
+  // const router = useRouter()
+  // useEffect(() => {
+  //   const token = cookie.get("token")
+  //   if (!token || token === "undefined") {
+  //     router.push('/')
+  //   }
+
+  // }, [])
+
   return (
     <>
       <Box bg={"#1c1c1c"}>
@@ -53,7 +66,7 @@ const NavBar = () => {
               Crear Usuario
             </Link>
             <Link
-            href="/verUsuarios"
+              href="/verUsuarios"
               p="2.3rem"
               _hover={{
                 background: "#4ea39a",
@@ -61,6 +74,8 @@ const NavBar = () => {
             >
               Ver usuarios
             </Link>
+        
+          
             {/* <Link
               p="2.3rem"
               _hover={{
