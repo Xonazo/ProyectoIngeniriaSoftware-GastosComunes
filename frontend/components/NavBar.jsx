@@ -13,17 +13,68 @@ import {
 import { useRouter } from "next/router";
 import cookie from "js-cookie";
 import { useEffect } from "react";
+import Swal from "sweetalert2";
+
+
+
 
 
 const NavBar = () => {
-  // const router = useRouter()
-  // useEffect(() => {
-  //   const token = cookie.get("token")
-  //   if (!token || token === "undefined") {
-  //     router.push('/')
-  //   }
+  const router = useRouter()
 
-  // }, [])
+  const comprobacion = () => {
+    const token = cookie.get("token")
+    if (!token || token === "undefined") {
+      //router.push('/')
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "No estas logueado",
+      });
+    } else {
+      router.push("/verUsuarios");
+    }
+  }
+
+
+
+  const comprobacion2 = () => {
+    const token = cookie.get("token")
+    if (!token || token === "undefined") {
+      //router.push('/')
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "No estas logueado",
+      });
+    } else {
+      router.push("/CreateUser");
+    }
+  }
+
+  const comprobacion3 = () => {
+    const token = cookie.get("token")
+    if (token) {
+      //router.push('/')
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Ya estas logueado",
+      });
+    
+    } else {
+      router.push("/");
+      
+    }
+    if (!token || token === "undefined") {
+      //router.push('/')
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Ya estas en el inicio",
+      });
+  }
+  }
 
   return (
     <>
@@ -35,9 +86,9 @@ const NavBar = () => {
           justify={{ base: "center", md: "space-between" }}
         >
           <Link href="/">
-          <Center>
-            <Image  p="1rem" boxSize={"max-content"} src="/logo.svg"/>
-          </Center>
+            <Center>
+              <Image p="1rem" boxSize={"max-content"} src="/logo.svg" />
+            </Center>
           </Link>
 
           <Flex
@@ -48,7 +99,7 @@ const NavBar = () => {
             color="white"
           >
             <Link
-              href="/"
+              onClick={() => comprobacion3()}
               p="2.3rem"
               _hover={{
                 background: "#4ea39a",
@@ -57,7 +108,7 @@ const NavBar = () => {
               Inicio
             </Link>
             <Link
-              href="/CreateUser"
+              onClick={() => comprobacion2()}
               p="2.3rem"
               _hover={{
                 background: "#4ea39a",
@@ -66,7 +117,7 @@ const NavBar = () => {
               Crear Usuario
             </Link>
             <Link
-              href="/verUsuarios"
+              onClick={() => comprobacion()}
               p="2.3rem"
               _hover={{
                 background: "#4ea39a",
@@ -74,8 +125,8 @@ const NavBar = () => {
             >
               Ver usuarios
             </Link>
-        
-          
+
+
             {/* <Link
               p="2.3rem"
               _hover={{

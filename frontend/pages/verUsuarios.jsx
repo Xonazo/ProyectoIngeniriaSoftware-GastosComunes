@@ -9,14 +9,14 @@ import cookie from 'js-cookie';
 
 
 export default function VerUsuarios() {
-  const router = useRouter()
-  useEffect(() => {
-    const token = cookie.get("token")
-    if (!token || token === "undefined") {
-      router.push('/')
-    }
+  // const router = useRouter()
+  // useEffect(() => {
+  //   const token = cookie.get("token")
+  //   if (!token || token === null) {
+  //     router.push('/')
+  //   }
+  // }, [])
 
-  }, [])
   return (
     <>
       <NavBar />

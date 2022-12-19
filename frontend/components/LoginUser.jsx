@@ -5,8 +5,10 @@ import { useRouter } from "next/router";
 import { login, checkToken } from '../data/user'
 import Swal from 'sweetalert2'
 import Cookie from 'js-cookie'
+import { useEffect } from "react";
 
 //no funca esta funcion 
+/*
 export const getServerSideProps = async (context) => {
     try {
         const response = await checkToken(context.req.headers.cookie)
@@ -24,7 +26,12 @@ export const getServerSideProps = async (context) => {
             props: {}
         }
     }
-}
+}*/
+
+
+
+
+
 
 const Home = ({ data }) => {
 
@@ -40,7 +47,15 @@ const Home = ({ data }) => {
             [e.target.name]: e.target.value
         })
     }
-
+   
+    useEffect(() => {
+      const token = Cookie.get("token")
+      if (token) {
+        router.push('/verUsuarios')
+      }
+  
+    }, [])
+  
 
 
     const onsubmit = async (e) => {
