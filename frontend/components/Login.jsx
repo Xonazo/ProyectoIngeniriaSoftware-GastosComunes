@@ -14,12 +14,12 @@ import {
   Input,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { login, checkToken } from '../data/user';
 import Swal from "sweetalert2";
 import Cookie from 'js-cookie'
 
-const LoginButton = ({data}) => {
+const LoginButton = () => {
   const router = useRouter();
 
   const [user, setUser] = useState({
@@ -58,6 +58,14 @@ const LoginButton = ({data}) => {
   };
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [overlay, setOverlay] = useState(<OverlayOne />);
+
+  useEffect(() => {
+    const token = Cookie.get("token")
+    if (token) {
+      router.push('/verUsuarios')
+    }
+
+  }, [])
 
   return (
     <>

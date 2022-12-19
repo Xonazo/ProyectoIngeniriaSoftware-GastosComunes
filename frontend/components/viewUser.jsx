@@ -21,8 +21,8 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { useRouter } from "next/router";
 import { BsTrashFill } from "react-icons/bs";
-
 import { VscAdd } from "react-icons/vsc";
+import Cookies from "js-cookie";
 
 const viewUser = () => {
   const router = useRouter();
@@ -108,6 +108,13 @@ const viewUser = () => {
       );
     });
   };
+
+  const cerrar = async () => {
+    await axios.get(`${process.env.API_URL}/logout`);
+    Cookies.remove("token");
+    router.push("/");
+  };
+
   return (
     <>
       <Container maxW="container.xl" centerContent>
@@ -120,6 +127,13 @@ const viewUser = () => {
           onClick={() => router.push("/CreateUser")}
         >
           Crear Usuario
+        </Button>
+        <Button 
+        colorScheme={"teal"}
+        size="lg" 
+        onClick={() => cerrar()}
+        >
+          Logout
         </Button>
         <Table variant={"simple"} my="10">
           <Thead color="white">
