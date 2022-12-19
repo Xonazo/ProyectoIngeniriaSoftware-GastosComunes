@@ -1,7 +1,6 @@
 const Registro = require('../models/Registro');
 const nodemailer = require('nodemailer');
 const Deudas = require('../models/deudas');
-const { sendVoucher } = require('./voucherController');
 
 const createRegistroPago = (req, res) =>{
     const {regidVecino,fechaRegistro,cantidadPago,pago} = req.body
@@ -11,7 +10,7 @@ const createRegistroPago = (req, res) =>{
         if(error){
             return res.status(400).send({message: "No se creo el registro"})
         }
-        Deudas.updateOne({idvecino: regidVecino }, {$inc:{deuda:-cantidadPago} },(error,deuda) => {
+        Deudas.findOne({idvecino: regidVecino },(error,deuda) => {
             if(error){
                 newRegistro.deleteOne()
                 return res.status(400).send({message: "No se actualizo la deuda"})
@@ -20,12 +19,22 @@ const createRegistroPago = (req, res) =>{
                 newRegistro.deleteOne()
                 return res.status(404).send({message: "No se encontro la deuda"})
             }
-            if(pago == "pago abono"){
+            if(cantidadPago > deuda.deuda){
                 newRegistro.deleteOne()
+                return res.status(404).send({message: "No se puede restar la deuda bajo a 0"})
+            }
+            if(cantidadPago <= 0 ){
+                newRegistro.deleteOne()
+                return res.status(404).send({message: "La cantidad de pago no puede ser menor o igual a 0"})
+            }
+            if(pago === "pago abono"){
                 return res.status(404).send({message: "El pago no puede ser un abono"})
             }
-            sendVoucher(regidVecino);
-            return res.status(201).send(registro)
+
+            Deudas.updateOne({idvecino: regidVecino }, {$inc:{deuda:-cantidadPago} },(error,deuda) => {
+                return res.status(201).send(registro)
+            })
+
         })
 
     })
@@ -39,7 +48,7 @@ const createRegistroAbono = (req, res) =>{
         if(error){
             return res.status(400).send({message: "No se creo el registro"})
         }
-        Deudas.updateOne({idvecino: regidVecino }, {$inc:{deuda:-cantidadPago} },(error,deuda) => {
+        Deudas.findOne({idvecino: regidVecino },(error,deuda) => {
             if(error){
                 newRegistro.deleteOne()
                 return res.status(400).send({message: "No se actualizo la deuda"})
@@ -47,6 +56,14 @@ const createRegistroAbono = (req, res) =>{
             if(!deuda ){
                 newRegistro.deleteOne()
                 return res.status(404).send({message: "No se encontro la deuda"})
+            }
+            if(deuda.deuda > 0 ){
+                newRegistro.deleteOne()
+                return res.status(404).send({message: "No se puede crear un abono a una deuda existente"})
+            }
+            if(cantidadPago <= 0 ){
+                newRegistro.deleteOne()
+                return res.status(404).send({message: "La cantidad de pago no puede ser menor o igual a 0"})
             }
             if(pago == "pago a tiempo"){
                 newRegistro.deleteOne()
@@ -57,16 +74,9 @@ const createRegistroAbono = (req, res) =>{
                 newRegistro.deleteOne()
                 return res.status(404).send({message: "Pago no identificado como abono"})
             }
-
-            Deudas.updateOne({idvecino: regidVecino }, {$inc:{abono:+cantidadPago} },(error) => {
-                if(error){
-                    newRegistro.deleteOne()
-                    return res.status(400).send({message: "No se actualizo la deuda"})
-                }
+            Deudas.updateOne({idvecino: regidVecino }, {$inc:{abono:+cantidadPago} },(error,deuda) => {
+                return res.status(201).send(registro)
             })
-
-            sendVoucher(regidVecino);
-            return res.status(201).send(registro)
         })
 
     })
