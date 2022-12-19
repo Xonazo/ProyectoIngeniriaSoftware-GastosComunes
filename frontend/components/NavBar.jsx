@@ -61,14 +61,15 @@ const NavBar = () => {
             >
               Ver usuarios
             </Link>
-            {/* <Link
+            <Link
+            href="/UsersNoPay"
               p="2.3rem"
               _hover={{
                 background: "#4ea39a",
               }}
             >
-              Enlace4
-            </Link> */}
+              Usuarios sin pagar
+            </Link>
           </Flex>
         </Flex>
       </Box>

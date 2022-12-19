@@ -2,17 +2,12 @@ import React from "react";
 import {
   Box,
   Image,
-  Container,
-  Center,
   Heading,
-  Button,
   Flex,
   Stack,
-  background,
-  color
+
 } from "@chakra-ui/react";
-
-
+import Login from "./Login";
 
 const bgImage =
   "https://www.iaconcagua.com/Multimedia/posts/nuevo-proyecto-de-departamentos-en-puente-alto.w1600.jpg";
@@ -20,8 +15,7 @@ const bgImage =
 const HomeContent = () => {
   return (
     <Box
-      h={"55vh"}
-      bg="gray"
+      h={"92.7vh"}
       bgImage={`${bgImage}`}
       bgRepeat="no-repeat"
       bgSize="cover"
@@ -31,7 +25,7 @@ const HomeContent = () => {
         alignItems= 'center'
         justify= 'center'
         h='100%'
-        bg= 'rgb(0 0 0 /40%)'
+        bg= 'rgb(0 0 0 /60%)'
       >
         <Heading
           fontSize={ {base:'1rem', md:'1.7rem'}} 
@@ -60,34 +54,7 @@ const HomeContent = () => {
           direction={ {base:'column', md:'row'}}
           color={'white'} 
         >
-          <Button
-            backgroundColor= 'rgb( 0 0 0 / 30% )'
-            borderColor={'#4ea39a'}
-            borderWidth= {'0.3rem'}
-            borderRadius={'2.2rem'}
-            padding='2rem 4rem'
-            fontSize={'1.5rem'}
-            textTransform={'uppercase'}
-            fontWeight='light'
-            transition={'all 0.2s linear'}
-            _hover={{
-              bgColor: '#4ea39a'
-            }}
-          >INGRESA TU RUT</Button>
-          {/* <Button
-            backgroundColor= 'rgb( 0 0 0 / 30% )'
-            borderColor={'#4ea39a'}
-            borderWidth= {'0.3rem'}
-            borderRadius={'2.2rem'}
-            padding='2rem 4rem'
-            fontSize={'1.5rem'}
-            textTransform={'uppercase'}
-            fontWeight='light'
-            transition={'all 0.2s linear'}
-            _hover={{
-              bgColor: '#4ea39a'
-            }}
-          >Administrador</Button> */}
+          <Login/>
         </Stack>
         <Image src='/click.svg' my={'5px'} boxSize='100px'/>
       </Flex>

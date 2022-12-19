@@ -1,29 +1,69 @@
 const Registro = require('../models/Registro');
-const nodemailer = require('nodemailer');
 const Deudas = require('../models/deudas');
 
-const createRegistro = (req, res) =>{
+const createRegistroPago = (req, res) =>{
     const {regidVecino,fechaRegistro,cantidadPago,pago} = req.body
     const newRegistro = new Registro({ regidVecino, fechaRegistro, cantidadPago, pago })
-    
+
     newRegistro.save((error,registro)=>{
         if(error){
             return res.status(400).send({message: "No se creo el registro"})
         }
-        Deudas.updateOne({ idVecino: regidVecino }, {$inc:{deuda:-cantidadPago} },(error,pdeuda) => {
+        Deudas.updateOne({idvecino: regidVecino }, {$inc:{deuda:-cantidadPago} },(error,deuda) => {
             if(error){
                 newRegistro.deleteOne()
                 return res.status(400).send({message: "No se actualizo la deuda"})
             }
-            if(!pdeuda ){
+            if(!deuda ){
                 newRegistro.deleteOne()
                 return res.status(404).send({message: "No se encontro la deuda"})
             }
+            if(pago == "pago abono"){
+                newRegistro.deleteOne()
+                return res.status(404).send({message: "El pago no puede ser un abono"})
+            }
+            return res.status(201).send(registro)
+        })
+    })
+}
+
+const createRegistroAbono = (req, res) =>{
+    const {regidVecino,fechaRegistro,cantidadPago,pago} = req.body
+    const newRegistro = new Registro({ regidVecino, fechaRegistro, cantidadPago, pago })
+
+    newRegistro.save((error,registro)=>{
+        if(error){
+            return res.status(400).send({message: "No se creo el registro"})
+        }
+        Deudas.updateOne({idvecino: regidVecino }, {$inc:{deuda:-cantidadPago} },(error,deuda) => {
+            if(error){
+                newRegistro.deleteOne()
+                return res.status(400).send({message: "No se actualizo la deuda"})
+            }
+            if(!deuda ){
+                newRegistro.deleteOne()
+                return res.status(404).send({message: "No se encontro la deuda"})
+            }
+            if(pago == "pago a tiempo"){
+                newRegistro.deleteOne()
+                return res.status(404).send({message: "Pago no identificado como abono"})
+            }
+
+            if(pago == "pago con atraso"){
+                newRegistro.deleteOne()
+                return res.status(404).send({message: "Pago no identificado como abono"})
+            }
+
+            Deudas.updateOne({idvecino: regidVecino }, {$inc:{abono:+cantidadPago} },(error) => {
+                if(error){
+                    newRegistro.deleteOne()
+                    return res.status(400).send({message: "No se actualizo la deuda"})
+                }
+            })
             return res.status(201).send(registro)
         })
 
     })
-
 }
 
 
@@ -68,8 +108,8 @@ const getRegistro = (req, res) => {
 }
 
 const getRegistrosVecino = (req, res) => {
-    const {idVecino} = req.params
-    Registro.find({regidVecino:idVecino},(error,registro)=> {
+    const {id} = req.params
+    Registro.find({regidVecino: id },(error,Registro)=> {
     if(error){
             return res.status(400).send({ message: "No se pudo encontrar el registro"})
         }
@@ -79,10 +119,23 @@ const getRegistrosVecino = (req, res) => {
         return res.status(200).send(Registro)
     })
 }
+const getallRegistros = (req, res) => {
+
+    Registro.find({}, (error, Registro) => {
+        if (error) {
+            return res.status(400).send({ message: "No se hizo la busqueda de los registros" })
+        }
+
+        return res.status(200).send(Registro)
+    })
+}
 
 module.exports = {
-    createRegistro,
+    createRegistroPago,
+    createRegistroAbono,
     updateRegistro,
     deleteRegistro,
     getRegistro,
-    getRegistrosVecino}
+    getRegistrosVecino,
+    getallRegistros
+}

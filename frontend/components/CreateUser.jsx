@@ -190,6 +190,7 @@ const CreateUser = () => {
           my={"5"}
           onClick={onSubmit}
           width={{ base: "100%", md: "25%" }}
+          size={'lg'}
         >
           Crear usuario
         </Button>
