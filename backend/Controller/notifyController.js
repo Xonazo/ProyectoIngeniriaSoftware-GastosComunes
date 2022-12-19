@@ -7,7 +7,6 @@ const registroPago = require('../models/Registro');
 const user = require('../models/user');
 
     /* Variables globales */
-
 // Obtenemos fecha actual (Date)
 const date_time = new Date();
 // Obtenemos el mes de la fecha actual (Number)

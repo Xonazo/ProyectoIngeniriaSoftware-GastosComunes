@@ -7,3 +7,4 @@ api.get('/notifyUser/:id', notifyController.notifyUser);
 
 
 module.exports = api
+

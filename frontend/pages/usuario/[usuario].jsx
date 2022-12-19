@@ -191,4 +191,5 @@ const usuario = (data) => {
   );
 };
 
+
 export default usuario;

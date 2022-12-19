@@ -1,6 +1,5 @@
 const User = require('../models/user');
 
-
 const checkEmail = (req, res, next) => {
     const {correo} = req.body;
     User.findOne({correo}, (error, user) => {
@@ -13,5 +12,4 @@ const checkEmail = (req, res, next) => {
         next();
     })
 }
-
 module.exports = checkEmail

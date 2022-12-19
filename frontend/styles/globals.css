@@ -9,7 +9,6 @@ html {
 body {
   font-size: 16px; /* 1rem = 10px */
 } 
-
 /* Utilidades */
 .contenedor {
   width: min(90%, 140rem);

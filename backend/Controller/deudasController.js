@@ -2,7 +2,6 @@ const { set } = require('mongoose');
 const Deudas = require('../models/deudas');
 
 const createDeudas = (req, res) => {
-
     const { rut, deuda, abono } = req.body;
     const newDeudas = new Deudas({ rut, deuda, abono }) 
     newDeudas.save((error, Deudas) => {

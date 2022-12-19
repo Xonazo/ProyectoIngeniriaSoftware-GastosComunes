@@ -31,4 +31,5 @@ const RegistroSchema = new Schema({
 
 })
 
+
 module.exports = mongoose.model('Registro' , RegistroSchema);

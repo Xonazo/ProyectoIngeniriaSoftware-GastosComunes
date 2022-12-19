@@ -66,7 +66,6 @@ const createRegistroAbono = (req, res) =>{
     })
 }
 
-
 const updateRegistro = (req, res) => {
     const {id} = req.params
     Registro.findByIdAndUpdate(id, req.body, (error, Registro) => {

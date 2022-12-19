@@ -159,5 +159,6 @@ const viewUser = () => {
       </Container>
     </>
   );
-};
+}
+
 export default viewUser;

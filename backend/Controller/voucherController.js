@@ -42,7 +42,6 @@ const sendVoucher = idVecino =>{
     })
 }
 
-
 module.exports = {
     sendVoucher
 }

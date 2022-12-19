@@ -38,7 +38,6 @@ const CreateUser = () => {
     role: "",
   });
 
-
   const onSubmit = async (e) => {<Icon as={MdPerson} />
     try {
       const response = await axios.post(`${process.env.API_URL}/crearUser`,values);

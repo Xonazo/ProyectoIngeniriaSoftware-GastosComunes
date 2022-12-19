@@ -6,7 +6,6 @@ const login = async (correo) => {
     return response
 }   
 
-
 const logout = async () => {
     const response = await axios.get(`${process.env.API_URL}/logout`);
     return response

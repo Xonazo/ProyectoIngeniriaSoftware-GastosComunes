@@ -186,7 +186,6 @@ const checkToken = (req, res) => {
     
 }
 
-
 const logout = (req, res) => {
     res.clearCookie("token");
     return res.status(200).send({message:"Se ha cerrado la sesion correctamente"})

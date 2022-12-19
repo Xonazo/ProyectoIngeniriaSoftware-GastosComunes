@@ -59,6 +59,6 @@ const viewUserPay = () => {
       </Table>
     </Container>
   );
-};
+}
 
 export default viewUserPay;

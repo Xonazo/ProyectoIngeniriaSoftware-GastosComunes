@@ -90,6 +90,6 @@ const viewUserNoPay = () => {
       </Table>
     </Container>
   );
-};
+}
 
 export default viewUserNoPay;
