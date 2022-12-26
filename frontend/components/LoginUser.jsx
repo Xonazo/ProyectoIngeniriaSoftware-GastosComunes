@@ -36,7 +36,8 @@ export const getServerSideProps = async (context) => {
 const Home = ({ data }) => {
 
     const [user, setUser] = useState({
-        correo: ""
+        correo: "",
+        role:""
     })
 
     const router = useRouter()
@@ -47,24 +48,30 @@ const Home = ({ data }) => {
             [e.target.name]: e.target.value
         })
     }
-   
-    useEffect(() => {
-      const token = Cookie.get("token")
-      if (token) {
-        router.push('/verUsuarios')
-      }
-  
-    }, [])
-  
 
+    // useEffect(() => {
+    //     const token = Cookie.get("token")
+    //     if (token) {
+    //       router.push('/verUsuarios')
+    //     }
+
+    //   }, []);
 
     const onsubmit = async (e) => {
         e.preventDefault()
         try {
             const response = await login(user.correo)
             if (response.status === 200) {
-                Cookie.set('token', response.data.token, { expires: 1 })
-                router.push('/verUsuarios')
+           
+                console.log(response.data.role)
+                if(response.data.role === "admin"){
+                    Cookie.set('token', response.data.token, { expires: 1 })
+                    router.push('/verUsuarios')
+                }else{
+                    router.push('/usuario/'+response.data.id)
+                }
+            
+                
             }
         } catch (error) {
             return Swal.fire({
@@ -74,6 +81,9 @@ const Home = ({ data }) => {
             })
         }
     }
+
+
+
 
     return (
         <Container maxW="container.xl" centerContent>

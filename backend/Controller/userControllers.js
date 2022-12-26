@@ -172,9 +172,24 @@ const getAll = (req, res) => {
 }
 
 
+// const login = (req, res) => {
+//     const { correo } = req.body;
+//     User.findOne({ correo }, (error, user) => {
+//       if (error) {
+//         return res.status(400).send({ message: "No se pudo realizar la busqueda" });
+//       }
+//       if (!user) {
+//         return res.status(400).send({ message: "El usuario no existe" });
+//       }
+//       const isAdmin = user.role === 'admin';
+//     //  const token = createToken(user, isAdmin);
+//       res.cookie("token", createToken(user,isAdmin), { httpOnly: true });
+//       console.log(isAdmin);
+//       return res.status(200).send({ message: "Se ha logeado correctamente", token:createToken(user,isAdmin), user: user.name, role: user.role });
+//     });
+//   };
 
-
-const login = (req, res) => {
+  const login = (req, res) => {
     const { correo } = req.body;
     User.findOne({ correo }, (error, user) => {
         if (error) {
@@ -184,12 +199,16 @@ const login = (req, res) => {
             return res.status(400).send({message: "El usuario no existe"})
         } 
         res.cookie("token", createToken(user) , {httpOnly:true})
-        return res.status(200).send({message:"Se ha logeado correctamente", token:createToken(user),user:user.name})
+        return res.status(200).send({message:"Se ha logeado correctamente", token:createToken(user),user:user.name, role:user.role, id:user._id})
     })
 }
 
 
+
+  
+
 const checkToken = (req, res) => {
+
     return res.status(200).send({message:"Token valido"}) 
     
 }
