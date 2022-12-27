@@ -6,6 +6,9 @@ import { login, checkToken } from '../data/user'
 import Swal from 'sweetalert2'
 import Cookie from 'js-cookie'
 import { useEffect } from "react";
+import axios from "axios";
+const jwt = require("jsonwebtoken");
+//const jwt = require("jwt-simple");
 
 //no funca esta funcion 
 /*
@@ -30,14 +33,11 @@ export const getServerSideProps = async (context) => {
 
 
 
-
-
-
 const Home = ({ data }) => {
 
     const [user, setUser] = useState({
         correo: "",
-        role:""
+        role: ""
     })
 
     const router = useRouter()
@@ -61,17 +61,18 @@ const Home = ({ data }) => {
         e.preventDefault()
         try {
             const response = await login(user.correo)
+            
             if (response.status === 200) {
-           
-                console.log(response.data.role)
-                if(response.data.role === "admin"){
-                    Cookie.set('token', response.data.token, { expires: 1 })
+                Cookie.set('token', response.data.token, { expires: 1 })
+                const token = Cookie.get("token");
+                const decoded = jwt.decode(token, process.env.SECRET_KEY);
+                console.log(decoded)
+                if (decoded.role === "admin") {
                     router.push('/verUsuarios')
                 }else{
-                    router.push('/usuario/'+response.data.id)
+                    router.push('/usuario/'+decoded.sub)
                 }
-            
-                
+               
             }
         } catch (error) {
             return Swal.fire({

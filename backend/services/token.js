@@ -3,8 +3,9 @@ const moment = require('moment');
 require('dotenv').config();
 
 const createToken = (user) => {
-    const payload ={
+    const payload = {
         sub: user._id,
+        role:user.role,
         iat: moment().unix(),
         exp: moment().add(1, 'hours').unix(),
     }
@@ -14,3 +15,4 @@ const createToken = (user) => {
 module.exports = {
     createToken
 }
+
