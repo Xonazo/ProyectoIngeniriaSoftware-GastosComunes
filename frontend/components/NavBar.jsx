@@ -14,16 +14,22 @@ import { useRouter } from "next/router";
 import cookie from "js-cookie";
 import { useEffect } from "react";
 import Swal from "sweetalert2";
+const jwt = require("jsonwebtoken");
 
 
 
 
-
-const NavBar = () => {
+const NavBar = (data) => {
   const router = useRouter()
 
   const comprobacion = () => {
     const token = cookie.get("token")
+    const decoded = jwt.decode(token,process.env.SECRET_KEY)
+    console.log(decoded)
+
+    if(decoded.role === "admin") {
+      router.push("/verUsuarios");
+    }
     if (!token || token === "undefined") {
       //router.push('/')
       Swal.fire({
@@ -31,15 +37,19 @@ const NavBar = () => {
         title: "Oops...",
         text: "No estas logueado",
       });
-    } else {
-      router.push("/verUsuarios");
     }
+     
   }
 
 
 
   const comprobacion2 = () => {
     const token = cookie.get("token")
+    const decoded = jwt.decode(token,process.env.SECRET_KEY)
+    console.log(decoded)
+    if(decoded.role === "admin") {
+      router.push("/CreateUser");
+    }
     if (!token || token === "undefined") {
       //router.push('/')
       Swal.fire({
@@ -47,9 +57,8 @@ const NavBar = () => {
         title: "Oops...",
         text: "No estas logueado",
       });
-    } else {
-      router.push("/CreateUser");
     }
+     
   }
 
   const comprobacion3 = () => {
