@@ -18,12 +18,15 @@ import { useState, useEffect } from "react";
 import { login, checkToken } from '../data/user';
 import Swal from "sweetalert2";
 import Cookie from 'js-cookie'
+import jwt from 'jsonwebtoken'
+
 
 const LoginButton = () => {
   const router = useRouter();
 
   const [user, setUser] = useState({
     correo: "",
+    role:""
   });
 
   const handleChange = (e) => {
@@ -34,21 +37,30 @@ const LoginButton = () => {
   };
 
   const onSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
     try {
-      const response = await login(user.correo);
-      if (response.status === 200) {
-        Cookie.set('token', response.data.token, { expires: 1 });
-        router.push("/verUsuarios");
-      }
+        const response = await login(user.correo)
+        
+        if (response.status === 200) {
+            Cookie.set('token', response.data.token, { expires: 1 })
+            const token = Cookie.get("token");
+            const decoded = jwt.decode(token, process.env.SECRET_KEY);
+            // console.log(decoded)
+            if (decoded.role === "admin") {
+                router.push('/management')
+            }else{
+                router.push('/management/'+ decoded.sub )
+            }
+           
+        }
     } catch (error) {
-      return Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "Algo salio mal!",
-      });
+        return Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Algo salio mal!',
+        })
     }
-  };
+}
 
   const OverlayOne = () => {
     <ModalOverlay
@@ -58,14 +70,6 @@ const LoginButton = () => {
   };
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [overlay, setOverlay] = useState(<OverlayOne />);
-
-  useEffect(() => {
-    const token = Cookie.get("token")
-    if (token) {
-      router.push('/verUsuarios')
-    }
-
-  }, [])
 
   return (
     <>

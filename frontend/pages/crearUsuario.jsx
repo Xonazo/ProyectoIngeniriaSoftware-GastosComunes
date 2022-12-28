@@ -1,5 +1,15 @@
-import { useState } from "react";
+
+
+//Importamos NavBar dinamico.
+import DynamicNavBar from "../components/DynamicNavBar";
+//Importamos SweetAlert.
+import Swal from "sweetalert2"
+//Importamos axios.
 import axios from "axios";
+// Importamos React Hooks.
+import { useState } from "react";
+import { useRouter } from "next/router";
+// Importamos los componentes utilizados de Chakra UI.
 import {
   Button,
   Container,
@@ -16,6 +26,7 @@ import {
   Box,
   InputLeftAddon,
 } from "@chakra-ui/react";
+// Importamos los iconos utilizados de React Icons.
 import {
   MdPerson,
   MdEmail,
@@ -24,11 +35,9 @@ import {
   MdFingerprint,
   MdPanTool,
 } from "react-icons/md";
-import Swal from "sweetalert2";
-import { useRouter } from "next/router";
 
-const CreateUser = () => {
-  const router = useRouter()
+export default function CreateUser() {
+  const router = useRouter();
   const [values, setValues] = useState({
     name: "",
     rut: "",
@@ -38,9 +47,13 @@ const CreateUser = () => {
     role: "",
   });
 
-  const onSubmit = async (e) => {<Icon as={MdPerson} />
+  const onSubmit = async (e) => {
+    <Icon as={MdPerson} />;
     try {
-      const response = await axios.post(`${process.env.API_URL}/crearUser`,values);
+      const response = await axios.post(
+        `${process.env.API_URL}/crearUser`,
+        values
+      );
       console.log(response);
       if (response.status === 201) {
         Swal.fire({
@@ -49,8 +62,8 @@ const CreateUser = () => {
           icon: "success",
           confirmButtonText: "Ok",
         }).then((result) => {
-          router.push('/verUsuarios')
-        })
+          router.push("/management");
+        });
       } else {
         Swal.fire({
           title: "Error",
@@ -77,7 +90,9 @@ const CreateUser = () => {
   };
 
   return (
-    <Container
+    <>
+      <DynamicNavBar />
+      <Container
       bg={"#D6E4E5"}
       margin=" 3rem auto"
       p={"3rem"}
@@ -108,15 +123,13 @@ const CreateUser = () => {
               bg={"#a8d3d1"}
               children={<Icon as={MdFingerprint} />}
             />
-            <NumberInput width="100%">
-              <NumberInputField
+            <Input width="100%"
                 bg={"#F7F7F7"}
                 placeholder="xx.xxx.xxx-k"
                 type={"text"}
                 onChange={onChange}
                 name={"rut"}
-              />
-            </NumberInput>
+                />
           </InputGroup>
         </FormControl>
 
@@ -130,7 +143,7 @@ const CreateUser = () => {
               type={"email"}
               onChange={onChange}
               name={"correo"}
-            ></Input>
+            />
           </InputGroup>
         </FormControl>
 
@@ -195,7 +208,6 @@ const CreateUser = () => {
         </Button>
       </Box>
     </Container>
+    </>
   );
-};
-
-export default CreateUser;
+}

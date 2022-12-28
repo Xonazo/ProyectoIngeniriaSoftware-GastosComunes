@@ -22,9 +22,9 @@ const NavBar = () => {
           justify={{ base: "center", md: "space-between" }}
         >
           <Link href="/">
-          <Center>
-            <Image  p="1rem" boxSize={"max-content"} src="/logo.svg"/>
-          </Center>
+            <Center>
+              <Image p="1rem" boxSize={"max-content"} src="/logo.svg" />
+            </Center>
           </Link>
 
           <Flex
@@ -53,7 +53,7 @@ const NavBar = () => {
               Crear Usuario
             </Link>
             <Link
-            href="/verUsuarios"
+              href="/viewUsers"
               p="2.3rem"
               _hover={{
                 background: "#4ea39a",
@@ -62,7 +62,7 @@ const NavBar = () => {
               Ver usuarios
             </Link>
             <Link
-            href="/UsersNoPay"
+              href="/UsersNoPay"
               p="2.3rem"
               _hover={{
                 background: "#4ea39a",
@@ -75,7 +75,6 @@ const NavBar = () => {
       </Box>
     </>
   );
-}
-
+};
 
 export default NavBar;

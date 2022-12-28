@@ -1,4 +1,4 @@
-import NavBar from "../components/NavBar";
+import DynamicNavBar from "../components/DynamicNavBar";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
@@ -32,11 +32,17 @@ const UsersNoPay = () => {
   const showUsers = () => {
     return users.map((usuario, index) => {
       return (
-        <Tr key={usuario._id}>
+        <Tr
+          key={usuario._id}
+          _hover={{
+            background: "rgb( 0 0 0 / 05% )",
+          }}
+        >
           <Td>{usuario.name}</Td>
           <Td>{usuario.numeroVivienda}</Td>
           <Td display={"flex"} justifyContent="space-around">
             <Button
+              bg={"#b9d1d3"}
               as={AiFillNotification}
               boxSize="35"
               cursor={"pointer"}
@@ -47,8 +53,10 @@ const UsersNoPay = () => {
               }}
             />
             <Button
+              bg={"#b9d1d3"}
               as={AiFillExclamationCircle}
               boxSize={"35"}
+              onClick={() => router.push(`/usuario/${usuario._id}`)}
               _hover={{
                 bg: "#4ea39a",
                 color: "white",
@@ -61,10 +69,12 @@ const UsersNoPay = () => {
   };
 
   const notifyUser = async (id) => {
-    try{
-      const response = await axios.get(`${process.env.API_URL}/notifyUser/` + id);
+    try {
+      const response = await axios.get(
+        `${process.env.API_URL}/notifyUser/` + id
+      );
       console.log(response);
-      if(response.status === 200){
+      if (response.status === 200) {
         Swal.fire({
           title: "Usuario notificado",
           text: "El usuario ha sido notificado",
@@ -72,8 +82,8 @@ const UsersNoPay = () => {
           confirmButtonText: "Ok",
         }).then((result) => {
           // router.push('/verUsuarios')
-        })
-      }else{
+        });
+      } else {
         Swal.fire({
           title: "Error",
           text: "Ha ocurrido un error",
@@ -81,7 +91,7 @@ const UsersNoPay = () => {
           confirmButtonText: "Ok",
         });
       }
-    }catch(error){
+    } catch (error) {
       Swal.fire({
         title: "Error",
         text: "Ha ocurrido un error",
@@ -89,11 +99,11 @@ const UsersNoPay = () => {
         confirmButtonText: "Ok",
       });
     }
-  }
+  };
 
   return (
     <>
-      <NavBar />
+      <DynamicNavBar />
       <Container
         bg={"#D6E4E5"}
         margin=" 3rem auto"
@@ -107,20 +117,19 @@ const UsersNoPay = () => {
         >
           Pagos pendientes
         </Heading>
-        <Table variant="simple">
-          <Thead>
+        <Table variant="unstyled">
+          <Thead bg={"#b9d1d3"}>
             <Tr fontWeight={"bold"}>
               <Td>Nombre </Td>
               <Td>Nº Vivienda </Td>
-              <Td>Accion</Td>
+              <Td textAlign={"center"}>Accion</Td>
             </Tr>
           </Thead>
-          <Tbody>{showUsers()}</Tbody>
+          <Tbody bg={"#dae9ea"}>{showUsers()}</Tbody>
         </Table>
       </Container>
     </>
   );
 };
-
 
 export default UsersNoPay;

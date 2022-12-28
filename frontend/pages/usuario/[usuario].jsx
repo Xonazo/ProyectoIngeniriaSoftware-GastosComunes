@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
-import Router, { useRouter } from "next/router";
-import NavBar from "../../components/NavBar";
+import { useRouter } from "next/router";
+import DynamicNavBar from "../../components/DynamicNavBar";
 import axios from "axios";
 import {
   Button,
@@ -102,7 +102,7 @@ const usuario = (data) => {
 
   return (
     <>
-      <NavBar />
+      <DynamicNavBar />
       <Container
         bg={"#D6E4E5"}
         margin=" 3rem auto"

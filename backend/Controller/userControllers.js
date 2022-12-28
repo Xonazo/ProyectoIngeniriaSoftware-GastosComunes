@@ -176,7 +176,7 @@ const login = (req, res) => {
             return res.status(400).send({message: "El usuario no existe"})
         } 
         res.cookie("token", createToken(user) , {httpOnly:true})
-        return res.status(200).send({message:"Se ha logeado correctamente", token:createToken(user),user:user.name})
+        return res.status(200).send({message:"Se ha logeado correctamente", token:createToken(user),user:user.name, role:user.role, id:user._id})
     })
 }
 

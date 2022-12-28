@@ -3,7 +3,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-const viewUserPay = () => {
+const UsersPay = () => {
   const router = useRouter();
 
   const [users, setUsers] = useState([]);
@@ -12,7 +12,7 @@ const viewUserPay = () => {
   }, []);
 
   const getUsers = async () => {
-    const response = await axios.get(`${process.env.API_URL}/getUsersPay`);
+    const response = await axios.get(`${process.env.API_URL}/getUser`);
     setUsers(response.data);
   };
 
@@ -61,4 +61,4 @@ const viewUserPay = () => {
   );
 }
 
-export default viewUserPay;
+export default UsersPay;
