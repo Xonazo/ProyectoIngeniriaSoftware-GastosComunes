@@ -69,7 +69,8 @@ const notify = (req, res)=>{
         // Declaracion de rango inicial del mes
         const fechaInicio = new Date(`${ano}-${mes}-1`);
         // Declaracion de rango final del mes
-        const fechaFin = new Date(`${ano}-${mes+1}-01`);
+        const fechaFin = new Date();
+        fechaFin.setFullYear(ano, mes, 0)
 
         const calcDiff = date_time - paydate;
         const dayDiff = Math.trunc(calcDiff/(1000*60*60*24));

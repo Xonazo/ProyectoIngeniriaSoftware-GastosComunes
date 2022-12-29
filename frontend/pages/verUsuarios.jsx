@@ -1,7 +1,7 @@
 import DynamicNavBar from "../components/DynamicNavBar";
-import { useRouter } from 'next/router';
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import cookie from 'js-cookie';
+import cookie from "js-cookie";
 import axios from "axios";
 import Swal from "sweetalert2";
 import {
@@ -13,22 +13,22 @@ import {
   Td,
   Tbody,
   Button,
+  Label,
 } from "@chakra-ui/react";
 
 // Iconos importados
 import { AiFillNotification, AiFillExclamationCircle } from "react-icons/ai";
 import { FaTrash } from "react-icons/fa";
 
-
 export default function VerUsuarios() {
   const router = useRouter();
   const [users, setUsers] = useState([]);
   useEffect(() => {
     // Verificacion de token.
-    const token = cookie.get('token');
+    const token = cookie.get("token");
     if (!token || token === "undefined") {
-      router.push('/');
-    }else{
+      router.push("/");
+    } else {
       // Obtencion de los usuarios de la base de datos.
       getUsers();
     }
@@ -36,7 +36,7 @@ export default function VerUsuarios() {
 
   const getUsers = async () => {
     // Obtencion de los usuarios de la base de datos.
-    const response = await axios.get(`${process.env.API_URL}/getUsersNoPay`);
+    const response = await axios.get(`${process.env.API_URL}/buscarUser`);
     // Seteo de los usuarios obtenidos.
     setUsers(response.data);
   };
@@ -56,7 +56,8 @@ export default function VerUsuarios() {
           <Td>{usuario.numeroVivienda}</Td>
           {/* Acciones en el usuario. */}
           <Td display={"flex"} justifyContent="space-around">
-            <Button
+            {/* <Button
+              title="Notificar"
               bg={"#b9d1d3"}
               as={AiFillNotification}
               boxSize="35"
@@ -66,8 +67,10 @@ export default function VerUsuarios() {
                 bg: "#4ea39a",
                 color: "white",
               }}
-            />
+            >
+            </Button> */}
             <Button
+              title="Más informacion"
               bg={"#b9d1d3"}
               as={AiFillExclamationCircle}
               boxSize={"35"}
@@ -78,6 +81,7 @@ export default function VerUsuarios() {
               }}
             />
             <Button
+              title="Eliminar"
               bg={"#b9d1d3"}
               as={FaTrash}
               boxSize={"35"}
@@ -94,38 +98,38 @@ export default function VerUsuarios() {
   };
 
   // Funcion para notificar al usuario.
-  const notifyUser = async (id) => {
-    try {
-      const response = await axios.get(
-        `${process.env.API_URL}/notifyUser/` + id
-      );
-      console.log(response);
-      if (response.status === 200) {
-        Swal.fire({
-          title: "Usuario notificado",
-          text: "El usuario ha sido notificado",
-          icon: "success",
-          confirmButtonText: "Ok",
-        }).then((result) => {
-          // router.push('/verUsuarios')
-        });
-      } else {
-        Swal.fire({
-          title: "Error",
-          text: "Ha ocurrido un error",
-          icon: "error",
-          confirmButtonText: "Ok",
-        });
-      }
-    } catch (error) {
-      Swal.fire({
-        title: "Error",
-        text: "Ha ocurrido un error",
-        icon: "error",
-        confirmButtonText: "Ok",
-      });
-    }
-  };
+  // const notifyUser = async (id) => {
+  //   try {
+  //     const response = await axios.get(
+  //       `${process.env.API_URL}/notifyUser/` + id
+  //     );
+  //     console.log(response);
+  //     if (response.status === 200) {
+  //       Swal.fire({
+  //         title: "Usuario notificado",
+  //         text: "El usuario ha sido notificado",
+  //         icon: "success",
+  //         confirmButtonText: "Ok",
+  //       }).then((result) => {
+  //         // router.push('/verUsuarios')
+  //       });
+  //     } else {
+  //       Swal.fire({
+  //         title: "Error",
+  //         text: "Ha ocurrido un error",
+  //         icon: "error",
+  //         confirmButtonText: "Ok",
+  //       });
+  //     }
+  //   } catch (error) {
+  //     Swal.fire({
+  //       title: "Error",
+  //       text: "Ha ocurrido un error",
+  //       icon: "error",
+  //       confirmButtonText: "Ok",
+  //     });
+  //   }
+  // };
 
   // Funcion para confimar la eliminacion del usuario(id).
   const deletUserConfirmation = (id) => {
@@ -160,8 +164,8 @@ export default function VerUsuarios() {
 
   return (
     <>
-    <DynamicNavBar/>
-    <Container
+      <DynamicNavBar />
+      <Container
         bg={"#D6E4E5"}
         margin=" 3rem auto"
         p={"3rem"}
@@ -186,5 +190,5 @@ export default function VerUsuarios() {
         </Table>
       </Container>
     </>
-  )
+  );
 }

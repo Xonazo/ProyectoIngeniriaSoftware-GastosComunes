@@ -12,6 +12,7 @@ import {
   Tr,
   Tbody,
   Button,
+  Center,
 } from "@chakra-ui/react";
 import { AiFillNotification, AiFillExclamationCircle } from "react-icons/ai";
 import Swal from "sweetalert2";
@@ -42,6 +43,7 @@ const UsersNoPay = () => {
           <Td>{usuario.numeroVivienda}</Td>
           <Td display={"flex"} justifyContent="space-around">
             <Button
+              title="Notificar"
               bg={"#b9d1d3"}
               as={AiFillNotification}
               boxSize="35"
@@ -53,6 +55,7 @@ const UsersNoPay = () => {
               }}
             />
             <Button
+              title="Más informacion"
               bg={"#b9d1d3"}
               as={AiFillExclamationCircle}
               boxSize={"35"}
@@ -101,6 +104,30 @@ const UsersNoPay = () => {
     }
   };
 
+  const notify = async () => {
+    try {
+      console.log("entro al try");
+      const response = await axios.get(`${process.env.API_URL}/notify`);
+      if (response.status === 200) {
+        Swal.fire({
+          title: "Usuarios notificados",
+          text: "Se ha notificado a todos los usuarios",
+          icon: "success",
+          confirmButtonText: "Ok",
+        });
+      } else {
+        Swal.fire({
+          title: "Error",
+          text: "Ha ocurrido un error",
+          icon: "error",
+          confirmButtonText: "Ok",
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <DynamicNavBar />
@@ -127,6 +154,18 @@ const UsersNoPay = () => {
           </Thead>
           <Tbody bg={"#dae9ea"}>{showUsers()}</Tbody>
         </Table>
+        <Center marginBlock={"1.5rem"}>
+          <Button
+            title="Notificar a todos"
+            colorScheme={"whatsapp"}
+            w="19rem"
+            h={"5rem"}
+            fontSize="2xl"
+            onClick={() => notify()}
+          >
+            Notificar
+          </Button>
+        </Center>
       </Container>
     </>
   );

@@ -7,7 +7,8 @@ html {
   box-sizing: inherit;
 }
 body {
-  font-size: 16px; /* 1rem = 10px */
+  font-size: 16px;
+   /* 1rem = 10px */
 } 
 /* Utilidades */
 .contenedor {
@@ -35,5 +36,10 @@ body {
   }
 }
 
-
+/* .bg-color{
+  background-image: url('/condominiosHome.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
+} */
 

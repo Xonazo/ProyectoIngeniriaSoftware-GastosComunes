@@ -49,7 +49,7 @@ const LoginButton = () => {
             if (decoded.role === "admin") {
                 router.push('/management')
             }else{
-                router.push('/management/'+ decoded.sub )
+                router.push('/userManagement' )
             }
            
         }

@@ -177,5 +177,4 @@ const DynamicNavBar = () => {
   };
   return <>{selectNavBar(role)}</>;
 };
-
 export default DynamicNavBar;

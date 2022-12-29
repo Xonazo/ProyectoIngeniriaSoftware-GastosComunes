@@ -65,7 +65,7 @@ const usuario = (data) => {
     }
     setTimeout(() => {
       setIsLoading(false);
-      Router.reload();
+      router.reload();
     }, 2000)
   };
 

@@ -7,15 +7,18 @@ import {
   Icon,
   Center,
   Heading,
+  Flex,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import axios from "axios";
 import Cookies from "js-cookie";
 import jwt from "jsonwebtoken";
 // Iconos importados
-import { FaUserFriends, FaUserPlus} from "react-icons/fa";
-import { AiFillDollarCircle } from "react-icons/ai";
-import { TbReceiptOff } from "react-icons/tb";
+import { FaUserFriends, FaUserPlus } from "react-icons/fa";
+import { FaUserClock, FaUserTimes } from "react-icons/fa";
+import { IoWallet } from "react-icons/io5";
+import { MdLibraryBooks } from "react-icons/md";
+
 import { useEffect, useState } from "react";
 
 const simpleGrid = () => {
@@ -24,25 +27,21 @@ const simpleGrid = () => {
   const logout = async () => {
     await axios.get(`${process.env.API_URL}/logout`);
     Cookies.remove("token");
-  }
+  };
   return (
     <>
       <DynamicNavBar/>
-      <Container bg={"#D6E4E5"} margin=" 2rem auto" borderRadius='1rem'>
-        <Heading 
-        textAlign="center" 
-        p={'1rem'}
-        textTransform={"uppercase"}
-        fontFamily='sans-serif'
-        letterSpacing={'3px'}
+      <Container bg={"#D6E4E5"} margin=" 2rem auto" borderRadius="1rem">
+        <Heading
+          textAlign="center"
+          p={"1rem"}
+          textTransform={"uppercase"}
+          fontFamily="sans-serif"
+          letterSpacing={"3px"}
         >
           Administracion
         </Heading>
-        <SimpleGrid 
-        columns={[2, null, 3]} 
-        spacing="40px" 
-        p={"2rem"}
-        >
+        <SimpleGrid columns={[2, null, 3]} spacing="40px" p={"2rem"}>
           <Button
             display={"flex"}
             flexDirection="column"
@@ -87,11 +86,26 @@ const simpleGrid = () => {
               bg: "teal",
               color: "white",
             }}
-            
           >
-            <Icon as={AiFillDollarCircle} boxSize={90}/>
+            <Icon as={MdLibraryBooks} boxSize={90} />
             <Text textTransform={"uppercase"} fontSize={"xl"}>
-              Pagos
+              Historial
+            </Text>
+          </Button>
+          <Button
+            display={"flex"}
+            flexDirection="column"
+            height={"max-content"}
+            maxWidth="max-content"
+            p={"2rem"}
+            _hover={{
+              bg: "teal",
+              color: "white",
+            }}
+          >
+            <Icon as={FaUserClock} boxSize={90} />
+            <Text textTransform={"uppercase"} fontSize={"xl"}>
+              Por confirmar
             </Text>
           </Button>
           <Button
@@ -106,9 +120,26 @@ const simpleGrid = () => {
             }}
             onClick={() => router.push("/pagosPendientes")}
           >
-            <Icon as={TbReceiptOff} boxSize={90}/>
+            <Icon as={FaUserTimes} boxSize={90} />
             <Text textTransform={"uppercase"} fontSize={"xl"}>
               Pendientes
+            </Text>
+          </Button>
+          <Button
+            display={"flex"}
+            flexDirection="column"
+            height={"max-content"}
+            maxWidth="max-content"
+            p={"2rem"}
+            _hover={{
+              bg: "teal",
+              color: "white",
+            }}
+            onClick={() => router.push("/verDeudas")}
+          >
+            <Icon as={IoWallet} boxSize={90} />
+            <Text textTransform={"uppercase"} fontSize={"xl"}>
+              Deudas
             </Text>
           </Button>
         </SimpleGrid>
@@ -116,6 +147,5 @@ const simpleGrid = () => {
     </>
   );
 };
-
 
 export default simpleGrid;
