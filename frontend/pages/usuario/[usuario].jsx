@@ -174,7 +174,11 @@ const usuario = (data) => {
 
               <FormControl mt={4}>
                 <FormLabel fontWeight={'bold'}>Nº Vivienda</FormLabel>
-                <Text> {user.data.numeroVivienda}</Text>
+                <Input size={'lg'} name="numeroVivienda" onChange={onChange} defaultValue={user.data.numeroVivienda}></Input>
+              </FormControl>
+              <FormControl mt={4}>
+                <FormLabel fontWeight={'bold'}>Nº Personas</FormLabel>
+                <Input size={'lg'} name="personasConvive" onChange={onChange} defaultValue={user.data.personasConvive}></Input>
               </FormControl>
             </ModalBody>
 

@@ -16,6 +16,8 @@ import {
 } from "@chakra-ui/react";
 import { AiFillNotification, AiFillExclamationCircle } from "react-icons/ai";
 import Swal from "sweetalert2";
+import Cookies from "js-cookie";
+import jwt from "jsonwebtoken";
 
 const UsersNoPay = () => {
   const router = useRouter();
@@ -29,6 +31,24 @@ const UsersNoPay = () => {
     const response = await axios.get(`${process.env.API_URL}/getUsersNoPay`);
     setUsers(response.data);
   };
+    //COLOCAR EN PAGINAS DE ADMINS
+    const comprobacion = () => {
+      const token = Cookies.get("token")
+      if (token) {
+        const decoded = jwt.decode(token, process.env.SECRET_KEY)
+        if (decoded.role === "admin") {
+         // router.push("/management");
+        }
+        if (decoded.role === "user") {
+          router.push("/userManagement");
+        }
+      } else {
+        router.push("/");
+      }
+    }
+    useEffect(() => {
+      comprobacion()
+    }, [])
 
   const showUsers = () => {
     return users.map((usuario, index) => {

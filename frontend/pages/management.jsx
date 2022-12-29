@@ -21,7 +21,29 @@ import { MdLibraryBooks } from "react-icons/md";
 
 import { useEffect, useState } from "react";
 
+
+
 const simpleGrid = () => {
+
+  //COLOCAR EN PAGINAS DE ADMINS
+  const comprobacion = () => {
+    const token = Cookies.get("token")
+    if (token) {
+      const decoded = jwt.decode(token, process.env.SECRET_KEY)
+      if (decoded.role === "admin") {
+       // router.push("/management");
+      }
+      if (decoded.role === "user") {
+        router.push("/userManagement");
+      }
+    } else {
+      router.push("/");
+    }
+  }
+  useEffect(() => {
+    comprobacion()
+  }, [])
+
   const router = useRouter();
   // Funcion para cerrar sesion
   const logout = async () => {
@@ -30,7 +52,7 @@ const simpleGrid = () => {
   };
   return (
     <>
-      <DynamicNavBar/>
+      <DynamicNavBar />
       <Container bg={"#D6E4E5"} margin=" 2rem auto" borderRadius="1rem">
         <Heading
           textAlign="center"
@@ -86,13 +108,17 @@ const simpleGrid = () => {
               bg: "teal",
               color: "white",
             }}
+            onClick={() => router.push("/verRegistro")}
+
           >
+
             <Icon as={MdLibraryBooks} boxSize={90} />
             <Text textTransform={"uppercase"} fontSize={"xl"}>
               Historial
             </Text>
           </Button>
           <Button
+
             display={"flex"}
             flexDirection="column"
             height={"max-content"}
@@ -101,7 +127,10 @@ const simpleGrid = () => {
             _hover={{
               bg: "teal",
               color: "white",
+
             }}
+
+
           >
             <Icon as={FaUserClock} boxSize={90} />
             <Text textTransform={"uppercase"} fontSize={"xl"}>

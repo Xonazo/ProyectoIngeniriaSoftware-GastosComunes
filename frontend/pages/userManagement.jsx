@@ -1,6 +1,4 @@
 import DynamicNavBar from "../components/DynamicNavBar";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
 
 // Componentes CHAKRA UI
 import {
@@ -22,20 +20,47 @@ import { FaRegIdCard } from "react-icons/fa";
 import Cookie from "js-cookie";
 import jwt from "jsonwebtoken";
 import axios from "axios";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+
 
 const Management = () => {
   const router = useRouter();
-  const token = Cookie.get("token");
-  const decoded = jwt.decode(token, process.env.SECRET_KEY);
-  const id = decoded.sub;
 
   const [user, setUser] = useState([]);
 
+  //SOLO COLOCAR EN PAGINAS DE USERS
+  const comprobacion = () => {
+    const token = Cookie.get("token")
+    if (token) {
+      const decoded = jwt.decode(token, process.env.SECRET_KEY)
+      if (decoded.role === "user") {
+        router.push("/userManagement");
+      }
+      // if (decoded.role === "admin") {
+      //   router.push("/management");
+      // }
+    } else {
+      router.push("/");
+    }
+  }
+  useEffect(() => {
+    comprobacion()
+  }, [])
+
+
+
   const getUser = async () => {
-    const response = await axios.get(
-      `${process.env.API_URL}/findOneUser/${id}`
-    );
-    setUser(response.data);
+    const token = Cookie.get("token");
+    if (token) {
+      const decoded = jwt.decode(token, process.env.SECRET_KEY);
+      const id = decoded.sub;
+
+      const response = await axios.get(
+        `${process.env.API_URL}/findOneUser/${id}`
+      );
+      setUser(response.data);
+    }
   };
 
   useEffect(() => {
@@ -104,6 +129,8 @@ const Management = () => {
             height={"max-content"}
             maxWidth="max-content"
             p={"2rem"}
+            onClick={() => router.push(`/registroUser`)}
+
             _hover={{
               bg: "teal",
               color: "white",

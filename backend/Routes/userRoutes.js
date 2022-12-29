@@ -10,6 +10,7 @@ api.put('/updateUser/:id',userController.updateUser);
 api.delete('/deleteUser/:id',userController.deleteUser);
 api.get('/findOneUser/:id',userController.getOneUser);
 api.get('/getAll/:id',userController.getAll);
+api.delete('/deleteCascade/:id',userController.deleteCascade);
 
 api.post('/user/login',userController.login);
 api.get('/checkToken',auth.auth, userController.checkToken);

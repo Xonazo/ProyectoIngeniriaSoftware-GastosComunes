@@ -26,7 +26,7 @@ const LoginButton = () => {
 
   const [user, setUser] = useState({
     correo: "",
-    role:""
+    role: ""
   });
 
   const handleChange = (e) => {
@@ -36,31 +36,48 @@ const LoginButton = () => {
     });
   };
 
+  //COMPROBACION PARA QUE LA PAGINA NO VUELVA AL INICO
+  const comprobacion = () => {
+    const token = Cookie.get("token")
+    if (token) {
+      const decoded = jwt.decode(token, process.env.SECRET_KEY)
+      if (decoded.role === "admin") {
+        router.push("/management");
+      }else{
+        router.push("/");
+      }
+    }
+  }
+
+  useEffect(() => {
+    comprobacion()
+  }, [])
+
   const onSubmit = async (e) => {
     e.preventDefault()
     try {
-        const response = await login(user.correo)
-        
-        if (response.status === 200) {
-            Cookie.set('token', response.data.token, { expires: 1 })
-            const token = Cookie.get("token");
-            const decoded = jwt.decode(token, process.env.SECRET_KEY);
-            // console.log(decoded)
-            if (decoded.role === "admin") {
-                router.push('/management')
-            }else{
-                router.push('/userManagement' )
-            }
-           
+      const response = await login(user.correo)
+
+      if (response.status === 200) {
+        Cookie.set('token', response.data.token, { expires: 1 })
+        const token = Cookie.get("token");
+        const decoded = jwt.decode(token, process.env.SECRET_KEY);
+        // console.log(decoded)
+        if (decoded.role === "admin") {
+          router.push('/management')
+        } else {
+          router.push('/userManagement')
         }
+
+      }
     } catch (error) {
-        return Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'Algo salio mal!',
-        })
+      return Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Algo salio mal!',
+      })
     }
-}
+  }
 
   const OverlayOne = () => {
     <ModalOverlay
@@ -107,7 +124,7 @@ const LoginButton = () => {
               </Text>
 
               <Stack>
-                <Input onChange={handleChange} type={"email"} placeholder="Ingresa tu email." name='correo'/>
+                <Input onChange={handleChange} type={"email"} placeholder="Ingresa tu email." name='correo' />
               </Stack>
 
               <Stack justify="center" color="gray.600" spacing="3">

@@ -19,7 +19,7 @@ import {
 // Iconos importados
 import { AiFillNotification, AiFillExclamationCircle } from "react-icons/ai";
 import { FaTrash } from "react-icons/fa";
-
+import jwt from "jsonwebtoken";
 export default function VerUsuarios() {
   const router = useRouter();
   const [users, setUsers] = useState([]);
@@ -33,7 +33,23 @@ export default function VerUsuarios() {
       getUsers();
     }
   }, []);
-
+  const comprobacion = () => {
+    const token = cookie.get("token")
+    if (token) {
+      const decoded = jwt.decode(token, process.env.SECRET_KEY)
+      if (decoded.role === "admin") {
+        //router.push("/management");
+      }
+      if (decoded.role === "user") {
+        router.push("/userManagement");
+      }
+    } else {
+      router.push("/");
+    }
+  }
+  useEffect(() => {
+    comprobacion()
+  }, [])
   const getUsers = async () => {
     // Obtencion de los usuarios de la base de datos.
     const response = await axios.get(`${process.env.API_URL}/buscarUser`);
@@ -157,7 +173,7 @@ export default function VerUsuarios() {
   //Eliminacion del usuario(id).
   const deletUser = async (id) => {
     const response = await axios.delete(
-      `${process.env.API_URL}/deleteUser/` + id
+      `${process.env.API_URL}/deleteCascade/` + id
     );
     getUsers();
   };

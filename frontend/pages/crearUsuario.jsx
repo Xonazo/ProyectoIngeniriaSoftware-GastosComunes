@@ -7,7 +7,7 @@ import Swal from "sweetalert2"
 //Importamos axios.
 import axios from "axios";
 // Importamos React Hooks.
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { useRouter } from "next/router";
 // Importamos los componentes utilizados de Chakra UI.
 import {
@@ -35,7 +35,8 @@ import {
   MdFingerprint,
   MdPanTool,
 } from "react-icons/md";
-
+import Cookie from "js-cookie";
+import jwt from "jsonwebtoken";
 export default function CreateUser() {
   const router = useRouter();
   const [values, setValues] = useState({
@@ -88,6 +89,25 @@ export default function CreateUser() {
       [e.target.name]: e.target.value,
     });
   };
+
+  //SOLOADMIS
+  const comprobacion = () => {
+    const token = Cookie.get("token")
+    if (token) {
+      const decoded = jwt.decode(token, process.env.SECRET_KEY)
+      if (decoded.role === "admin") {
+        //router.push("/management");
+      }
+      if (decoded.role === "user") {
+        router.push("/userManagement");
+      }
+    } else {
+      router.push("/");
+    }
+  }
+  useEffect(() => {
+    comprobacion()
+  }, [])
 
   return (
     <>
