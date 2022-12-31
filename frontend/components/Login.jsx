@@ -71,6 +71,7 @@ const LoginButton = () => {
 
       }
     } catch (error) {
+      onClose()
       return Swal.fire({
         icon: 'error',
         title: 'Oops...',

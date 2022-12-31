@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import DynamicNavBar from "../../components/DynamicNavBar";
 import axios from "axios";
@@ -20,10 +20,13 @@ import {
   FormLabel,
   Input,
   useDisclosure,
+  Flex,
 } from "@chakra-ui/react";
+import Cookie from "js-cookie";
+import jwt from "jsonwebtoken";
 
 export async function getServerSideProps(context) {
-  console.log("URL DE QUERY>>>>>" + context.params.usuario);
+  // console.log("URL DE QUERY>>>>>" + context.params.usuario);
   try {
     const response = await axios.get(
       `${process.env.API_URL}/findOneUser/${context.params.usuario}`
@@ -41,6 +44,9 @@ export async function getServerSideProps(context) {
     };
   }
 }
+
+
+
 
 const usuario = (data) => {
   const router = useRouter();
@@ -66,7 +72,7 @@ const usuario = (data) => {
     setTimeout(() => {
       setIsLoading(false);
       router.reload();
-    }, 2000)
+    }, 2000);
   };
 
   const onChange = (e) => {
@@ -76,27 +82,20 @@ const usuario = (data) => {
     });
   };
 
-  const selectRole = (rol) => {
-    switch (rol) {
-      case "admin":
-        return (
-          <>
-            <option>user</option>
-            <option selected>admin</option>
-          </>
-        );
-        break;
+    //SOLOADMIS
+    const comprobacion = () => {
+      const token = Cookie.get("token");
+      if (!token) { 
+        router.push('/')
+      } 
+    };
 
-      case "user":
-        return (
-          <>
-            <option selected>user</option>
-            <option>admin</option>
-          </>
-        );
-        break;
+  useEffect(() => {
+    if (!user.data) {
+      router.push(`/usuario/${usuario._id}`,`/usuario`)
     }
-  };
+    comprobacion();
+  },[])
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -141,59 +140,109 @@ const usuario = (data) => {
           <span style={{ fontWeight: "bold" }}>Convivientes: </span>
           {user.data.personasConvive}
         </Text>
-        <Box align="center">
-          <Button onClick={onOpen} colorScheme="teal" size={"lg"}>
-            Editar
-          </Button>
-        </Box>
-        <Modal
-          size="2xl"
-          isCentered
-          isOpen={isOpen}
-          onClose={onClose}
-        >
+        <Modal size="2xl" isCentered isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
           <ModalContent>
             <ModalHeader>Editar información</ModalHeader>
             <ModalCloseButton />
             <ModalBody pb={6}>
               <FormControl>
-                <FormLabel fontWeight={'bold'}>Nombre</FormLabel>
-                <Input size={'lg'} name={"name"} onChange={onChange} defaultValue={user.data.name}></Input>
+                <FormLabel fontWeight={"bold"}>Nombre</FormLabel>
+                <Input
+                  size={"lg"}
+                  name={"name"}
+                  onChange={onChange}
+                  defaultValue={user.data.name}
+                ></Input>
               </FormControl>
 
               <FormControl mt={4}>
-                <FormLabel fontWeight={'bold'}>Rut</FormLabel>
-                <Input size={'lg'} name="rut" onChange={onChange} defaultValue={user.data.rut}></Input>
+                <FormLabel fontWeight={"bold"}>Rut</FormLabel>
+                <Input
+                  size={"lg"}
+                  name="rut"
+                  onChange={onChange}
+                  defaultValue={user.data.rut}
+                ></Input>
               </FormControl>
 
               <FormControl mt={4}>
-                <FormLabel fontWeight={'bold'}>Correo</FormLabel>
-                <Input size={'lg'} name="correo" onChange={onChange} defaultValue={user.data.correo}></Input>
+                <FormLabel fontWeight={"bold"}>Correo</FormLabel>
+                <Input
+                  size={"lg"}
+                  name="correo"
+                  onChange={onChange}
+                  defaultValue={user.data.correo}
+                ></Input>
               </FormControl>
 
               <FormControl mt={4}>
-                <FormLabel fontWeight={'bold'}>Nº Vivienda</FormLabel>
-                <Input size={'lg'} name="numeroVivienda" onChange={onChange} defaultValue={user.data.numeroVivienda}></Input>
+                <FormLabel fontWeight={"bold"}>Nº Vivienda</FormLabel>
+                <Input
+                  size={"lg"}
+                  name="numeroVivienda"
+                  onChange={onChange}
+                  defaultValue={user.data.numeroVivienda}
+                ></Input>
               </FormControl>
               <FormControl mt={4}>
-                <FormLabel fontWeight={'bold'}>Nº Personas</FormLabel>
-                <Input size={'lg'} name="personasConvive" onChange={onChange} defaultValue={user.data.personasConvive}></Input>
+                <FormLabel fontWeight={"bold"}>Nº Personas</FormLabel>
+                <Input
+                  size={"lg"}
+                  name="personasConvive"
+                  onChange={onChange}
+                  defaultValue={user.data.personasConvive}
+                ></Input>
               </FormControl>
             </ModalBody>
 
             <ModalFooter justifyContent={"center"}>
-              <Button size={'lg'} colorScheme="teal" mr={3} type='submit' onClick={onSubmit} isLoading={isLoading}>
+              <Button
+                size={"lg"}
+                colorScheme="teal"
+                mr={3}
+                type="submit"
+                onClick={onSubmit}
+                isLoading={isLoading}
+              >
                 Guardar
               </Button>
-              <Button size={'lg'} onClick={onClose}>Cancelar</Button>
+              <Button size={"lg"} onClick={onClose}>
+                Cancelar
+              </Button>
             </ModalFooter>
           </ModalContent>
         </Modal>
+
+        <Flex
+          justifyContent={"center"}
+          flexDirection={{ base: "column", md: "row" }}
+          alignItems={"center"}
+          gap="1rem"
+          marginBlock={"1.5rem"}
+        >
+          <Button
+            colorScheme="teal"
+            height={{ base: "5rem", md: "5rem" }}
+            width={{ base: "100%", md: "35%" }}
+            fontSize="2xl"
+            onClick={onOpen}
+          >
+            Editar
+          </Button>
+          <Button
+            colorScheme={"messenger"}
+            height={{ base: "5rem", md: "5rem" }}
+            width={{ base: "100%", md: "35%" }}
+            fontSize="2xl"
+            onClick={() => router.back()}
+          >
+            Volver
+          </Button>
+        </Flex>
       </Container>
     </>
   );
 };
-
 
 export default usuario;

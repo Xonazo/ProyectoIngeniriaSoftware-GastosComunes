@@ -14,10 +14,14 @@ import {
   Tbody,
   Button,
   Label,
+  Flex,
+  Avatar,
+  TableContainer,
+  Center,
 } from "@chakra-ui/react";
 
 // Iconos importados
-import { AiFillNotification, AiFillExclamationCircle } from "react-icons/ai";
+import { AiFillExclamationCircle } from "react-icons/ai";
 import { FaTrash } from "react-icons/fa";
 import jwt from "jsonwebtoken";
 export default function VerUsuarios() {
@@ -34,9 +38,9 @@ export default function VerUsuarios() {
     }
   }, []);
   const comprobacion = () => {
-    const token = cookie.get("token")
+    const token = cookie.get("token");
     if (token) {
-      const decoded = jwt.decode(token, process.env.SECRET_KEY)
+      const decoded = jwt.decode(token, process.env.SECRET_KEY);
       if (decoded.role === "admin") {
         //router.push("/management");
       }
@@ -46,10 +50,10 @@ export default function VerUsuarios() {
     } else {
       router.push("/");
     }
-  }
+  };
   useEffect(() => {
-    comprobacion()
-  }, [])
+    comprobacion();
+  }, []);
   const getUsers = async () => {
     // Obtencion de los usuarios de la base de datos.
     const response = await axios.get(`${process.env.API_URL}/buscarUser`);
@@ -59,6 +63,9 @@ export default function VerUsuarios() {
   // Funcion para mostrar los usuarios obtenidos de la base de datos.
   const showUsers = () => {
     return users.map((usuario, index) => {
+      if (usuario.role === "admin") {
+        return
+      }
       return (
         <Tr
           key={usuario._id}
@@ -67,29 +74,32 @@ export default function VerUsuarios() {
           }}
         >
           {/* Se muestra el nombre de usuario */}
-          <Td>{usuario.name}</Td>
+          <Td>
+            <Flex alignItems={"center"} justifyContent="center" gap={3}>
+              <Avatar
+                borderRadius={"50%"}
+                borderColor="black"
+                borderWidth="1px"
+                bg={"#D6E4E5"}
+                src={`https://robohash.org/${usuario._id}`}
+              />
+              <span>{usuario.name}</span>
+            </Flex>
+          </Td>
           {/* Se muestra el numero de vivienda de usuario */}
-          <Td>{usuario.numeroVivienda}</Td>
+          <Td textAlign={"center"}>{usuario.numeroVivienda}</Td>
           {/* Acciones en el usuario. */}
-          <Td display={"flex"} justifyContent="space-around">
-            {/* <Button
-              title="Notificar"
-              bg={"#b9d1d3"}
-              as={AiFillNotification}
-              boxSize="35"
-              cursor={"pointer"}
-              onClick={() => notifyUser(usuario._id)}
-              _hover={{
-                bg: "#4ea39a",
-                color: "white",
-              }}
-            >
-            </Button> */}
+          <Td
+            textAlign="center"
+            display={"flex"}
+            justifyContent="center"
+            gap={{ base: "1rem" }}
+          >
             <Button
               title="Más informacion"
               bg={"#b9d1d3"}
               as={AiFillExclamationCircle}
-              boxSize={"35"}
+              boxSize={{ base: "50", md: "35" }}
               onClick={() => router.push(`/usuario/${usuario._id}`)}
               _hover={{
                 bg: "#4ea39a",
@@ -97,13 +107,13 @@ export default function VerUsuarios() {
               }}
             />
             <Button
-              title="Eliminar"
+              title="Eliminar usuario"
               bg={"#b9d1d3"}
               as={FaTrash}
-              boxSize={"35"}
+              boxSize={{ base: "50", md: "35" }}
               onClick={() => deletUserConfirmation(usuario._id)}
               _hover={{
-                bg: "#4ea39a",
+                bg: "#8E1113",
                 color: "white",
               }}
             />
@@ -112,40 +122,6 @@ export default function VerUsuarios() {
       );
     });
   };
-
-  // Funcion para notificar al usuario.
-  // const notifyUser = async (id) => {
-  //   try {
-  //     const response = await axios.get(
-  //       `${process.env.API_URL}/notifyUser/` + id
-  //     );
-  //     console.log(response);
-  //     if (response.status === 200) {
-  //       Swal.fire({
-  //         title: "Usuario notificado",
-  //         text: "El usuario ha sido notificado",
-  //         icon: "success",
-  //         confirmButtonText: "Ok",
-  //       }).then((result) => {
-  //         // router.push('/verUsuarios')
-  //       });
-  //     } else {
-  //       Swal.fire({
-  //         title: "Error",
-  //         text: "Ha ocurrido un error",
-  //         icon: "error",
-  //         confirmButtonText: "Ok",
-  //       });
-  //     }
-  //   } catch (error) {
-  //     Swal.fire({
-  //       title: "Error",
-  //       text: "Ha ocurrido un error",
-  //       icon: "error",
-  //       confirmButtonText: "Ok",
-  //     });
-  //   }
-  // };
 
   // Funcion para confimar la eliminacion del usuario(id).
   const deletUserConfirmation = (id) => {
@@ -194,16 +170,29 @@ export default function VerUsuarios() {
         >
           USUARIOS
         </Heading>
-        <Table variant={"unstyled"}>
-          <Thead bg={"#b9d1d3"}>
-            <Tr fontWeight={"bold"}>
-              <Td>Nombre</Td>
-              <Td>Nº Vivienda</Td>
-              <Td textAlign="center">Accion</Td>
-            </Tr>
-          </Thead>
-          <Tbody bg={"#dae9ea"}>{showUsers()}</Tbody>
-        </Table>
+        <TableContainer>
+          <Table variant={"unstyled"}>
+            <Thead bg={"#b9d1d3"}>
+              <Tr fontWeight={"bold"}>
+                <Td textAlign={"center"}>Nombre</Td>
+                <Td textAlign={"center"}>Nº Vivienda</Td>
+                <Td textAlign="center">Accion</Td>
+              </Tr>
+            </Thead>
+            <Tbody bg={"#dae9ea"}>{showUsers()}</Tbody>
+          </Table>
+        </TableContainer>
+        <Center my={"10"}>
+          <Button
+            colorScheme={"messenger"}
+            height={{ base: "5rem", md: "5rem" }}
+            width={{ base: "100%", md: "35%" }}
+            fontSize="2xl"
+            onClick={() => router.back()}
+          >
+            Volver
+          </Button>
+        </Center>
       </Container>
     </>
   );

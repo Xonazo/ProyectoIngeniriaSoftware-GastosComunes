@@ -8,6 +8,8 @@ import {
   Center,
   Heading,
   Flex,
+  Image,
+  
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import axios from "axios";
@@ -21,17 +23,14 @@ import { MdLibraryBooks } from "react-icons/md";
 
 import { useEffect, useState } from "react";
 
-
-
 const simpleGrid = () => {
-
   //COLOCAR EN PAGINAS DE ADMINS
   const comprobacion = () => {
-    const token = Cookies.get("token")
+    const token = Cookies.get("token");
     if (token) {
-      const decoded = jwt.decode(token, process.env.SECRET_KEY)
+      const decoded = jwt.decode(token, process.env.SECRET_KEY);
       if (decoded.role === "admin") {
-       // router.push("/management");
+        // router.push("/management");
       }
       if (decoded.role === "user") {
         router.push("/userManagement");
@@ -39,10 +38,29 @@ const simpleGrid = () => {
     } else {
       router.push("/");
     }
-  }
+  };
   useEffect(() => {
-    comprobacion()
-  }, [])
+    comprobacion();
+  }, []);
+
+  const [user, setUser] = useState([]);
+
+  const getUser = async () => {
+    const token = Cookies.get("token");
+    if (token) {
+      const decoded = jwt.decode(token, process.env.SECRET_KEY);
+      const id = decoded.sub;
+
+      const response = await axios.get(
+        `${process.env.API_URL}/findOneUser/${id}`
+      );
+      setUser(response.data);
+    }
+  };
+
+  useEffect(() => {
+    getUser();
+  }, []);
 
   const router = useRouter();
   // Funcion para cerrar sesion
@@ -53,16 +71,42 @@ const simpleGrid = () => {
   return (
     <>
       <DynamicNavBar />
-      <Container bg={"#D6E4E5"} margin=" 2rem auto" borderRadius="1rem">
+      <Container
+        bg={"#D6E4E5"}
+        margin=" 3rem auto"
+        p={"3rem"}
+        borderRadius="0.9rem"
+      >
         <Heading
-          textAlign="center"
-          p={"1rem"}
+          size="xl"
           textTransform={"uppercase"}
-          fontFamily="sans-serif"
-          letterSpacing={"3px"}
+          textAlign="center"
+          marginBottom={"0.5rem"}
         >
-          Administracion
+          Bienvenido
         </Heading>
+        <Heading
+          size="2xl"
+          textTransform={"uppercase"}
+          textAlign="center"
+          marginBottom={"2rem"}
+        >
+          {user.name}
+        </Heading>
+        <Center>
+          <Image
+            bgColor={"white"}
+            borderRadius={"full"}
+            boxSize="150px"
+            src={`https://robohash.org/${user._id}`}
+            alt="imagen de usuario"
+            marginBottom={"2rem"}
+          />
+        </Center>
+        <Center>
+          <Heading size="lg">¿Qué buscas hoy?</Heading>
+        </Center>
+
         <SimpleGrid columns={[2, null, 3]} spacing="40px" p={"2rem"}>
           <Button
             display={"flex"}
@@ -109,28 +153,23 @@ const simpleGrid = () => {
               color: "white",
             }}
             onClick={() => router.push("/verRegistro")}
-
           >
-
             <Icon as={MdLibraryBooks} boxSize={90} />
             <Text textTransform={"uppercase"} fontSize={"xl"}>
               Historial
             </Text>
           </Button>
           <Button
-
             display={"flex"}
             flexDirection="column"
             height={"max-content"}
             maxWidth="max-content"
             p={"2rem"}
+            onClick={() => router.push("/verImagenes")}
             _hover={{
               bg: "teal",
               color: "white",
-
             }}
-
-
           >
             <Icon as={FaUserClock} boxSize={90} />
             <Text textTransform={"uppercase"} fontSize={"xl"}>
@@ -151,7 +190,7 @@ const simpleGrid = () => {
           >
             <Icon as={FaUserTimes} boxSize={90} />
             <Text textTransform={"uppercase"} fontSize={"xl"}>
-              Pendientes
+              Sin pagar
             </Text>
           </Button>
           <Button

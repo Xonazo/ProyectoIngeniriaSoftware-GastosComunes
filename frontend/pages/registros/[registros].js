@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import Router, { useRouter } from "next/router";
-import NavBar from "../../components/NavBar";
+import DynamicNavBar from "../../components/DynamicNavBar";
 import axios from "axios";
 import {
   Button,
@@ -46,6 +46,17 @@ const registros = (data) => {
   const [registros] = useState(data);
   console.log(registros);
 
+
+  // Para mostrar correctamente la fecha.
+  const fecha = new Date(registros.data.fechaRegistro);
+  const fechaFormateada = fecha.toLocaleDateString("es-ES", {
+    day: "numeric",
+    month: "numeric",
+    year: "numeric",
+  });
+  const fechaSplit = fechaFormateada.split("T");
+
+
   const [updates, setUpdates] = useState();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -75,13 +86,11 @@ const registros = (data) => {
     });
   };
 
-
   const { isOpen, onOpen, onClose } = useDisclosure();
-
 
   return (
     <>
-      <NavBar />
+      <DynamicNavBar/>
       <Container
         bg={"#D6E4E5"}
         margin=" 3rem auto"
@@ -98,7 +107,7 @@ const registros = (data) => {
 
         <Text>
           <span style={{ fontWeight: "bold" }}>Fecha del Registro: </span>
-          {registros.data.fechaRegistro}
+          {fechaSplit[0]}
         </Text>
         <Text>
           <span style={{ fontWeight: "bold" }}>Cantidad del pago: </span>
@@ -112,7 +121,7 @@ const registros = (data) => {
           <Button onClick={onOpen} colorScheme="teal" size={"lg"}>
             Editar
           </Button>
-          <Button onClick={() => router.push(`/VerRegistros/`)} colorScheme="teal" size={"lg"} marginLeft="20">
+          <Button onClick={() => router.push(`/verRegistro/`)} colorScheme="teal" size={"lg"} marginLeft="20">
             Ver registros
           </Button>
         </Box>

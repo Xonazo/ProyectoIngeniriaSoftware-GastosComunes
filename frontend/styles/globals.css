@@ -2,12 +2,14 @@
 html {
   font-size: 62.5%;
   box-sizing: border-box; /* Hack para Box Model **/
+  
 }
 *, *:before, *:after {
   box-sizing: inherit;
 }
 body {
   font-size: 16px;
+  
    /* 1rem = 10px */
 } 
 /* Utilidades */
@@ -31,15 +33,9 @@ body {
     color-scheme: dark;
   }
   body {
-    color: white;
-    background: black;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('/xd2.webp')!important;
+    background-size: cover!important;
   }
 }
 
-/* .bg-color{
-  background-image: url('/condominiosHome.jpg');
-  background-repeat: no-repeat;
-  background-size: cover;
-  height: 100vh;
-} */
 

@@ -9,16 +9,21 @@ import {
   Td,
   Heading,
   Stack,
-
+  Center,
+  TableContainer,
+  Flex,
+  Avatar,
 } from "@chakra-ui/react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { useRouter } from "next/router";
-import { BsTrashFill } from "react-icons/bs";
-import { BsPencilSquare } from "react-icons/bs";
 import DynamicNavBar from "../components/DynamicNavBar";
 import Cookie from "js-cookie";
 import jwt from "jsonwebtoken";
+// Iconos importados
+import { BsTrashFill } from "react-icons/bs";
+import { RiAddCircleFill, RiDeleteBack2Fill } from "react-icons/ri";
+
 
 const ViewDeudas = () => {
   const router = useRouter();
@@ -28,12 +33,11 @@ const ViewDeudas = () => {
     getDeudas();
   }, []);
 
-
   //COLOCAR EN PAGINAS DE ADMINS
   const comprobacion = () => {
-    const token = Cookie.get("token")
+    const token = Cookie.get("token");
     if (token) {
-      const decoded = jwt.decode(token, process.env.SECRET_KEY)
+      const decoded = jwt.decode(token, process.env.SECRET_KEY);
       if (decoded.role === "admin") {
         router.push("/verDeudas");
       }
@@ -43,20 +47,18 @@ const ViewDeudas = () => {
     } else {
       router.push("/");
     }
-  }
+  };
   useEffect(() => {
-    comprobacion()
-  }, [])
+    comprobacion();
+  }, []);
 
-  
   const getDeudas = async () => {
     const response = await axios.get(`${process.env.API_URL}/buscarDeudas`);
-    console.log(response)
+    console.log(response);
     if (response.status === 200) {
-      setdeudas(response.data)
+      setdeudas(response.data);
     }
   };
-
 
   // Confirmar para eliminar Deuda.
   const deletedeudaConfirmation = (id) => {
@@ -111,9 +113,7 @@ const ViewDeudas = () => {
   };
   //Actualizar la Deuda por su id.
   const actualizarDeuda = async (id) => {
-    const response = await axios.put(
-      `${process.env.API_URL}/updateOne/` + id
-    );
+    const response = await axios.put(`${process.env.API_URL}/updateOne/` + id);
     getDeudas();
   };
 
@@ -146,8 +146,6 @@ const ViewDeudas = () => {
     getDeudas();
   };
 
-
-
   const showdeudas = () => {
     return deudas.map((usuario, index) => {
       return (
@@ -157,25 +155,37 @@ const ViewDeudas = () => {
             background: "rgb( 0 0 0 / 20% )",
           }}
         >
-          <Td textAlign="center">{usuario.idvecino.name}</Td>
-          <Td textAlign="center">{usuario.idvecino.rut}</Td>
-          <Td textAlign="center">{usuario.deuda}</Td>
-          <Td textAlign="center">{usuario.abono}</Td>
-          <Td textAlign="center" display={"flex"} justifyContent="space-around">
+          <Td>
+            <Flex alignItems={"center"} justifyContent="center" gap={3}>
+              <Avatar
+                borderRadius={"50%"}
+                borderColor="black"
+                borderWidth="1px"
+                bg={"#D6E4E5"}
+                src={`https://robohash.org/${usuario.idvecino._id}`}
+              />
+              <span>{usuario.idvecino.name}</span>
+            </Flex>
+          </Td>
+          <Td>{usuario.idvecino.rut}</Td>
+          <Td>{usuario.deuda}</Td>
+          <Td>{usuario.abono}</Td>
+          <Td display={"flex"} justifyContent="space-around" gap={"1rem"}>
             <Button
-              as={BsTrashFill}
+              title="Asignar deuda"
+              as={RiAddCircleFill}
               boxSize={"35"}
-              onClick={() => deletedeudaConfirmation(usuario._id)}
+              onClick={() => actualizardeudaConfirmation(usuario._id)}
               cursor={"pointer"}
               _hover={{
-                bg: "#8E1113",
+                bg: "green.400",
                 color: "white",
               }}
             />
             <Button
-              as={BsPencilSquare}
+              as={RiDeleteBack2Fill}
               boxSize={"35"}
-              onClick={() => actualizardeudaConfirmation(usuario._id)}
+              onClick={() => deletedeudaConfirmation(usuario._id)}
               cursor={"pointer"}
               _hover={{
                 bg: "#8E1113",
@@ -190,37 +200,45 @@ const ViewDeudas = () => {
   return (
     <>
       <DynamicNavBar />
-
-      <Container maxW="container.xl" centerContent>
-        <Heading textAlign="center" my={10}>
+      <Container
+        maxW={"fit-content"}
+        bg={"#D6E4E5"}
+        margin=" 3rem auto"
+        p={"3rem"}
+        borderRadius={"1rem"}
+      >
+        <Heading
+          textTransform={"uppercase"}
+          textAlign="center"
+          marginBottom={"1rem"}
+        >
           LISTA DE DEUDAS
         </Heading>
-        <Stack>
-          <Button onClick={() => actualizarTODASdeudaConfirmation()}
+        <TableContainer>
+          <Table variant="unstyled">
+            <Thead bg={"#b9d1d3"}>
+              <Tr fontWeight={"bold"}>
+                <Td textAlign={"center"}>Nombre</Td>
+                <Td textAlign={"center"}>Rut</Td>
+                <Td textAlign={"center"}>Deuda</Td>
+                <Td textAlign={"center"}>Abono</Td>
+                <Td textAlign={"center"}>Accion</Td>
+              </Tr>
+            </Thead>
+            <Tbody bg={"#dae9ea"}>{showdeudas()}</Tbody>
+          </Table>
+        </TableContainer>
+        <Center marginBlock={"1.5rem"}>
+          <Button
             colorScheme="teal"
-            size={"lg"}>
-            Actualizar todas las deudas
+            w="25rem"
+            h={"5rem"}
+            fontSize="2xl"
+            onClick={() => actualizarTODASdeudaConfirmation()}
+          >
+            Asignar deuda a todos
           </Button>
-        </Stack>
-        <Table variant={"simple"} my="10">
-          <Thead color="white">
-            <Tr
-              borderColor={"black"}
-              bg={"black"}
-              borderWidth="2px"
-              textTransform={"uppercase"}
-            >
-              <Td textAlign="center">Nombre</Td>
-              <Td textAlign="center">Rut</Td>
-              <Td textAlign="center">Deuda</Td>
-              <Td textAlign="center">Abono</Td>
-              <Td textAlign="center">Accion</Td>
-            </Tr>
-          </Thead>
-          <Tbody borderColor={"black"} borderWidth="2px">
-            {showdeudas()}
-          </Tbody>
-        </Table>
+        </Center>
       </Container>
     </>
   );

@@ -162,6 +162,7 @@ const DynamicNavBar = () => {
                   Inicio
                 </Link>
                 <Link
+                  onClick={() => router.push("/about")}
                   p="2.3rem"
                   _hover={{
                     background: "#4ea39a",

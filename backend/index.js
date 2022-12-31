@@ -10,6 +10,7 @@ const userRoutes = require('./Routes/userRoutes')
 const registroRoutes = require('./Routes/RegistroRoutes')
 const deudasRoutes = require('./Routes/deudasRoutes');
 const notifyRoutes = require('./Routes/notifyRoutes')
+const fileRoutes = require('./Routes/fileRoutes')
 
 app.use(cookieParser());
 app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
@@ -21,6 +22,7 @@ app.use('/api', userRoutes);
 app.use('/api', registroRoutes);
 app.use('/api', deudasRoutes);
 app.use('/api', notifyRoutes);
+app.use('/api', fileRoutes);
 
 
 

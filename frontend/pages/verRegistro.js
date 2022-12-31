@@ -16,6 +16,11 @@ import {
   Heading,
   CloseButton,
   Icon,
+  Center,
+  Flex,
+  TableContainer,
+  Avatar,
+  Box,
 } from "@chakra-ui/react";
 import axios from "axios";
 import Swal from "sweetalert2";
@@ -36,9 +41,9 @@ const verRegistros = () => {
   }, []);
 
   const comprobacion = () => {
-    const token = Cookie.get("token")
+    const token = Cookie.get("token");
     if (token) {
-      const decoded = jwt.decode(token, process.env.SECRET_KEY)
+      const decoded = jwt.decode(token, process.env.SECRET_KEY);
       if (decoded.role === "admin") {
         //router.push("/management");
       }
@@ -48,14 +53,15 @@ const verRegistros = () => {
     } else {
       router.push("/");
     }
-  }
+  };
   useEffect(() => {
-    comprobacion()
-  }, [])
-
+    comprobacion();
+  }, []);
 
   const getRegistros = async () => {
-    const response = await axios.get(`${process.env.API_URL}/BuscarRegistrosAll`);
+    const response = await axios.get(
+      `${process.env.API_URL}/BuscarRegistrosAll`
+    );
     setRegistros(response.data);
   };
 
@@ -91,13 +97,13 @@ const verRegistros = () => {
 
   const showRegistros = () => {
     return products.map((registros, index) => {
-        const fecha = new Date(registros.fechaRegistro)
-        const fechaFormateada = fecha.toLocaleDateString("es-ES", {
-          day: "numeric",
-          month: "numeric",
-          year: "numeric"
-        })
-        
+      const fecha = new Date(registros.fechaRegistro);
+      const fechaFormateada = fecha.toLocaleDateString("es-ES", {
+        day: "numeric",
+        month: "numeric",
+        year: "numeric",
+      });
+
       return (
         <Tr
           key={registros._id}
@@ -105,29 +111,47 @@ const verRegistros = () => {
             background: "rgb( 0 0 0 / 20% )",
           }}
         >
-          <Td textAlign="center">{registros.regidVecino.name}</Td>
+          <Td>
+            <Flex alignItems={"center"} justifyContent="center" gap={3}>
+              <Avatar
+                borderRadius={"50%"}
+                borderColor="black"
+                borderWidth="1px"
+                bg={"#D6E4E5"}
+                src={`https://robohash.org/${registros.regidVecino._id}`}
+              />
+              <spawn>{registros.regidVecino.name}</spawn>
+            </Flex>
+          </Td>
           <Td textAlign="center">{registros.regidVecino.rut}</Td>
           <Td textAlign="center">{fechaFormateada}</Td>
           <Td textAlign="center">{registros.cantidadPago}</Td>
           <Td textAlign="center">{registros.pago}</Td>
-          <Td textAlign="center" display={"flex"} justifyContent="space-around">
+          <Td
+            textAlign="center"
+            display={"flex"}
+            justifyContent="center"
+            gap={{ base: "1rem" }}
+          >
             <Button
-              as={BsTrashFill}
-              boxSize={"35"}
-              onClick={() => deletdeudaConfirmation(registros._id)}
+              bg={"#b9d1d3"}
+              as={VscAdd}
+              boxSize={{ base: "50", md: "35" }}
+              onClick={() => router.push(`/registros/${registros._id}`)}
               cursor={"pointer"}
               _hover={{
-                bg: "#8E1113",
+                bg: "#4ea39a",
                 color: "white",
               }}
             />
             <Button
-              as={VscAdd}
-              boxSize={`35`}
-              onClick={() => router.push(`/registros/${registros._id}`)}
+              bg={"#b9d1d3"}
+              as={BsTrashFill}
+              boxSize={{ base: "50", md: "35" }}
+              onClick={() => deletdeudaConfirmation(registros._id)}
               cursor={"pointer"}
               _hover={{
-                bg: "teal",
+                bg: "#8E1113",
                 color: "white",
               }}
             />
@@ -139,47 +163,71 @@ const verRegistros = () => {
   return (
     <>
       <DynamicNavBar />
-
-      <Container maxW="container.xl" centerContent>
-        <Heading textAlign="center" my={10}>
-          HISTORIAL DE REGISTROS
+      <Container
+        maxW="container.xl"
+        bg={"#D6E4E5"}
+        margin=" 3rem auto"
+        p={"3rem"}
+        borderRadius={"1rem"}
+      >
+        <Heading
+          textTransform={"uppercase"}
+          textAlign="center"
+          marginBottom={"1rem"}
+        >
+          Historial de registros
         </Heading>
-        <Stack>
+        <TableContainer>
+          <Table variant={"unstyled"}>
+            <Thead bg={"#b9d1d3"}>
+              <Tr fontWeight={"bold"}>
+                <Td textAlign="center">Nombre</Td>
+                <Td textAlign="center">Rut</Td>
+                <Td textAlign="center">Fecha del registro</Td>
+                <Td textAlign="center">Cantidad de pago</Td>
+                <Td textAlign="center">Tipo de pago</Td>
+                <Td textAlign="center">Accion</Td>
+              </Tr>
+            </Thead>
+            <Tbody bg={"#dae9ea"}>{showRegistros()}</Tbody>
+          </Table>
+        </TableContainer>
+        <Flex
+          justifyContent={"center"}
+          flexDirection={{ base: "column", md: "row" }}
+          alignItems={"center"}
+          gap="1rem"
+          marginBlock={"1.5rem"}
+        >
           <Button
             colorScheme={"teal"}
-            size="lg"
+            height={{ base: "5rem", md: "5rem" }}
+            width={{ base: "100%", md: "35%" }}
+            fontSize="2xl"
             onClick={() => router.push("/CrearRegistroPago")}
           >
-            Crear registros
+            Crear Registro
           </Button>
           <Button
             colorScheme={"teal"}
-            size="lg"
+            height={{ base: "5rem", md: "5rem" }}
+            width={{ base: "100%", md: "35%" }}
+            fontSize="2xl"
+
             onClick={() => router.push("/CrearRegistroAbono")}
           >
             Crear Abono
           </Button>
-        </Stack>
-        <Table variant={"simple"} my="10">
-          <Thead color="white">
-            <Tr
-              borderColor={"black"}
-              bg={"black"}
-              borderWidth="2px"
-              textTransform={"uppercase"}
-            >
-              <Td textAlign="center">Nomnbre</Td>
-              <Td textAlign="center">Rut</Td>
-              <Td textAlign="center">Fecha del registro</Td>
-              <Td textAlign="center">Cantidad de pago</Td>
-              <Td textAlign="center">Tipo de pago</Td>
-              <Td textAlign="center">Accion</Td>
-            </Tr>
-          </Thead>
-          <Tbody borderColor={"black"} borderWidth="2px">
-            {showRegistros()}
-          </Tbody>
-        </Table>
+          <Button
+            colorScheme={"messenger"}
+            height={{ base: "5rem", md: "5rem" }}
+            width={{ base: "100%", md: "35%" }}
+            fontSize="2xl"
+            onClick={() => router.back()}
+          >
+            Volver
+          </Button>
+        </Flex> 
       </Container>
     </>
   );

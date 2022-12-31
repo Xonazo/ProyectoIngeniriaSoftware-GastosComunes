@@ -113,6 +113,7 @@ const Management = () => {
             height={"max-content"}
             maxWidth="max-content"
             p={"2rem"}
+            onClick={() => router.push(`/subirImagen`)}
             _hover={{
               bg: "teal",
               color: "white",
