@@ -109,34 +109,23 @@ export default function CreateUser() {
   }, []);
 
   function formatRut(rut) {
-    // Eliminamos los puntos y el guión
     rut = rut.replace(/\./g, '').replace('-', '');
 
-    // Si el RUT es menor a 8 dígitos, no hacemos nada
     if (rut.length == 8) {
-      // Insertamos el punto después del tercer dígito
       var formattedRut = rut.substring(0, 1) + ".";
-
-      // Insertamos el punto después del sexto dígito
       formattedRut += rut.substring(1, 4) + ".";
-
-      // Agregamos el resto del RUT y el guión
       formattedRut += rut.substring(4, 7) + "-";
-
       formattedRut += rut.substring(7)
-
       return formattedRut;
     }
+    if (rut.length < 8) {
+      return rut;
+    }
 
-    // Insertamos el punto después del tercer dígito
     var formattedRut = rut.substring(0, 2) + ".";
 
-    // Insertamos el punto después del sexto dígito
     formattedRut += rut.substring(2, 5) + ".";
-
-    // Agregamos el resto del RUT y el guión
     formattedRut += rut.substring(5, 8) + "-";
-
     formattedRut += rut.substring(8)
 
     return formattedRut;
@@ -145,13 +134,14 @@ export default function CreateUser() {
   function onRutInput(event) {
     var rut = event.target.value;
     event.target.value = formatRut(rut);
-    console.log(formatRut("82168680"));
 
   }
+  function restrictInput(event) {
+    var input = event.target;
+    input.value = input.value.replace(/[^0-9kK]/g, '');
+  }
 
-
-
-
+ 
   return (
     <>
       <DynamicNavBar />
@@ -196,9 +186,12 @@ export default function CreateUser() {
                   bg={"#F7F7F7"}
                   placeholder="xx.xxx.xxx-k"
                   type={"text"}
+                  maxLength="12"
                   onChange={(e) => {
+                    restrictInput(e);
                     onRutInput(e);
                     onChange(e);
+                    
                   }}
                   name={"rut"}
                 />

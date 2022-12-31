@@ -27,9 +27,12 @@ import jwt from "jsonwebtoken";
 
 export async function getServerSideProps(context) {
   // console.log("URL DE QUERY>>>>>" + context.params.usuario);
+ // console.log(context)
   try {
     const response = await axios.get(
+      // `${process.env.API_URL}/findOneUser/${context.query.usuario}`
       `${process.env.API_URL}/findOneUser/${context.params.usuario}`
+
     );
     return {
       props: {
@@ -82,20 +85,26 @@ const usuario = (data) => {
     });
   };
 
-    //SOLOADMIS
-    const comprobacion = () => {
-      const token = Cookie.get("token");
-      if (!token) { 
-        router.push('/')
-      } 
-    };
+  //SOLOADMIS
+  const comprobacion = () => {
+    const token = Cookie.get("token");
+    if (!token) {
+      router.push('/')
+    }
+  };
 
   useEffect(() => {
-    if (!user.data) {
-      router.push(`/usuario/${usuario._id}`,`/usuario`)
-    }
+    // if (!user.data) {
+    //   router.push(`/usuario/${usuario._id}`,`/usuario`)
+    
+    var uri = window.location.toString();
+     var clean_uri = uri.substring(0, uri.lastIndexOf('/'));
+    window.history.replaceState({}, document.title, clean_uri);
+    // console.log(uri)
+    
     comprobacion();
-  },[])
+
+  }, [])
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 

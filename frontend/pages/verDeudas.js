@@ -148,6 +148,9 @@ const ViewDeudas = () => {
 
   const showdeudas = () => {
     return deudas.map((usuario, index) => {
+      if (usuario.idvecino.role === "admin") {
+        return
+      }
       return (
         <Tr
           key={usuario._id}

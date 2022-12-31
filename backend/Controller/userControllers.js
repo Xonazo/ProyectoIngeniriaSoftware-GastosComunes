@@ -6,6 +6,33 @@ const registroPago = require('../models/Registro');
 const user = require('../models/user');
 const { createToken } = require('../services/token');
 
+
+User.findOne({ correo: "admin@gmail.com" }, (error, user) => {
+    if (error) {
+        console.error("Error al buscar al usuario administrador:", error);
+    } else if (!user) {
+        // Usuario administrador no encontrado, se crea
+        const adminUser = new User({
+            name: "Admin",
+            rut: "11111111-1",
+            correo: "admin@gmail.com",
+            numeroVivienda: 0,
+            personasConvive: 0,
+            role: "admin"
+        });
+
+        adminUser.save((error, user) => {
+            if (error) {
+                console.error("Error al crear al usuario administrador:", error);
+            } else {
+                console.log("Usuario administrador creadocorrectamente");
+            }
+        });
+    } else {
+        console.log("Usuario administrador ya existe, no se crea");
+    }
+});
+
 const createUser = (req, res) => {
     const { name, rut, correo, numeroVivienda, personasConvive, role } = req.body;
     const newUser = new User({
@@ -33,7 +60,6 @@ const createUser = (req, res) => {
         }
     })
 }
-
 const getUser = (req, res) => {
 
     User.find({}, (error, user) => {
@@ -170,25 +196,25 @@ const login = (req, res) => {
     const { correo } = req.body;
     User.findOne({ correo }, (error, user) => {
         if (error) {
-            return res.status(400).send({message: "No se pudo realizar la busqueda"})
+            return res.status(400).send({ message: "No se pudo realizar la busqueda" })
         }
         if (!user) {
-            return res.status(400).send({message: "El usuario no existe"})
-        } 
-        res.cookie("token", createToken(user) , {httpOnly:true})
-        return res.status(200).send({message:"Se ha logeado correctamente", token:createToken(user),user:user.name, role:user.role, id:user._id})
+            return res.status(400).send({ message: "El usuario no existe" })
+        }
+        res.cookie("token", createToken(user), { httpOnly: true })
+        return res.status(200).send({ message: "Se ha logeado correctamente", token: createToken(user), user: user.name, role: user.role, id: user._id })
     })
 }
 
 
 const checkToken = (req, res) => {
-    return res.status(200).send({message:"Token valido"}) 
-    
+    return res.status(200).send({ message: "Token valido" })
+
 }
 
 const logout = (req, res) => {
     res.clearCookie("token");
-    return res.status(200).send({message:"Se ha cerrado la sesion correctamente"})
+    return res.status(200).send({ message: "Se ha cerrado la sesion correctamente" })
 }
 
 
@@ -206,7 +232,7 @@ const deleteCascade = (req, res) => {
 
 
     })
-    Deudas.deleteMany({idvecino:id},(error, deudas) => {
+    Deudas.deleteMany({ idvecino: id }, (error, deudas) => {
 
         if (error) {
             return res.status(400).send({ message: "No se pudo actualizar el usuario" });
@@ -218,7 +244,7 @@ const deleteCascade = (req, res) => {
 
     })
 
-    Registro.deleteMany({regidVecino:id},  (error, Registro) => {
+    Registro.deleteMany({ regidVecino: id }, (error, Registro) => {
 
         if (error) {
             return res.status(400).send({ message: "No se pudo actualizar el usuario" });

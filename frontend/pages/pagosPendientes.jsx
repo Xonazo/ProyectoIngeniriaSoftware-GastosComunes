@@ -52,6 +52,9 @@ const UsersNoPay = () => {
 
   const showUsers = () => {
     return users.map((usuario, index) => {
+      if (usuario.role === "admin") {
+        return
+      }
       return (
         <Tr
           key={usuario._id}

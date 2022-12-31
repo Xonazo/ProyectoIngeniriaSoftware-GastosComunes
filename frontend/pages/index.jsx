@@ -13,6 +13,10 @@ const bgImage =
   "https://www.iaconcagua.com/Multimedia/posts/nuevo-proyecto-de-departamentos-en-puente-alto.w1600.jpg";
 
 
+
+
+
+
 export default function Home() {
   return (
     <>

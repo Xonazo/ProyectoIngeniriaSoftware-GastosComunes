@@ -109,28 +109,36 @@ const CreateRegistro = () => {
     }
   };
 
+
+
+
   const [selectedUser, setSelectedUser] = useState(null);
 
   // Mostrar los rut disponibles para crear registro de pago.
   const showRuts = () => {
     if (users.length === 0) {
+
       return <option>No hay usuarios</option>;
     }
     return (
       <Select
         bg={"#F7F7F7"}
         placeholder="Seleciona rut"
-        onChange = {(e) =>{
+        onChange={(e) => {
           onChange(e)
-          onChangeRut(e)}}
+          onChangeRut(e)
+        }}
         name={"rutVecino"}
       >
-        {users.map((user) => (
-          <option value={user.rut}>{user.rut}</option>
-        ))}
+        {users.map((user) => {
+          if (user.role !== 'admin') {
+            return <option value={user.rut}>{user.rut}</option>
+          }
+        })}
       </Select>
     );
   };
+
 
   // Obtencion de los datos del formulario.
   const onChange = (e) => {
@@ -143,6 +151,7 @@ const CreateRegistro = () => {
   const onChangeRut = (e) => {
     const rut = e.target.value;
     const selected = users.find((user) => user.rut === rut);
+
     setSelectedUser(selected)
   }
 

@@ -148,7 +148,8 @@ const Management = () => {
             height={"max-content"}
             maxWidth="max-content"
             p={"2rem"}
-            onClick={() => router.push(`/usuario/${user._id}`)}
+           //onClick={() => router.replace({pathname:`/usuario`,query:{id:user._id}})}
+              onClick={() => router.push(`/usuario/${user._id}`)}
             _hover={{
               bg: "teal",
               color: "white",

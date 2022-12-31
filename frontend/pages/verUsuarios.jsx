@@ -62,8 +62,11 @@ export default function VerUsuarios() {
   };
   // Funcion para mostrar los usuarios obtenidos de la base de datos.
   const showUsers = () => {
+
     return users.map((usuario, index) => {
-      if (usuario.role === "admin") {
+      const token = cookie.get("token")
+      const decoded = jwt.decode(token, process.env.SECRET_KEY)
+      if (usuario.rut === "11111111-1" || decoded.sub === usuario._id) {
         return
       }
       return (

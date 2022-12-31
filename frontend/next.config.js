@@ -1,6 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  
+
 }
 module.exports = {
   nextConfig,
@@ -8,4 +10,7 @@ module.exports = {
     API_URL: process.env.SERVIDOR,
     SECRET_KEY: process.env.SECRET_KEY,
   }
+
+  
+  
 }

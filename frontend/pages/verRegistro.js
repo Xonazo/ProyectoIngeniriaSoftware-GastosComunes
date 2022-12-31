@@ -97,6 +97,11 @@ const verRegistros = () => {
 
   const showRegistros = () => {
     return products.map((registros, index) => {
+     // console.log(registros.regidVecino.role);
+
+      if (registros.regidVecino.role === "admin") {
+        return
+      }
       const fecha = new Date(registros.fechaRegistro);
       const fechaFormateada = fecha.toLocaleDateString("es-ES", {
         day: "numeric",
