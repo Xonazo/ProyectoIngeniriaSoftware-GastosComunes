@@ -15,5 +15,4 @@ const DeudasSchema = new Schema({
     }
 })
 
-
 module.exports = mongoose.model('Deudas',DeudasSchema);

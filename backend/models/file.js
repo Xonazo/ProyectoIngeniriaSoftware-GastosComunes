@@ -12,6 +12,15 @@ const fileSchema = new Schema({
     mimeType: {
         type: String,
         required: true
+    },
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'user',
+        required: true
+    },
+    nombre: {
+        type: String,
+        required: true
     }
 });
 

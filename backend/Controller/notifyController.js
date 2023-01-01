@@ -6,8 +6,7 @@ dotenv.config();
 const registroPago = require('../models/Registro');
 const user = require('../models/user');
 
-        /* Variables globales */
-
+    /* Variables globales */
 // Obtenemos fecha actual (Date)
 const date_time = new Date();
 // Obtenemos el mes de la fecha actual (Number)
@@ -70,7 +69,8 @@ const notify = (req, res)=>{
         // Declaracion de rango inicial del mes
         const fechaInicio = new Date(`${ano}-${mes}-1`);
         // Declaracion de rango final del mes
-        const fechaFin = new Date(`${ano}-${mes+1}-01`);
+        const fechaFin = new Date();
+        fechaFin.setFullYear(ano, mes, 0)
 
         const calcDiff = date_time - paydate;
         const dayDiff = Math.trunc(calcDiff/(1000*60*60*24));
@@ -87,7 +87,7 @@ const notify = (req, res)=>{
             registro.forEach( element =>{
                 let idUser = element["regidVecino"];
                 ArrayUser.push(idUser._id.toString());
-            });
+            })
 
             //A los vecinos que no pertenezcan al Array es porque no presentaron pagos, se le envia correo.
             // $nin = No dentro de ...
