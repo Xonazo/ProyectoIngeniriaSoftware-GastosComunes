@@ -47,19 +47,21 @@ const createUser = (req, res) => {
         if (error) {
             return res.status(400).send({ message: "No se ha podido crear al Usuario" });
         }
+        // Crear la nueva deuda solo si no hay errores al crear al usuario
+        const newDeudas = new Deudas({
+            idvecino: newUser._id,
+            deuda: 30000,
+            abono: 0
+        })
+        newDeudas.save((error, deudas) => {
+            if (error) {
+                return res.status(400).send({ message: "No se ha crear la deuda" });
+            }
+        })
         return res.status(201).send(user)
     })
-    const newDeudas = new Deudas({
-        idvecino: newUser._id,
-        deuda: 30000,
-        abono: 0
-    })
-    newDeudas.save((error, deudas) => {
-        if (error) {
-            return res.status(400).send({ message: "No se ha crear la deuda" });
-        }
-    })
 }
+
 const getUser = (req, res) => {
 
     User.find({}, (error, user) => {
