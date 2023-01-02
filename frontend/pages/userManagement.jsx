@@ -1,6 +1,12 @@
+// NavBar dinamico
 import DynamicNavBar from "../components/DynamicNavBar";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import Cookie from "js-cookie";
+import jwt from "jsonwebtoken";
+import axios from "axios";
 
-// Componentes CHAKRA UI
+// Componentes importados de Chakra UI
 import {
   Center,
   Container,
@@ -17,39 +23,31 @@ import { AiFillDollarCircle } from "react-icons/ai";
 import { TbChecklist } from "react-icons/tb";
 import { FaRegIdCard } from "react-icons/fa";
 
-import Cookie from "js-cookie";
-import jwt from "jsonwebtoken";
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
-
-
 const Management = () => {
   const router = useRouter();
-
+  // Inicializamos el estado del usuario
   const [user, setUser] = useState([]);
 
-  //SOLO COLOCAR EN PAGINAS DE USERS
+  // Comprobacion de cookies
   const comprobacion = () => {
-    const token = Cookie.get("token")
+    const token = Cookie.get("token");
     if (token) {
-      const decoded = jwt.decode(token, process.env.SECRET_KEY)
+      const decoded = jwt.decode(token, process.env.SECRET_KEY);
       if (decoded.role === "user") {
         router.push("/userManagement");
       }
-      // if (decoded.role === "admin") {
-      //   router.push("/management");
-      // }
     } else {
       router.push("/");
     }
-  }
+  };
+
+  // useEffect para volver a comprobar las cookies, y obtener los datos del usuario
   useEffect(() => {
-    comprobacion()
-  }, [])
+    comprobacion();
+    getUser();
+  }, []);
 
-
-
+  // Funcion para obtener los datos del usuario (cookies)
   const getUser = async () => {
     const token = Cookie.get("token");
     if (token) {
@@ -62,10 +60,6 @@ const Management = () => {
       setUser(response.data);
     }
   };
-
-  useEffect(() => {
-    getUser();
-  }, []);
 
   return (
     <>
@@ -131,7 +125,6 @@ const Management = () => {
             maxWidth="max-content"
             p={"2rem"}
             onClick={() => router.push(`/registroUser`)}
-
             _hover={{
               bg: "teal",
               color: "white",
@@ -148,8 +141,8 @@ const Management = () => {
             height={"max-content"}
             maxWidth="max-content"
             p={"2rem"}
-           //onClick={() => router.replace({pathname:`/usuario`,query:{id:user._id}})}
-              onClick={() => router.push(`/usuario/${user._id}`)}
+            //onClick={() => router.replace({pathname:`/usuario`,query:{id:user._id}})}
+            onClick={() => router.push(`/usuario/${user._id}`)}
             _hover={{
               bg: "teal",
               color: "white",

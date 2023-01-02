@@ -1,5 +1,9 @@
-//Importamos NavBar dinamico.`
+// Componente NavBar importado
 import DynamicNavBar from "../components/DynamicNavBar";
+// Componente de Login importado.
+import Login from "../components/Login";
+
+// Componentes importados de Chakra UI
 import {
   Box,
   Image,
@@ -7,15 +11,9 @@ import {
   Flex,
   Stack,
 } from "@chakra-ui/react";
-import Login from "../components/Login";
 
 const bgImage =
   "https://www.iaconcagua.com/Multimedia/posts/nuevo-proyecto-de-departamentos-en-puente-alto.w1600.jpg";
-
-
-
-
-
 
 export default function Home() {
   return (
@@ -66,7 +64,6 @@ export default function Home() {
         <Image src='/click.svg' my={'5px'} boxSize='100px'/>
       </Flex>
     </Box>
-
     </>
   )
   

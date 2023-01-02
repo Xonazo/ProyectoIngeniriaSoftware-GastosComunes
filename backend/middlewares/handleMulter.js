@@ -22,7 +22,7 @@ const storage = multer.diskStorage({
     },
     filename: function (req, file, cb) {
         let fecha = new Date()
-        let fechaString = fecha.getSeconds() + "-" + fecha.getMinutes() + "-" + fecha.getHours() + "-" + fecha.getDate() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getFullYear()
+        let fechaString = fecha.getDate() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getFullYear() + "-" + fecha.getHours() + "-" + fecha.getMinutes() + "-" + fecha.getSeconds()
         cb(null, fechaString + "-" + file.originalname)
     }
 })

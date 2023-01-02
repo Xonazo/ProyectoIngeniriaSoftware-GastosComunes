@@ -1,4 +1,13 @@
+// Componente NavBar importado
+import DynamicNavBar from "../components/DynamicNavBar";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import Cookie from "js-cookie";
+import jwt from "jsonwebtoken";
+import axios from "axios";
+import Swal from "sweetalert2";
+
+// Componentes importados de Chakra UI
 import {
   Button,
   Container,
@@ -8,32 +17,26 @@ import {
   Tr,
   Td,
   Heading,
-  Stack,
   Center,
   TableContainer,
   Flex,
   Avatar,
 } from "@chakra-ui/react";
-import axios from "axios";
-import Swal from "sweetalert2";
-import { useRouter } from "next/router";
-import DynamicNavBar from "../components/DynamicNavBar";
-import Cookie from "js-cookie";
-import jwt from "jsonwebtoken";
+
 // Iconos importados
-import { BsTrashFill } from "react-icons/bs";
 import { RiAddCircleFill, RiDeleteBack2Fill } from "react-icons/ri";
 
 
 const ViewDeudas = () => {
   const router = useRouter();
 
+  // Inicializamos el estado de las deudas.
   const [deudas, setdeudas] = useState([]);
   useEffect(() => {
     getDeudas();
   }, []);
 
-  //COLOCAR EN PAGINAS DE ADMINS
+  // Comprobacion de token(Cookies)
   const comprobacion = () => {
     const token = Cookie.get("token");
     if (token) {

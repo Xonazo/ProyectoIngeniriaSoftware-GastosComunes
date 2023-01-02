@@ -50,9 +50,6 @@ export async function getServerSideProps(context) {
   }
 }
 
-
-
-
 const usuario = (data) => {
   const router = useRouter();
   const [user] = useState(data);

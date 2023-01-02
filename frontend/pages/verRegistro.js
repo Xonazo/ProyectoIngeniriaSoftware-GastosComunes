@@ -1,45 +1,45 @@
+// Componente NavBar importado
+import DynamicNavBar from "../components/DynamicNavBar";
+
 import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import Cookie from "js-cookie";
+import jwt from "jsonwebtoken";
+import axios from "axios";
+import Swal from "sweetalert2";
+
+// Componentes importados de Chakra UI
 import {
   Button,
   Container,
-  Input,
-  Stack,
-  Text,
-  HStack,
   Table,
   Thead,
   Tbody,
-  Tfoot,
   Tr,
-  Th,
   Td,
   Heading,
-  CloseButton,
-  Icon,
-  Center,
   Flex,
   TableContainer,
   Avatar,
-  Box,
 } from "@chakra-ui/react";
-import axios from "axios";
-import Swal from "sweetalert2";
-import { useRouter } from "next/router";
-import { BsTrashFill } from "react-icons/bs";
-import DynamicNavBar from "../components/DynamicNavBar";
-import Cookie from "js-cookie";
-import jwt from "jsonwebtoken";
 
+// Iconos importados
+import { BsTrashFill } from "react-icons/bs";
 import { VscAdd } from "react-icons/vsc";
 
 const verRegistros = () => {
   const router = useRouter();
 
-  const [products, setRegistros] = useState([]);
+  // Inicializamos el estado de los registros.
+  const [registros, setRegistros] = useState([]);
+
   useEffect(() => {
+    comprobacion();
     getRegistros();
   }, []);
 
+
+  // Comprobacion de token(Cookies)
   const comprobacion = () => {
     const token = Cookie.get("token");
     if (token) {
@@ -54,14 +54,13 @@ const verRegistros = () => {
       router.push("/");
     }
   };
-  useEffect(() => {
-    comprobacion();
-  }, []);
 
+  // Obtencion de registros.
   const getRegistros = async () => {
     const response = await axios.get(
       `${process.env.API_URL}/BuscarRegistrosAll`
     );
+    // Seteo de los registros obtenidos.
     setRegistros(response.data);
   };
 
@@ -96,12 +95,12 @@ const verRegistros = () => {
   };
 
   const showRegistros = () => {
-    return products.map((registros, index) => {
-     // console.log(registros.regidVecino.role);
-
+    return registros.map((registros, index) => {
+      // Verificamos el rol de usuario, si es administrador no se muestra en el listado.
       if (registros.regidVecino.role === "admin") {
         return
       }
+      // Formateamos la fecha para mostrarla en el listado.
       const fecha = new Date(registros.fechaRegistro);
       const fechaFormateada = fecha.toLocaleDateString("es-ES", {
         day: "numeric",
@@ -165,6 +164,7 @@ const verRegistros = () => {
       );
     });
   };
+  
   return (
     <>
       <DynamicNavBar />

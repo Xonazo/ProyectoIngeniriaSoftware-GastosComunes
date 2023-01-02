@@ -1,9 +1,15 @@
+// Componente NavBar importado
 import DynamicNavBar from "../components/DynamicNavBar";
-import { useRouter } from "next/router";
+
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+
 import cookie from "js-cookie";
+import jwt from "jsonwebtoken";
 import axios from "axios";
 import Swal from "sweetalert2";
+
+// Componentes importados de Chakra UI
 import {
   Container,
   Heading,
@@ -13,7 +19,6 @@ import {
   Td,
   Tbody,
   Button,
-  Label,
   Flex,
   Avatar,
   TableContainer,
@@ -23,27 +28,18 @@ import {
 // Iconos importados
 import { AiFillExclamationCircle } from "react-icons/ai";
 import { FaTrash } from "react-icons/fa";
-import jwt from "jsonwebtoken";
+
 export default function VerUsuarios() {
   const router = useRouter();
   const [users, setUsers] = useState([]);
-  useEffect(() => {
-    // Verificacion de token.
-    const token = cookie.get("token");
-    if (!token || token === "undefined") {
-      router.push("/");
-    } else {
-      // Obtencion de los usuarios de la base de datos.
-      getUsers();
-    }
-  }, []);
+
+
+  // Funcion para verificar el rol del usuario.
   const comprobacion = () => {
     const token = cookie.get("token");
     if (token) {
+      // Decodificacion del token.
       const decoded = jwt.decode(token, process.env.SECRET_KEY);
-      if (decoded.role === "admin") {
-        //router.push("/management");
-      }
       if (decoded.role === "user") {
         router.push("/userManagement");
       }
@@ -51,21 +47,27 @@ export default function VerUsuarios() {
       router.push("/");
     }
   };
+
+  // useEffect para volver a comprobar cookies.
   useEffect(() => {
     comprobacion();
+    getUsers();
   }, []);
+
+  // Obtencion de los usuarios de la base de datos.
   const getUsers = async () => {
-    // Obtencion de los usuarios de la base de datos.
     const response = await axios.get(`${process.env.API_URL}/buscarUser`);
     // Seteo de los usuarios obtenidos.
     setUsers(response.data);
   };
   // Funcion para mostrar los usuarios obtenidos de la base de datos.
   const showUsers = () => {
-
+    // Recorremos los usuarios obtenidos.
     return users.map((usuario, index) => {
+
       const token = cookie.get("token")
       const decoded = jwt.decode(token, process.env.SECRET_KEY)
+      // Verificamos el rol de usuario, si es administrador no se muestra en el listado.
       if (usuario.rut === "11111111-1" || decoded.sub === usuario._id) {
         return
       }
@@ -76,7 +78,6 @@ export default function VerUsuarios() {
             background: "rgb( 0 0 0 / 05% )",
           }}
         >
-          {/* Se muestra el nombre de usuario */}
           <Td>
             <Flex alignItems={"center"} justifyContent="center" gap={3}>
               <Avatar
@@ -89,9 +90,8 @@ export default function VerUsuarios() {
               <span>{usuario.name}</span>
             </Flex>
           </Td>
-          {/* Se muestra el numero de vivienda de usuario */}
+          
           <Td textAlign={"center"}>{usuario.numeroVivienda}</Td>
-          {/* Acciones en el usuario. */}
           <Td
             textAlign="center"
             display={"flex"}

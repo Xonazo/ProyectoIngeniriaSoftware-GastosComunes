@@ -1,13 +1,13 @@
-//Importamos NavBar dinamico.
+// Componente NavBar importado
 import DynamicNavBar from "../components/DynamicNavBar";
-//Importamos SweetAlert.
-import Swal from "sweetalert2";
-//Importamos axios.
-import axios from "axios";
-// Importamos React Hooks.
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-// Importamos los componentes utilizados de Chakra UI.
+import Cookie from "js-cookie";
+import jwt from "jsonwebtoken";
+import axios from "axios";
+import Swal from "sweetalert2";
+
+// Componentes importados de Chakra UI
 import {
   Button,
   Container,
@@ -16,8 +16,6 @@ import {
   FormControl,
   Input,
   FormLabel,
-  NumberInput,
-  NumberInputField,
   Select,
   Icon,
   InputGroup,
@@ -25,9 +23,9 @@ import {
   InputLeftAddon,
   Text,
   FormHelperText,
-
 } from "@chakra-ui/react";
-// Importamos los iconos utilizados de React Icons.
+
+// Iconos importados
 import {
   MdPerson,
   MdEmail,
@@ -36,10 +34,12 @@ import {
   MdFingerprint,
   MdPanTool,
 } from "react-icons/md";
-import Cookie from "js-cookie";
-import jwt from "jsonwebtoken";
+
+
 export default function CreateUser() {
   const router = useRouter();
+
+  // Inicializamos valores de formulario
   const [values, setValues] = useState({
     name: "",
     rut: "",
@@ -49,11 +49,10 @@ export default function CreateUser() {
     role: "",
   });
 
+  // Funcion para utilizar valores de formularios para actualizar usuario
   const onSubmit = async (e) => {
     <Icon as={MdPerson} />;
-  
-  //  console.log(values.correo)
-   
+
     if(values.name === ""){
       Swal.fire({
         title: "Error",
@@ -83,6 +82,7 @@ export default function CreateUser() {
       });
       return;
     }
+
     if(values.numeroVivienda === ""){
       Swal.fire({
         title: "Error",
@@ -92,6 +92,7 @@ export default function CreateUser() {
       });
       return;
     }
+
     if(values.personasConvive === ""){
       Swal.fire({
         title: "Error",
@@ -101,6 +102,7 @@ export default function CreateUser() {
       });
       return;
     }
+
     if(values.role === ""){
       Swal.fire({
         title: "Error",
@@ -111,8 +113,7 @@ export default function CreateUser() {
       return;
     }
 
-
-
+    // Restriccion de correo, para que sea valido
     if(!restrictInputMail({target:{value:values.correo}}) ){
       Swal.fire({
         title: "Error",
@@ -123,12 +124,13 @@ export default function CreateUser() {
       return;
     }
 
+
     try {
       const response = await axios.post(
         `${process.env.API_URL}/crearUser`,
         values
       );
-      // console.log(response);
+      // Notificacion de creacion de usuario correcto.
       if (response.status === 201) {
         Swal.fire({
           title: "Usuario creado",
@@ -156,8 +158,7 @@ export default function CreateUser() {
     }
   };
 
-
-
+  // Funcion para obtener los valores del formulario
   const onChange = (e) => {
     setValues({
       ...values,
@@ -165,7 +166,7 @@ export default function CreateUser() {
     });
   };
 
-  //SOLOADMIS
+  // Comprobacion de token(Cookies)
   const comprobacion = () => {
     const token = Cookie.get("token");
     if (token) {

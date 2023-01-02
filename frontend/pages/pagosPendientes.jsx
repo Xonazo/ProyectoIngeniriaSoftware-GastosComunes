@@ -1,7 +1,14 @@
+// Componente NavBar importado
 import DynamicNavBar from "../components/DynamicNavBar";
+
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import Swal from "sweetalert2";
+import Cookies from "js-cookie";
+import jwt from "jsonwebtoken";
 import axios from "axios";
+
+// Componentes importados de Chakra UI
 import {
   Box,
   Container,
@@ -13,47 +20,53 @@ import {
   Tbody,
   Button,
   Center,
+  Flex,
+  Avatar,
 } from "@chakra-ui/react";
+
+// Iconos importados
 import { AiFillNotification, AiFillExclamationCircle } from "react-icons/ai";
-import Swal from "sweetalert2";
-import Cookies from "js-cookie";
-import jwt from "jsonwebtoken";
+
 
 const UsersNoPay = () => {
   const router = useRouter();
 
+  // Inicializamos el estado de los usuarios.
   const [users, setUsers] = useState([]);
+
+  // useEffect para volver a comprobar cookies y obtener usuarios.
   useEffect(() => {
+    comprobacion();
     getUsers();
   }, []);
 
+  // Funcion para obtener los usuarios que no han pagado.
   const getUsers = async () => {
     const response = await axios.get(`${process.env.API_URL}/getUsersNoPay`);
     setUsers(response.data);
   };
-    //COLOCAR EN PAGINAS DE ADMINS
-    const comprobacion = () => {
-      const token = Cookies.get("token")
-      if (token) {
-        const decoded = jwt.decode(token, process.env.SECRET_KEY)
-        if (decoded.role === "admin") {
-         // router.push("/management");
-        }
-        if (decoded.role === "user") {
-          router.push("/userManagement");
-        }
-      } else {
-        router.push("/");
-      }
-    }
-    useEffect(() => {
-      comprobacion()
-    }, [])
 
+   // Funcion para verificar el rol del usuario.
+  const comprobacion = () => {
+    // Obtenemos el token del usuario.
+    const token = Cookies.get("token");
+    if (token) {
+      // Decodificacion del token.
+      const decoded = jwt.decode(token, process.env.SECRET_KEY);
+      if (decoded.role === "user") {
+        router.push("/userManagement");
+      }
+    } else {
+      router.push("/");
+    }
+  };
+
+  // Funcion para mostrar los usuarios obtenidos
   const showUsers = () => {
     return users.map((usuario, index) => {
+      // Si el rol de usuario es admin, no se muestra.
       if (usuario.role === "admin") {
-        return
+        return;
       }
       return (
         <Tr
@@ -62,7 +75,18 @@ const UsersNoPay = () => {
             background: "rgb( 0 0 0 / 05% )",
           }}
         >
-          <Td>{usuario.name}</Td>
+          <Td>
+            <Flex alignItems={"center"} justifyContent="center" gap={3}>
+              <Avatar
+                borderRadius={"50%"}
+                borderColor="black"
+                borderWidth="1px"
+                bg={"#D6E4E5"}
+                src={`https://robohash.org/${usuario._id}`}
+              />
+              <span>{usuario.name}</span>
+            </Flex>
+          </Td>
           <Td>{usuario.numeroVivienda}</Td>
           <Td display={"flex"} justifyContent="space-around">
             <Button
@@ -94,6 +118,7 @@ const UsersNoPay = () => {
     });
   };
 
+  // Funcion para notificar al usuario por id.
   const notifyUser = async (id) => {
     try {
       const response = await axios.get(
@@ -127,9 +152,9 @@ const UsersNoPay = () => {
     }
   };
 
+  // Funcion para notificar a todos los usuarios.
   const notify = async () => {
     try {
-      console.log("entro al try");
       const response = await axios.get(`${process.env.API_URL}/notify`);
       if (response.status === 200) {
         Swal.fire({
