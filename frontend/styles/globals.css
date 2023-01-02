@@ -1,0 +1,41 @@
+/* Globales */
+html {
+  font-size: 62.5%;
+  box-sizing: border-box; /* Hack para Box Model **/
+  
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+body {
+  font-size: 16px;
+  
+   /* 1rem = 10px */
+} 
+/* Utilidades */
+.contenedor {
+  width: min(90%, 140rem);
+  margin: 0 auto;
+}
+
+.no-margin {
+  margin: 0;
+}
+.no-padding {
+  padding: 0;
+}
+.centrar-texto {
+  text-align: center;
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+  body {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('/xd2.webp')!important;
+    background-size: cover!important;
+  }
+}
+
+
