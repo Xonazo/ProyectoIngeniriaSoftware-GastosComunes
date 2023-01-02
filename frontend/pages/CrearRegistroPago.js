@@ -1,3 +1,4 @@
+// Componente NavBar importado
 import DynamicNavBar from "../components/DynamicNavBar";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
@@ -5,7 +6,8 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import Cookie from "js-cookie";
 import jwt from "jsonwebtoken";
-// Componentes importados
+
+// Componentes importados de Chakra UI
 import {
   Button,
   Container,
@@ -34,6 +36,7 @@ import {
 const CreateRegistro = () => {
   const router = useRouter();
 
+  // Inicializamos el estado de los usuarios.
   const [users, setUsers] = useState([]);
 
   // Obtencion de los usuarios de la base de datos.
@@ -44,6 +47,7 @@ const CreateRegistro = () => {
     setUsers(response.data);
   };
 
+  // Inicializamos el estado de los valores del formulario.
   const [values, setValues] = useState({
     regidVecino: "",
     fechaRegistro: "",
@@ -55,10 +59,8 @@ const CreateRegistro = () => {
   const comprobacion = () => {
     const token = Cookie.get("token");
     if (token) {
+      // Decodificacion del token
       const decoded = jwt.decode(token, process.env.SECRET_KEY);
-      if (decoded.role === "admin") {
-        // router.push("/CreateRegistroAbono");
-      }
       if (decoded.role === "user") {
         router.push("/userManagement");
       }
@@ -67,7 +69,7 @@ const CreateRegistro = () => {
     }
   };
 
-  //
+  // useEffect para volver a comprobar las cookies, y obtener los datos de los usuarios.
   useEffect(() => {
     comprobacion();
     getUsers();
@@ -109,15 +111,10 @@ const CreateRegistro = () => {
     }
   };
 
-
-
-
-  const [selectedUser, setSelectedUser] = useState(null);
-
   // Mostrar los rut disponibles para crear registro de pago.
   const showRuts = () => {
     if (users.length === 0) {
-
+      // En caso que no se encuentren usuarios.
       return <option>No hay usuarios</option>;
     }
     return (
@@ -148,10 +145,15 @@ const CreateRegistro = () => {
     });
 
   };
+
+  // Inicializamos el estado de rut seleccionado.
+  const [selectedUser, setSelectedUser] = useState(null);
+
+  // Funcion para leer los datos ingresados en el formulario.
   const onChangeRut = (e) => {
     const rut = e.target.value;
     const selected = users.find((user) => user.rut === rut);
-
+    // Seteo del rut seleccionado.
     setSelectedUser(selected)
   }
 
@@ -159,7 +161,6 @@ const CreateRegistro = () => {
     var input = event.target;
     input.value = input.value.replace(/[^0-9]/g, '');
   }
-
 
   return (
     <>
@@ -205,6 +206,7 @@ const CreateRegistro = () => {
               {showRuts()}
             </InputGroup>
           </FormControl>
+
           <FormControl>
             <FormLabel fontSize={"1.2rem"}>Fecha del registro</FormLabel>
             <InputGroup size="lg">
@@ -226,7 +228,7 @@ const CreateRegistro = () => {
           </FormControl>
 
           <FormControl>
-            <FormLabel fontSize={"1.2rem"}>Monto de pago</FormLabel>
+            <FormLabel fontSize={"1.2rem"}>Monto depago</FormLabel>
             <InputGroup size="lg">
               <InputLeftAddon
                 bg={"#a8d3d1"}

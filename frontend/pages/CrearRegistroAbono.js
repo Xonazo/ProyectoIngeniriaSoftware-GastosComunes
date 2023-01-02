@@ -1,11 +1,13 @@
+// Componente NavBar importado
 import DynamicNavBar from "../components/DynamicNavBar";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import axios from "axios";
-import Swal from "sweetalert2";
 import Cookie from "js-cookie";
 import jwt from "jsonwebtoken";
-// Componentes importados
+import axios from "axios";
+import Swal from "sweetalert2";
+
+// Componentes importados de Chakra UI
 import {
   Button,
   Container,
@@ -23,27 +25,13 @@ import {
   FormHelperText,
 } from "@chakra-ui/react";
 // Iconos importados
-import {
-  MdPerson,
-  MdDateRange,
-  MdPanTool,
-  MdAttachMoney,
-} from "react-icons/md";
+import { MdPerson, MdDateRange, MdAttachMoney } from "react-icons/md";
 
-/// Crear registro de pago
+
 const CreateRegistroAbono = () => {
   const router = useRouter();
 
-  const [users, setUsers] = useState([]);
-
-  // Obtencion de los usuarios de la base de datos.
-  const getUsers = async () => {
-    // Obtencion de los usuarios de la base de datos.
-    const response = await axios.get(`${process.env.API_URL}/buscarUser`);
-    // Seteo de los usuarios obtenidos.
-    setUsers(response.data);
-  };
-
+  // Inicializamos el estado de los valores del formulario.
   const [values, setValues] = useState({
     regidVecino: "",
     fechaRegistro: "",
@@ -51,14 +39,22 @@ const CreateRegistroAbono = () => {
     pago: "pago abono",
   });
 
+ // Inicializamos el estado de los usuarios.
+  const [users, setUsers] = useState([]);
+
+  // Obtencion de los usuarios de la base de datos.
+  const getUsers = async () => {
+    const response = await axios.get(`${process.env.API_URL}/buscarUser`);
+    // Seteo de los usuarios obtenidos.
+    setUsers(response.data);
+  };
+
   // Comprobacion de token(Cookies)
   const comprobacion = () => {
     const token = Cookie.get("token");
     if (token) {
+      // Decodificacion del token
       const decoded = jwt.decode(token, process.env.SECRET_KEY);
-      if (decoded.role === "admin") {
-        // router.push("/CreateRegistroAbono");
-      }
       if (decoded.role === "user") {
         router.push("/userManagement");
       }
@@ -67,13 +63,12 @@ const CreateRegistroAbono = () => {
     }
   };
 
-  //
+  // useEffect para volver a comprobar las cookies, y obtener los datos de los usuarios.
   useEffect(() => {
     comprobacion();
     getUsers();
   }, []);
 
-  // Creacion de registro de pago
   const onSubmit = async (e) => {
     <Icon as={MdPerson} />;
     try {
@@ -112,12 +107,12 @@ const CreateRegistroAbono = () => {
 
 
 
+  // Estado para el rut seleccionado.
   const [selectedUser, setSelectedUser] = useState(null);
 
-  // Mostrar los rut disponibles para crear registro de pago.
+  // Funcion para mostrar el listado de ruts disponibles.
   const showRuts = () => {
     if (users.length === 0) {
-
       return <option>No hay usuarios</option>;
     }
     return (
@@ -125,13 +120,13 @@ const CreateRegistroAbono = () => {
         bg={"#F7F7F7"}
         placeholder="Seleciona rut"
         onChange={(e) => {
-          onChange(e)
-          onChangeRut(e)
+          onChange(e);
+          onChangeRut(e);
         }}
         name={"rutVecino"}
       >
         {users.map((user) => {
-          if (user.role !== 'admin') {
+          if (user.role !== "admin") {
             return <option value={user.rut} label={`${user.rut} (${user.name})`}></option>
           }
         })}
@@ -139,44 +134,43 @@ const CreateRegistroAbono = () => {
     );
   };
 
-
-  // Obtencion de los datos del formulario.
+  // Funcion para leer los datos ingresados en el formulario.
   const onChange = (e) => {
     setValues({
       ...values,
       [e.target.name]: e.target.value,
     });
-
   };
+
+  // Funcion para obtener el rut seleccionado.
   const onChangeRut = (e) => {
     const rut = e.target.value;
     const selected = users.find((user) => user.rut === rut);
+    // Seteo del rut seleccionado.
+    setSelectedUser(selected);
+  };
 
-    setSelectedUser(selected)
-  }
-
+  // Funcion para restringir caracteres
   function restrictInput(event) {
     var input = event.target;
     input.value = input.value.replace(/[^0-9]/g, '');
   }
 
+
   return (
     <>
-      <DynamicNavBar />
+      <DynamicNavBar/>
       <Container
         bg={"#D6E4E5"}
         margin=" 3rem auto"
         p={"3rem"}
         borderRadius="0.9rem"
       >
-        <Heading
-          textAlign={"center"}
-          textTransform="uppercase"
-          marginBottom={"4"}
-        >
-          Registro de pago
+        <Heading textAlign={"center"} textTransform="uppercase">
+          Registro de Abono
         </Heading>
         <Stack>
+
           <FormControl>
             <FormLabel fontSize={"1.2rem"}>Nombre</FormLabel>
             <InputGroup size="lg">
@@ -204,6 +198,7 @@ const CreateRegistroAbono = () => {
               {showRuts()}
             </InputGroup>
           </FormControl>
+
           <FormControl>
             <FormLabel fontSize={"1.2rem"}>Fecha del registro</FormLabel>
             <InputGroup size="lg">
@@ -225,7 +220,7 @@ const CreateRegistroAbono = () => {
           </FormControl>
 
           <FormControl>
-            <FormLabel fontSize={"1.2rem"}>Monto de pago</FormLabel>
+            <FormLabel fontSize={"1.2rem"}>Cantidad del pago</FormLabel>
             <InputGroup size="lg">
               <InputLeftAddon
                 bg={"#a8d3d1"}
@@ -246,11 +241,13 @@ const CreateRegistroAbono = () => {
           </FormControl>
 
         </Stack>
-        <Center my={{ base: "3rem", md: "3rem" }}>
+
+        <Center>
           <Button
             colorScheme={"teal"}
             type="submit"
-            height={{ base: "8rem", md: "5rem" }}
+            my={"5"}
+            height={{ base: "5rem", md: "5rem" }}
             width={{ base: "100%", md: "35%" }}
             fontSize="2xl"
             onClick={onSubmit}
@@ -258,6 +255,7 @@ const CreateRegistroAbono = () => {
             Crear registro
           </Button>
         </Center>
+
       </Container>
     </>
   );

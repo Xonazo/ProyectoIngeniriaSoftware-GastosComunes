@@ -12,10 +12,12 @@ const UserSchema = new Schema({
         type: String,
         requiered: true,
         unique : true,
+        minLenght: 11,
     },
     correo:{
         type: String,
-        required: true
+        required: true,
+        unique: true,
     },
     numeroVivienda:{
         type: Number,

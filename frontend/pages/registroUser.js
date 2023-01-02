@@ -1,12 +1,13 @@
-import axios from "axios";
-import Cookies from "js-cookie";
-import Router from "next/router";
-import React from "react";
-import { useEffect, useState } from "react";
+// NavBar dinamico
 import DynamicNavBar from "../components/DynamicNavBar";
+import { useEffect, useState } from "react";
+import Router from "next/router";
 
+import Cookies from "js-cookie";
 import jwt from "jsonwebtoken";
+import axios from "axios";
 
+// Componentes importados de Chakra UI
 import {
   Container,
   Table,
@@ -21,17 +22,15 @@ import {
 } from "@chakra-ui/react";
 
 export const registros = (idUser) => {
-  useEffect(() => {
-    getUserInfo();
-    getRegistros();
-  }, []);
 
+  // Inicializamos la informacion del usuario
   const [userInfo, setUserInfo] = useState({
     id: "",
     nombre: "",
     rut: "",
   });
 
+  // Inicializamos los registros
   const [registros, setRegistros] = useState([]);
 
   const getUserInfo = async () => {
@@ -40,7 +39,7 @@ export const registros = (idUser) => {
       Router.push("/");
       //Revisar pagina de login
     }
-    console.log(token);
+    // Obtencion y decodificacion del token
     const decoded = jwt.decode(token, process.env.SECRET_KEY);
     const response = await axios.get(
       `${process.env.API_URL}/findOneUser/${decoded.sub}`
@@ -58,15 +57,14 @@ export const registros = (idUser) => {
   const getRegistros = async () => {
     const token = Cookies.get("token");
     if (!token || token === "" || token === undefined) {
-      Router.push("/index");
-      //Revisar pagina de login
+      Router.push("/");
     }
     const decoded = jwt.decode(token, process.env.SECRET_KEY);
     const registros = await axios.get(
       `${process.env.API_URL}/BuscarRegistrosTotal/search/${decoded.sub}`
     );
     if (registros.status === 200) {
-      console.log(registros.data);
+      // Seteo de registros al estado de registros
       setRegistros(registros.data);
     }
   };
@@ -93,6 +91,12 @@ export const registros = (idUser) => {
       );
     });
   };
+
+    // useEffect para obtener informacion de usuario y registros.
+    useEffect(() => {
+      getUserInfo();
+      getRegistros();
+    }, []);
 
   return (
     <>
@@ -125,7 +129,7 @@ export const registros = (idUser) => {
         </TableContainer>
         <Center marginBlock={"1.5rem"}>
           <Button
-            colorScheme="teal"
+            colorScheme={"messenger"}
             w="25rem"
             h={"5rem"}
             fontSize="2xl"

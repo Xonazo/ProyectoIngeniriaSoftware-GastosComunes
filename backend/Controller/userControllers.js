@@ -61,7 +61,6 @@ const createUser = (req, res) => {
         return res.status(201).send(user)
     })
 }
-
 const getUser = (req, res) => {
 
     User.find({}, (error, user) => {
@@ -227,7 +226,6 @@ const deleteCascade = (req, res) => {
         if (error) {
             return res.status(400).send({ message: "No se pudo actualizar el usuario" });
         }
-
         if (!user) {
             return res.status(404).send({ message: "No se encontro al usuario" })
         }
@@ -239,7 +237,6 @@ const deleteCascade = (req, res) => {
         if (error) {
             return res.status(400).send({ message: "No se pudo actualizar el usuario" });
         }
-
         if (!deudas) {
             return res.status(404).send({ message: "No se encontro al usuario" })
         }
@@ -251,7 +248,6 @@ const deleteCascade = (req, res) => {
         if (error) {
             return res.status(400).send({ message: "No se pudo actualizar el usuario" });
         }
-
         if (!Registro) {
             return res.status(404).send({ message: "No se encontro al usuario" })
         }

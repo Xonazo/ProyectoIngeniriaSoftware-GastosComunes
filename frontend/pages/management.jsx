@@ -7,7 +7,6 @@ import {
   Icon,
   Center,
   Heading,
-  Flex,
   Image,
   
 } from "@chakra-ui/react";
@@ -20,6 +19,7 @@ import { FaUserFriends, FaUserPlus } from "react-icons/fa";
 import { FaUserClock, FaUserTimes } from "react-icons/fa";
 import { IoWallet } from "react-icons/io5";
 import { MdLibraryBooks } from "react-icons/md";
+import { AiFillProfile } from "react-icons/ai";
 
 import { useEffect, useState } from "react";
 
@@ -171,9 +171,9 @@ const simpleGrid = () => {
               color: "white",
             }}
           >
-            <Icon as={FaUserClock} boxSize={90} />
+            <Icon as={AiFillProfile} boxSize={90} />
             <Text textTransform={"uppercase"} fontSize={"xl"}>
-              Por confirmar
+              Ver pagos
             </Text>
           </Button>
           <Button

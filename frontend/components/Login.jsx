@@ -121,7 +121,7 @@ const LoginButton = () => {
               <Image src="/logo.svg" maxH={"50px"} mb="8" mx="auto" />
               <Heading>Inicia sesion.</Heading>
               <Text fontSize="lg" color="gray.600">
-                Ingresa tu rut para Ingresar{" "}
+                Ingresa tu email para Ingresar{" "}
               </Text>
 
               <Stack>

@@ -3,10 +3,8 @@ import DynamicNavBar from "../components/DynamicNavBar";
 import {
   Container,
   Image,
-  Box,
   Text,
   Grid,
-  GridItem,
   Heading,
   Flex,
 } from "@chakra-ui/react";
