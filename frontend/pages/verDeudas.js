@@ -151,6 +151,7 @@ const ViewDeudas = () => {
       if (usuario.idvecino.role === "admin") {
         return
       }
+     
       return (
         <Tr
           key={usuario._id}

@@ -24,6 +24,8 @@ import {
   Box,
   InputLeftAddon,
   Text,
+  FormHelperText,
+
 } from "@chakra-ui/react";
 // Importamos los iconos utilizados de React Icons.
 import {
@@ -49,12 +51,84 @@ export default function CreateUser() {
 
   const onSubmit = async (e) => {
     <Icon as={MdPerson} />;
+  
+  //  console.log(values.correo)
+   
+    if(values.name === ""){
+      Swal.fire({
+        title: "Error",
+        text: "Ingrese un nombre",
+        icon: "error",
+        confirmButtonText: "Ok",
+      });
+      return;
+    }
+    
+    if(values.rut === ""){
+      Swal.fire({
+        title: "Error",
+        text: "Ingrese un Rut",
+        icon: "error",
+        confirmButtonText: "Ok",
+      });
+      return;
+    }
+
+    if(values.correo === ""){
+      Swal.fire({
+        title: "Error",
+        text: "Ingrese un Correo",
+        icon: "error",
+        confirmButtonText: "Ok",
+      });
+      return;
+    }
+    if(values.numeroVivienda === ""){
+      Swal.fire({
+        title: "Error",
+        text: "Ingrese un Numero de vivienda",
+        icon: "error",
+        confirmButtonText: "Ok",
+      });
+      return;
+    }
+    if(values.personasConvive === ""){
+      Swal.fire({
+        title: "Error",
+        text: "Ingrese el numero de personas con que convive",
+        icon: "error",
+        confirmButtonText: "Ok",
+      });
+      return;
+    }
+    if(values.role === ""){
+      Swal.fire({
+        title: "Error",
+        text: "Seleccione un rol",
+        icon: "error",
+        confirmButtonText: "Ok",
+      });
+      return;
+    }
+
+
+
+    if(!restrictInputMail({target:{value:values.correo}}) ){
+      Swal.fire({
+        title: "Error",
+        text: "Correo invalido",
+        icon: "error",
+        confirmButtonText: "Ok",
+      });
+      return;
+    }
+
     try {
       const response = await axios.post(
         `${process.env.API_URL}/crearUser`,
         values
       );
-      console.log(response);
+      // console.log(response);
       if (response.status === 201) {
         Swal.fire({
           title: "Usuario creado",
@@ -81,6 +155,8 @@ export default function CreateUser() {
       });
     }
   };
+
+
 
   const onChange = (e) => {
     setValues({
@@ -134,14 +210,33 @@ export default function CreateUser() {
   function onRutInput(event) {
     var rut = event.target.value;
     event.target.value = formatRut(rut);
-
   }
+
   function restrictInput(event) {
     var input = event.target;
     input.value = input.value.replace(/[^0-9kK]/g, '');
   }
 
- 
+
+  function restrictInputNombre(event) {
+    var input = event.target;
+    input.value = input.value.replace(/[^a-zA-ZñÑ ]/g, '');
+  }
+
+  function restrictInputMail(e) {
+    var validMail = /^(?:[^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*|"[^\n"]+")@(?:[^<>()[\].,;:\s@"]+\.)+[^<>()[\]\.,;:\s@"]{2,63}$/i
+    var input = e.target;
+
+    if (input.value.match(validMail)) {
+      console.log("mail valido")
+      return true;
+    } 
+    if(!input.value.match(validMail)) {
+      console.log("mail invalido")
+      return false;
+    }
+  }
+
   return (
     <>
       <DynamicNavBar />
@@ -168,10 +263,16 @@ export default function CreateUser() {
                   bg={"#F7F7F7"}
                   placeholder="Nombre y apellido"
                   type={"text"}
-                  onChange={onChange}
+                  onChange={(e) => {
+                    restrictInputNombre(e)
+                    onChange(e);
+                  }}
                   name={"name"}
+                  maxLength="40"
                 ></Input>
               </InputGroup>
+              <FormHelperText>Solo letras</FormHelperText>
+
             </FormControl>
 
             <FormControl>
@@ -182,16 +283,17 @@ export default function CreateUser() {
                   children={<Icon as={MdFingerprint} />}
                 />
                 <Input
+                  minLength={"11"}
                   width="100%"
                   bg={"#F7F7F7"}
                   placeholder="xx.xxx.xxx-k"
                   type={"text"}
                   maxLength="12"
                   onChange={(e) => {
-                    restrictInput(e);
+                    restrictInput(e)
                     onRutInput(e);
                     onChange(e);
-                    
+
                   }}
                   name={"rut"}
                 />
@@ -199,7 +301,9 @@ export default function CreateUser() {
             </FormControl>
 
             <FormControl>
+
               <FormLabel fontSize={"1.2rem"}>Correo electronico</FormLabel>
+
               <InputGroup size="lg">
                 <InputLeftAddon
                   bg={"#a8d3d1"}
@@ -209,29 +313,44 @@ export default function CreateUser() {
                   bg={"#F7F7F7"}
                   placeholder="nombre@ejemplo.com"
                   type={"email"}
-                  onChange={onChange}
+                  
+                  onChange={(e) => {
+                    restrictInputMail(e)
+                    onChange(e);
+                  }}
                   name={"correo"}
+
                 />
+
               </InputGroup>
+              <FormHelperText>Solo correos validos</FormHelperText>
+
             </FormControl>
 
             <FormControl>
+
               <FormLabel fontSize={"1.2rem"}>Numero vivienda</FormLabel>
               <InputGroup size="lg">
                 <InputLeftAddon
                   bg={"#a8d3d1"}
                   children={<Icon as={MdHouse} />}
                 />
-                <NumberInput width={"100%"}>
-                  <NumberInputField
+                <InputGroup width={"100%"}>
+                  <Input
                     bg={"#F7F7F7"}
                     placeholder="#0000"
-                    type={"number"}
-                    onChange={onChange}
+                    type={"text"}
+                    maxLength="4"
+                    onChange={(e) => {
+                      restrictInput(e)
+                      onChange(e);
+                    }}
                     name={"numeroVivienda"}
-                  ></NumberInputField>
-                </NumberInput>
+                  ></Input>
+                </InputGroup>
+
               </InputGroup>
+              <FormHelperText>Solo numeros</FormHelperText>
             </FormControl>
 
             <FormControl>
@@ -244,11 +363,18 @@ export default function CreateUser() {
                 <Input
                   bg={"#F7F7F7"}
                   placeholder="Cantidad de personas"
-                  type={"number"}
-                  onChange={onChange}
+                  type={"text"}
+                  maxLength="2"
+                  onChange={(e) => {
+                    restrictInput(e)
+                    onChange(e);
+
+                  }}
                   name={"personasConvive"}
                 ></Input>
               </InputGroup>
+              <FormHelperText>Solo numeros</FormHelperText>
+
             </FormControl>
             <FormControl>
               <FormLabel fontSize={"1.2rem"}>Tipo de usuario</FormLabel>
@@ -267,6 +393,7 @@ export default function CreateUser() {
                   <option>admin</option>
                 </Select>
               </InputGroup>
+
             </FormControl>
           </Stack>
           <Box my={"10"} display='flex' flexDir={{ base: "column", md: "row" }} justifyContent='center' gap={'10'}>

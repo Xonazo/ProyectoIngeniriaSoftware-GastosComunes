@@ -11,11 +11,13 @@ const UserSchema = new Schema({
     rut:{
         type: String,
         requiered: true,
-        unique : true
+        unique : true,
+        minLenght: 11,
     },
     correo:{
         type: String,
-        required: true
+        required: true,
+        unique: true,
     },
     numeroVivienda:{
         type: Number,
