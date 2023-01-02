@@ -7,6 +7,14 @@ const user = require('../models/user');
 const createRegistroPago = (req, res) => {
     const { rutVecino, fechaRegistro, cantidadPago, pago } = req.body
 
+    // Convertir fecha a objeto Date
+    const fecha = new Date(fechaRegistro)
+
+    // Validar si fecha es mayor al día de hoy
+    if (fecha.getTime() > Date.now()) {
+        return res.status(400).send({ message: "La fecha ingresada es mayor al día de hoy" })
+    }
+
     User.findOne({ rut: rutVecino }, (error, user) => {
         if (error) {
             return res.status(400).send({ message: "Error al buscar usuario" })
@@ -50,6 +58,14 @@ const createRegistroPago = (req, res) => {
 
 const createRegistroAbono = (req, res) => {
     const { rutVecino, fechaRegistro, cantidadPago, pago } = req.body
+
+    // Convertir fecha a objeto Date
+    const fecha = new Date(fechaRegistro)
+
+    // Validar si fecha es mayor al día de hoy
+    if (fecha.getTime() > Date.now()) {
+        return res.status(400).send({ message: "La fecha ingresada es mayor al día de hoy" })
+    }
 
     User.findOne({ rut: rutVecino }, (error, user) => {
         if (error) {

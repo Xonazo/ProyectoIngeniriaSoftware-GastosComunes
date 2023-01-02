@@ -11,7 +11,7 @@ const UserSchema = new Schema({
     rut:{
         type: String,
         requiered: true,
-        unique : true
+        unique : true,
     },
     correo:{
         type: String,

@@ -104,7 +104,7 @@ const ViewDeudas = () => {
       if (result.isConfirmed) {
         actualizarDeuda(id);
         Swal.fire({
-          title: "Eliminado!",
+          title: "Actualizado!",
           text: "El Deuda ha sido actualizada",
           icon: "success",
         });
@@ -131,7 +131,7 @@ const ViewDeudas = () => {
       if (result.isConfirmed) {
         actualizarTODASDeuda();
         Swal.fire({
-          title: "Eliminado!",
+          title: "Actualizadas!",
           text: "TODAS las deudas han sido actualizadas",
           icon: "success",
         });

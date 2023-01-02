@@ -20,6 +20,7 @@ import {
   InputGroup,
   InputLeftAddon,
   Center,
+  FormHelperText,
 } from "@chakra-ui/react";
 // Iconos importados
 import {
@@ -154,6 +155,12 @@ const CreateRegistro = () => {
     setSelectedUser(selected)
   }
 
+  function restrictInput(event) {
+    var input = event.target;
+    input.value = input.value.replace(/[^0-9]/g, '');
+  }
+
+
   return (
     <>
       <DynamicNavBar />
@@ -215,6 +222,7 @@ const CreateRegistro = () => {
                 />
               </NumberInput>
             </InputGroup>
+            <FormHelperText>Solo fecha desde antes hasta hoy</FormHelperText>
           </FormControl>
 
           <FormControl>
@@ -227,11 +235,15 @@ const CreateRegistro = () => {
               <Input
                 bg={"#F7F7F7"}
                 placeholder="Cantidad del pago"
-                type={"Number"}
-                onChange={onChange}
+                type={"text"}
+                onChange={(e) => {
+                  restrictInput(e);
+                  onChange(e);
+                }}
                 name={"cantidadPago"}
               ></Input>
             </InputGroup>
+            <FormHelperText>Solo numeros</FormHelperText>
           </FormControl>
 
           <FormControl>
