@@ -228,7 +228,7 @@ const verRegistros = () => {
             height={{ base: "5rem", md: "5rem" }}
             width={{ base: "100%", md: "35%" }}
             fontSize="2xl"
-            onClick={() => router.back()}
+            onClick={() => router.push("/management")}
           >
             Volver
           </Button>

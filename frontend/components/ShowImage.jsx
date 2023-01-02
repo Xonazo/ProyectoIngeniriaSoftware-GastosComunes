@@ -53,7 +53,7 @@ const ShowImage = ({ fileId }) => {
         <ModalContent>
           <ModalHeader>Archivo</ModalHeader>
           <ModalCloseButton />
-          <ModalBody>
+          <ModalBody align={"center"}>
             <Image src={`${process.env.API_URL}/file/download/${fileId}`} />
           </ModalBody>
 

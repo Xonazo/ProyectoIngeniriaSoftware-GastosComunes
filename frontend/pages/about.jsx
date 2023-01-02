@@ -39,15 +39,15 @@ function about() {
             borderRadius="1rem"
           >
             <Text>
-              Sed in eros nisl. Integer pharetra aliquam ante, ac placerat lacus
-              sodales in. Suspendisse blandit egestas sem eu efficitur. In non
-              massa sit amet dui volutpat laoreet sit amet in augue. Maecenas
-              vitae nisl dapibus, laoreet libero ut, semper nisi. In egestas,
-              ante eget interdum ultricies, massa sapien mattis est, eget
-              iaculis massa leo euismod eros. Donec ac nisl mi. Nam pellentesque
-              tincidunt eros vel efficitur. In sapien nunc, placerat eu tortor
-              id, posuere dictum quam. Suspendisse ac euismod tortor, at dictum
-              nunc. Phasellus cursus venenatis metus vitae suscipit.{" "}
+              Empresa dedicada a la administración de gastos comunes de condominios a lo largo de Chile
+              <br />
+              Nelson Rubio nelson.rubio1901@alumnos.ubiobio.cl
+              <br />
+              Edison Muñoz edison.munoz1901@alumnos.ubiobio.cl
+              <br />
+              Matias San Martin matias.san1901@alumnos.ubiobio.cl
+              <br />
+              Domingo Vega domingo.vega1901@alumnos.ubiobio.cl
             </Text>
           </Flex>
         </Grid>

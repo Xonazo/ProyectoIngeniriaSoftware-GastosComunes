@@ -17,6 +17,7 @@ import {
   FormHelperText,
   Container,
   Heading,
+  Flex,
 } from "@chakra-ui/react";
 
 export default function SubidaImagen() {
@@ -43,7 +44,8 @@ export default function SubidaImagen() {
       if (response.status === 201) {
         Swal.fire({
           icon: "success",
-          title: "Imagen subida correctamente",
+          title: "Realizado",
+          text: "Se ha subido correctamente la imagen",
           showConfirmButton: false,
           timer: 1500,
         });
@@ -67,7 +69,7 @@ export default function SubidaImagen() {
           textAlign={"center"}
           marginBottom={"1rem"}
         >
-          Subida de comprobantes de pagos
+          Subir comprobante
         </Heading>
         <FormControl>
           <FormLabel
@@ -79,14 +81,15 @@ export default function SubidaImagen() {
           >
             Selecciona un archivo
           </FormLabel>
-          <Input
-            size={"lg"}
-            textAlign={"center"}
-            type="file"
-            id="archivos"
-            name="archivos"
-            onChange={(e) => setNombreArchivo(e.target.files[0].name)}
-          />
+          <Center>
+            <Input
+              size={"xl"}
+              type="file"
+              id="archivos"
+              name="archivos"
+              onChange={(e) => setNombreArchivo(e.target.files[0].name)}
+            />
+          </Center>
           <FormHelperText
             id="image-helper-text"
             textTransform={"uppercase"}
@@ -95,12 +98,32 @@ export default function SubidaImagen() {
             Solo se aceptan imagenes
           </FormHelperText>
         </FormControl>
-        <Center>
-          <Button type="submit" mt={4}>
+        <Flex
+          justifyContent={"center"}
+          flexDirection={{ base: "column", md: "row" }}
+          alignItems={"center"}
+          gap="1rem"
+          marginTop={"3.5rem"}
+        >
+          <Button
+            type="submit"
+            colorScheme="teal"
+            height={{ base: "5rem", md: "5rem" }}
+            width={{ base: "100%", md: "35%" }}
+            fontSize="2xl">
             Subir imagen
           </Button>
-        </Center>
-        <Center></Center>
+          <Button
+            colorScheme="teal"
+            height={{ base: "5rem", md: "5rem" }}
+            width={{ base: "100%", md: "40%" }}
+            fontSize="2xl"
+            onClick={() => router.push("/verImagenesUser")}>
+            Ver imagenes subidas
+          </Button>
+        </Flex>
+
+
       </Container>
     </form>
   );

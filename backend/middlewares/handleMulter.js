@@ -13,7 +13,6 @@ const storage = multer.diskStorage({
                 return res.status(404).send({ message: "Usuario no existe" })
             }
             const path = './uploads/' + user.name.toString().replace(" ", "_")
-            console.log(path)
             if (!fs.existsSync(path)) {
                 fs.mkdirSync(path, { recursive: true })
             }
@@ -22,7 +21,7 @@ const storage = multer.diskStorage({
     },
     filename: function (req, file, cb) {
         let fecha = new Date()
-        let fechaString = fecha.getDate() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getFullYear() + "-" + fecha.getHours() + "-" + fecha.getMinutes() + "-" + fecha.getSeconds()
+        let fechaString = fecha.getDate() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getFullYear() + "-" + fecha.getHours() + ":" + fecha.getMinutes() + "-" + fecha.getSeconds()
         cb(null, fechaString + "-" + file.originalname)
     }
 })

@@ -22,7 +22,7 @@ const payday = paydate.getDate()+1;
 
 // Declaracion de objeto transporter "Reutilizable"
 let transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com", 
+    host: "smtp.gmail.com",
     port: 465,
     secure: true, //
     auth: {

@@ -79,7 +79,7 @@ export default function VerUsuarios() {
           }}
         >
           <Td>
-            <Flex alignItems={"center"} justifyContent="center" gap={3}>
+            <Flex alignItems={"center"} justifyContent="left" gap={3}>
               <Avatar
                 borderRadius={"50%"}
                 borderColor="black"
@@ -90,7 +90,7 @@ export default function VerUsuarios() {
               <span>{usuario.name}</span>
             </Flex>
           </Td>
-          
+
           <Td textAlign={"center"}>{usuario.numeroVivienda}</Td>
           <Td
             textAlign="center"

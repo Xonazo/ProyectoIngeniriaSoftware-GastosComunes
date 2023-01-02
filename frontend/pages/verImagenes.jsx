@@ -21,9 +21,12 @@ import {
   Tbody,
   Avatar,
   Flex,
+  Button,
+  Center,
 } from "@chakra-ui/react";
 
-
+import { AiFillPlusCircle } from "react-icons/ai";
+import { AiFillDollarCircle } from "react-icons/ai";
 
 const viewImage = () => {
 
@@ -113,7 +116,34 @@ const viewImage = () => {
             <Td display={"flex"} justifyContent="center">
               <ShowImage fileId={file._id} />
             </Td>
-            
+            <Td>
+              <Center>
+                <Button
+                  title="Pagar"
+                  as={AiFillDollarCircle}
+                  boxSize={{ base: "50", md: "35" }}
+                  _hover={{
+                    bg: "#4ea39a",
+                    color: "white",
+                  }}
+                  onClick={() => router.push("/CrearRegistroPago")}>
+                </Button>
+              </Center>
+            </Td>
+            <Td>
+              <Center>
+                <Button
+                  title="Abonar"
+                  as={AiFillPlusCircle}
+                  boxSize={{ base: "50", md: "35" }}
+                  _hover={{
+                    bg: "#4ea39a",
+                    color: "white",
+                  }}
+                  onClick={() => router.push("/CrearRegistroAbono")}>
+                </Button>
+              </Center>
+            </Td>
           </Tr>
         </>
       );
@@ -128,6 +158,7 @@ const viewImage = () => {
         margin=" 3rem auto"
         p={"3rem"}
         borderRadius={"1rem"}
+        maxW={"container.md"}
       >
         <Heading
           textTransform={"uppercase"}
@@ -143,6 +174,8 @@ const viewImage = () => {
                 <Td textAlign={"center"}>Nombre</Td>
                 <Td textAlign={"center"}>Fecha</Td>
                 <Td textAlign={"center"}>Ver</Td>
+                <Td textAlign={"center"}>Pago</Td>
+                <Td textAlign={"center"}>Abono</Td>
               </Tr>
             </Thead>
             <Tbody>{showFiles()}</Tbody>
