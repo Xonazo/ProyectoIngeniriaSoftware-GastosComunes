@@ -43,6 +43,9 @@ const createUser = (req, res) => {
         personasConvive,
         role
     })
+     if (rut.length < 11) {
+        return res.status(400).send({ message: "El RUT debe tener al menos 11 caracteres" });
+      }
     newUser.save((error, user) => {
         if (error) {
             return res.status(400).send({ message: "No se ha podido crear al Usuario" });
