@@ -55,32 +55,26 @@ const usuario = (data) => {
   const [user] = useState(data);
   // console.log(user);
 
-  const [updates, setUpdates] = useState();
+  const [updates, setUpdates] = useState({
+    name: "",
+    rut: "",
+    correo: "",
+    numeroVivienda: "",
+    personasConvive: "",
+  });
   const [isLoading, setIsLoading] = useState(false);
 
   const onSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
 
-    if (updates === undefined) {
-      return
-    }
+    console.log(updates)
 
-    if (updates.name === "") {
+    if (updates.name === ""||updates.rut === ""||updates.correo === ""||updates.numeroVivienda === ""||updates.personasConvive === "") {
       onClose()
       Swal.fire({
         title: "Error",
-        text: "El campo no puede estar vacio",
-        icon: "error",
-        confirmButtonText: "Ok",
-      });
-      return;
-    }
-    if (!restrictInputMail({ target: { value: updates.correo } })) {
-      onClose()
-      Swal.fire({
-        title: "Error",
-        text: "Correo invalido",
+        text: "El campo es invalido",
         icon: "error",
         confirmButtonText: "Ok",
       });
@@ -108,17 +102,7 @@ const usuario = (data) => {
 
 
   function restrictInputMail(e) {
-    var validMail = /^(?:[^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*|"[^\n"]+")@(?:[^<>()[\].,;:\s@"]+\.)+[^<>()[\]\.,;:\s@"]{2,63}$/i
-    var input = e.target;
 
-    if (input.value.match(validMail)) {
-      console.log("mail valido")
-      return true;
-    }
-    if (!input.value.match(validMail)) {
-      console.log("mail invalido")
-      return false;
-    }
   }
 
   const onChange = (e) => {
@@ -138,9 +122,6 @@ const usuario = (data) => {
 
   useEffect(() => {
 
-    //  var uri = window.location.toString();
-    //  var clean_uri = uri.substring(0, uri.lastIndexOf('/'));
-    // window.history.replaceState({}, document.title, clean_uri);
     comprobacion();
   }, [])
 
@@ -188,7 +169,16 @@ const usuario = (data) => {
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-
+  const getValues = ()=> {
+    setUpdates ({
+      ...updates,
+      name: user.data.name,
+      rut: user.data.rut ,
+      correo: user.data.correo ,
+      numeroVivienda: user.data.numeroVivienda ,
+      personasConvive: user.data.personasConvive
+    })
+  }
 
 
   return (
@@ -250,6 +240,7 @@ const usuario = (data) => {
               <FormControl>
                 <FormLabel fontWeight={"bold"}>Nombre</FormLabel>
                 <Input
+                isRequired
                   size={"lg"}
                   name={"name"}
                   maxLength="40"
@@ -264,6 +255,8 @@ const usuario = (data) => {
               <FormControl mt={4}>
                 <FormLabel fontWeight={"bold"}>Rut</FormLabel>
                 <Input
+                isRequired
+
                   size={"lg"}
                   name="rut"
                   maxLength="12"
@@ -280,6 +273,7 @@ const usuario = (data) => {
               <FormControl mt={4}>
                 <FormLabel fontWeight={"bold"}>Correo</FormLabel>
                 <Input
+                isRequired
                   size={"lg"}
                   name="correo"
                   onChange={(e) => {
@@ -293,6 +287,7 @@ const usuario = (data) => {
               <FormControl mt={4}>
                 <FormLabel fontWeight={"bold"}>Nº Vivienda</FormLabel>
                 <Input
+                isRequired
                   size={"lg"}
                   name="numeroVivienda"
                   maxLength="4"
@@ -306,6 +301,7 @@ const usuario = (data) => {
               <FormControl mt={4}>
                 <FormLabel fontWeight={"bold"}>Nº Personas</FormLabel>
                 <Input
+                isRequired
                   size={"lg"}
                   name="personasConvive"
                   maxLength="2"
@@ -350,7 +346,11 @@ const usuario = (data) => {
             height={{ base: "5rem", md: "5rem" }}
             width={{ base: "100%", md: "35%" }}
             fontSize="2xl"
-            onClick={onOpen}
+
+            onClick={() => {
+              onOpen()
+              getValues()
+            }}
           >
             Editar
           </Button>
